@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import IMG from '../assets/img2.png';
-export default function PundingCard() {
+const PundingCard = () => {
 	return (
 		<Card>
 			<CardIMG></CardIMG>
@@ -18,7 +18,8 @@ export default function PundingCard() {
 			</CardInfoBox>
 		</Card>
 	);
-}
+};
+export default PundingCard;
 const Title = styled.div`
 	font-weight: 800;
 `;

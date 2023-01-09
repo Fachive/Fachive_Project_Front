@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import IMG from '../assets/img.png';
 import { BiLike } from 'react-icons/bi';
 import { IoEyeOutline } from 'react-icons/io5';
-export default function PashionCard() {
+const PashionCard = () => {
 	return (
 		<Card>
 			<CardIMG></CardIMG>
@@ -20,8 +20,8 @@ export default function PashionCard() {
 			</CardInfoBox>
 		</Card>
 	);
-}
-
+};
+export default PashionCard;
 const Card = styled.div`
 	margin-left: 10px;
 	border-radius: 10px;

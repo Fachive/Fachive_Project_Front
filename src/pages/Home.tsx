@@ -1,10 +1,12 @@
 import PashionCard from '../components/PashionCard';
 import PundingCard from '../components/PundingCard';
-export default function Home() {
+const Home = () => {
 	return (
 		<>
 			<PashionCard />
 			<PundingCard />
 		</>
 	);
-}
+};
+
+export default Home;
