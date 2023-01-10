@@ -7,29 +7,36 @@ const PashionCard = () => {
 		<Card>
 			<CardIMG></CardIMG>
 			<CardInfoBox>
-				<div style={{ display: 'flex' }}>
+				<CardLeftInfo>
 					<Profile />
 					<Designer>Designer Choi</Designer>
-				</div>
-				<div>
+				</CardLeftInfo>
+				<CardLeftRightInfo>
 					<BiLike size="22" />
 					33
 					<IoEyeOutline style={{ marginLeft: '15px' }} size="22" />
 					666
-				</div>
+				</CardLeftRightInfo>
 			</CardInfoBox>
 		</Card>
 	);
 };
 export default PashionCard;
+const CardLeftRightInfo = styled.div`
+	display: flex;
+	gap: 5px;
+`;
+const CardLeftInfo = styled.div`
+	display: flex;
+`;
 const Card = styled.div`
 	margin-left: 10px;
 	border-radius: 10px;
 	overflow: hidden;
-	width: 336px;
+	min-width: 336px;
 `;
 const Designer = styled.span`
-	margin-left: 15px;
+	margin-left: 10px;
 `;
 const Profile = styled.div`
 	background-color: #c5c5c5;
