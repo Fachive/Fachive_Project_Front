@@ -20,6 +20,7 @@ const Home = () => {
 			<RecommendButton>패션추천 바로 가기</RecommendButton>
 			<FundingImg />
 
+			<RecommendTitle>패카이브 추천 픽</RecommendTitle>
 			<FachiveRecommend>
 				<PundingCard />
 				<PundingCard />
@@ -33,7 +34,7 @@ const Home = () => {
 };
 const RecommendButton = styled.button`
 	width: 500px;
-	margin: 15px auto;
+	margin: 50px auto;
 	border: none;
 	padding: 15px;
 	font-size: 16px;

@@ -13,13 +13,31 @@ const PundingCard = () => {
 						<Designer>케이빌리지</Designer>
 						<Sale>90% (D-3)</Sale>
 					</div>
-					<div style={{ fontSize: '20px', fontWeight: '600' }}>32,000원</div>
+					<div style={{ fontSize: '20px', fontWeight: '600', color: '#1A3568' }}>32,000원</div>
 				</PundingInfo>
 			</CardInfoBox>
 		</Card>
 	);
 };
 export default PundingCard;
+
+const Card = styled.div`
+	margin-right: 25px;
+	border-radius: 10px;
+`;
+
+const CardInfoBox = styled.div`
+	margin-top: 15px;
+	margin-bottom: 15px;
+`;
+const CardIMG = styled.div`
+	height: 252px;
+	width: 406px;
+	background-image: url(${IMG});
+	background-size: cover;
+	border-radius: 20px;
+`;
+
 const Title = styled.div`
 	font-weight: 800;
 `;
@@ -36,28 +54,13 @@ const PundingInfo = styled.div`
 	margin: 15px 0px;
 	justify-content: space-between;
 `;
-const Card = styled.div`
-	margin-left: 10px;
-	border-radius: 10px;
-	width: 336px;
-`;
+
 const Designer = styled.span`
-	margin-left: 15px;
+	margin-left: 10px;
 `;
 const Profile = styled.div`
 	background-color: #b3b3b3;
 	width: 20px;
 	border-radius: 10px;
 	height: 20px;
-`;
-const CardInfoBox = styled.div`
-	margin-top: 15px;
-	margin-bottom: 15px;
-`;
-const CardIMG = styled.div`
-	height: 252px;
-	width: 336px;
-	background-image: url(${IMG});
-	background-size: cover;
-	border-radius: 20px;
 `;
