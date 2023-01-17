@@ -63,9 +63,11 @@ const Container = styled.div`
 	flex-direction: column;
 `;
 const FachiveRecommend = styled.div`
+	width: 100%;
 	display: flex;
 	overflow-x: hidden;
 	overflow-y: hidden;
+	gap: 15px;
 `;
 const SlideImg = styled.img`
 	max-width: 100%;
