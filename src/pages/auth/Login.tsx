@@ -1,14 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import logoImage from '../../assets/logo-vertical1.png';
+import logoText from '../../assets/logo-vertical2.png';
+import kakao from '../../assets/kakao.jpg';
+import naver from '../../assets/naver.jpg';
+import google from '../../assets/google.jpg';
 
 const Login = () => {
 	return (
 		<LoginDiv>
-			<TitleImage>
-				<p>이미지 자리</p>
-				<p>FACHIVE</p>
-			</TitleImage>
+			<TitleImageDiv>
+				<img src={`${logoImage}`} alt="" />
+				<img src={`${logoText}`} alt="" />
+			</TitleImageDiv>
 			<form>
 				<InputContainer>
 					<LoginInput type="email" placeholder="아이디" />
@@ -22,9 +27,9 @@ const Login = () => {
 			</form>
 			<SocialLoginText>다른 계정을 활용하여 간편하게 로그인</SocialLoginText>
 			<SocialLogin>
-				<span>카카오톡</span>
-				<span>네이버</span>
-				<span>구글</span>
+				<img src={`${kakao}`} alt="" />
+				<img src={`${naver}`} alt="" />
+				<img src={`${google}`} alt="" />
 			</SocialLogin>
 		</LoginDiv>
 	);
@@ -33,16 +38,17 @@ const Login = () => {
 export default Login;
 const LoginDiv = styled.div`
 	position: absolute;
-	top: 50%;
+	top: 60%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	width: 300px;
 	height: 482px;
 `;
 
-const TitleImage = styled.div`
+const TitleImageDiv = styled.div`
 	text-align: center;
 	font-size: 1.5rem;
+	margin-bottom: 2rem;
 `;
 const InputContainer = styled.div`
 	box-sizing: border-box;
@@ -54,7 +60,7 @@ const LoginInput = styled.input`
 	box-sizing: border-box;
 	width: 95%;
 	padding: 15px 10px;
-	border: 0.5px solid gray;
+	border: 0.5px solid #ebebeb;
 `;
 const LoginButton = styled.button`
 	box-sizing: border-box;
@@ -73,15 +79,16 @@ const LinkContainer = styled.div`
 	box-sizing: border-box;
 	text-align: center;
 	a {
-		margin: 0 5px;
-		font-size: 0.9rem;
+		margin: 0 20px;
+		font-size: 0.75rem;
+		font-weight: bold;
 		text-decoration: none;
 		color: #666;
 	}
 `;
 const SocialLoginText = styled.div`
 	margin: 20px 0;
-	font-size: 0.7rem;
+	font-size: 0.65rem;
 	text-align: center;
 `;
 const SocialLogin = styled.div`
@@ -90,4 +97,9 @@ const SocialLogin = styled.div`
 	justify-content: space-around;
 	margin: 0 auto;
 	width: 80%;
+	img {
+		width: 25%;
+		border: 0.3px solid #eee;
+		border-radius: 50%;
+	}
 `;
