@@ -33,7 +33,8 @@ const Card = styled.div`
 	margin-left: 10px;
 	border-radius: 10px;
 	overflow: hidden;
-	min-width: 336px;
+	width: 25%;
+	min-width: 300px;
 `;
 const Designer = styled.span`
 	margin-left: 10px;
@@ -52,7 +53,6 @@ const CardInfoBox = styled.div`
 `;
 const CardIMG = styled.div`
 	height: 252px;
-	width: 336px;
 	background-image: url(${IMG});
 	background-size: cover;
 	border-radius: 10px;
