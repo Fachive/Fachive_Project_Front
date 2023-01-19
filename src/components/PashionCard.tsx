@@ -30,11 +30,8 @@ const CardLeftInfo = styled.div`
 	display: flex;
 `;
 const Card = styled.div`
-	margin-left: 10px;
 	border-radius: 10px;
-	overflow: hidden;
-	width: 25%;
-	min-width: 300px;
+	min-width: 332px;
 `;
 const Designer = styled.span`
 	margin-left: 10px;
@@ -52,7 +49,7 @@ const CardInfoBox = styled.div`
 	justify-content: space-between;
 `;
 const CardIMG = styled.div`
-	height: 252px;
+	height: 235px;
 	background-image: url(${IMG});
 	background-size: cover;
 	border-radius: 10px;
