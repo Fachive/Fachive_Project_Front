@@ -1,21 +1,32 @@
-import { Link } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import LogoImg from '../assets/Logo.png';
 
 const Navbar = () => {
+	const location = useLocation();
+	console.log(location.pathname);
+	const NAV_ITEM = [
+		['/fashion', '패션픽업'],
+		['/funding', '펀딩'],
+		['/portfolio', '포트폴리오'],
+	];
 	return (
 		<Container>
 			<NavContainerDiv>
 				<LogoSpan></LogoSpan>
-				<NavItemSpan>
-					<StyledLink to="/fashion">패션픽업</StyledLink>
-				</NavItemSpan>
-				<NavItemSpan>
-					<StyledLink to="/funding">펀딩</StyledLink>
-				</NavItemSpan>
-				<NavItemSpan>
-					<StyledLink to="/portfolio">포트폴리오</StyledLink>
-				</NavItemSpan>
+				{NAV_ITEM.map((v) => {
+					return (
+						<NavItemSpan>
+							{location.pathname === v[0] ? (
+								<StyledLink to={`${v[0]}`} className="selected">
+									{v[1]}
+								</StyledLink>
+							) : (
+								<StyledLink to={`${v[0]}`}>{v[1]}</StyledLink>
+							)}
+						</NavItemSpan>
+					);
+				})}
 			</NavContainerDiv>
 			<UserContainerDiv>
 				<UserItemDiv>로그인</UserItemDiv>
@@ -26,20 +37,32 @@ const Navbar = () => {
 	);
 };
 export default Navbar;
-const StyledLink = styled(Link)`
+const StyledLink = styled(NavLink)`
 	text-decoration-line: none;
-	color: black;
+	color: #999999;
+
+	&.selected {
+		font-weight: 800;
+		display: flex;
+		flex-direction: column;
+		color: black;
+		&::after {
+			content: '';
+			position: relative;
+			top: 18px;
+			border: 1px solid black;
+		}
+	}
 `;
 const Container = styled.div`
 	width: 100%;
-	height: 70px;
+	height: 60px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	color: #999999;
 	font-size: 16px;
 	font-weight: 700;
-	margin-bottom: 15px;
 `;
 const LogoSpan = styled.span`
 	height: 25px;
