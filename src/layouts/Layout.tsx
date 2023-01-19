@@ -20,6 +20,6 @@ const Container = styled.div`
 const LineDiv = styled.div`
 	width: calc(100% + 11.5%);
 	height: 1px;
-	border-top: 1px solid black;
+	border-top: 1px solid #ebebeb;
 	margin: 15px -6%;
 `;
