@@ -1,13 +1,16 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import category from '../../assets/category.png';
 
 const Fashion = () => {
-	const [filter, setFilter] = useState('');
-
+	const FILTER = ['추천순', '최신순', '마이픽'];
+	const [filter, setFilter] = useState('추천순');
 	const onClickHander = (e: any) => {
-		console.log(e.target.children);
+		setFilter(e.target.id);
 	};
+	useEffect(() => {
+		console.log(filter, 'useEffect');
+	}, [filter]);
 	return (
 		<ContainerDiv>
 			<CategoryDiv />
@@ -18,9 +21,15 @@ const Fashion = () => {
 
 			<SelectDiv>
 				<FilterBoxDiv onClick={(e) => onClickHander(e)}>
-					<FilterItemButton className="likes">추천순</FilterItemButton>
-					<FilterItemButton className="lately">최신순</FilterItemButton>
-					<FilterItemButton className="mypick">마이픽</FilterItemButton>
+					{FILTER.map((v) => {
+						return filter === v ? (
+							<FilterItemDiv id={v} className="selected">
+								{v}
+							</FilterItemDiv>
+						) : (
+							<FilterItemDiv id={v}>{v}</FilterItemDiv>
+						);
+					})}
 				</FilterBoxDiv>
 				<DropBoxDiv>
 					계절:
@@ -53,7 +62,10 @@ const SelectDiv = styled.div`
 	justify-content: space-between;
 	width: 100%;
 `;
-const FilterBoxDiv = styled.div``;
+const FilterBoxDiv = styled.div`
+	display: flex;
+	gap: 20px;
+`;
 const DropBoxDiv = styled.div`
 	font-weight: 600;
 `;
@@ -63,16 +75,24 @@ const DropItemSelect = styled.select`
 	font-weight: 600;
 	font-size: 16px;
 `;
-const FilterItemButton = styled.button`
-	width: 70px;
+const FilterItemDiv = styled.div`
 	height: 20px;
 	font-weight: 800;
 	font-size: 18px;
-	border: none;
-	background-color: white;
+	color: #999999;
 	cursor: pointer;
-	&:active {
-		color: green;
+
+	&.selected {
+		color: black;
+		font-weight: 800;
+		display: flex;
+		flex-direction: column;
+		&::after {
+			content: '';
+			position: relative;
+			top: 10px;
+			border: 1px solid black;
+		}
 	}
 `;
 const ContainerDiv = styled.div`
