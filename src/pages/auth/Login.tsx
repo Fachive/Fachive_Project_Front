@@ -22,7 +22,7 @@ const Login = () => {
 				<LoginButton>로그인</LoginButton>
 				<LinkContainer>
 					<Link to={'/'}>비밀번호 재설정</Link>
-					<Link to={'/'}>회원가입</Link>
+					<Link to={'/sign'}>회원가입</Link>
 				</LinkContainer>
 			</form>
 			<SocialLoginText>다른 계정을 활용하여 간편하게 로그인</SocialLoginText>
@@ -38,7 +38,7 @@ const Login = () => {
 export default Login;
 const LoginDiv = styled.div`
 	position: absolute;
-	top: 60%;
+	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	width: 300px;

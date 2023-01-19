@@ -1,13 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import logoImage from '../../assets/logo-vertical1.png';
+import logoText from '../../assets/logo-vertical2.png';
 
 const Sign = () => {
 	return (
 		<SignDiv>
 			<TitleImage>
-				<p>이미지 자리</p>
-				<p>FACHIVE</p>
+				<img src={`${logoImage}`} alt="" />
+				<img src={`${logoText}`} alt="" />
 			</TitleImage>
 			<SignForm>
 				<label htmlFor="signEmail">이메일</label>
@@ -20,8 +22,8 @@ const Sign = () => {
 				<SignInput id="signNickname" type="text" placeholder="2~8자 이내로 설정해주세요" />
 				<label htmlFor="signAgree">패카이브 가입 약관 동의</label>
 				<SignInput id="signAgree" type="text" placeholder="2~8자 이내로 설정해주세요" />
-				<button>sign in</button>
-				<Link to={'/'}>log in</Link>
+				<SignButton>회원가입</SignButton>
+				<Link to={'/login'}>log in</Link>
 			</SignForm>
 		</SignDiv>
 	);
@@ -30,7 +32,7 @@ const Sign = () => {
 export default Sign;
 const SignDiv = styled.div`
 	position: absolute;
-	top: 50%;
+	top: 55%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 	width: 364px;
@@ -50,4 +52,20 @@ const SignInput = styled.input`
 	box-sizing: border-box;
 	padding: 0.8rem 1rem;
 	margin-bottom: 1rem;
+	border-radius: 5px;
+	border: 0.5px solid #ebebeb;
+`;
+
+const SignButton = styled.button`
+	box-sizing: border-box;
+	display: flex;
+	justify-content: center;
+	margin: 0px auto;
+	width: 100%;
+	padding: 15px 10px;
+	background-color: #00b2ff;
+	font-weight: bold;
+	color: white;
+	border: none;
+	border-radius: 5px;
 `;
