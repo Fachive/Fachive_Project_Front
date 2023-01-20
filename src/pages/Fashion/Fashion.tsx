@@ -22,16 +22,20 @@ import {
 } from '../../assets';
 const FILTER = ['추천순', '최신순', '마이픽'];
 const CATEGORY: any = [
-	[all, allClick, '전체'],
-	[tshirts, tshirtsClick, '상의'],
-	[outter, outterClick, '아우터'],
-	[pants, pantsClick, '바지'],
-	[onepiece, onepieceClick, '원피스'],
-	[skirt, skirtClick, '스커트'],
-	[accessory, accessoryClick, '액세서리'],
-	[suit, suitClick, '정장'],
-	[dress, dressClick, '드레스'],
+	[all, allClick, '전체', 'all'],
+	[tshirts, tshirtsClick, '상의', 'tshirts'],
+	[outter, outterClick, '아우터', 'outter'],
+	[pants, pantsClick, '바지', 'pants'],
+	[onepiece, onepieceClick, '원피스', 'onepiece'],
+	[skirt, skirtClick, '스커트', 'skirt'],
+	[accessory, accessoryClick, '액세서리', 'accessory'],
+	[suit, suitClick, '정장', 'suit'],
+	[dress, dressClick, '드레스', 'dress'],
 ];
+
+interface CategoryDiv {
+	onClick: (e: React.MouseEvent<HTMLButtonElement>) => React.MouseEvent<HTMLButtonElement>;
+}
 const Fashion = () => {
 	const [filter, setFilter] = useState('추천순');
 	const [category, setCategory] = useState('all');
@@ -40,12 +44,21 @@ const Fashion = () => {
 	};
 	useEffect(() => {
 		console.log(filter, 'useEffect');
-	}, [filter]);
+		console.log(category, 'useEffect');
+	}, [filter, category]);
+	const clickHander = (e: any) => {
+		console.log(e.target.id);
+		setCategory(() => e.target.id);
+	};
 	return (
 		<ContainerDiv>
-			<CategoryDiv>
+			<CategoryDiv onClick={(e) => clickHander(e)}>
 				{CATEGORY.map((v: any) => {
-					return <CategoryItemDiv text={v[2]} img={v[0]}></CategoryItemDiv>;
+					return category === v[3] ? (
+						<CategoryItemDiv active={true} id={v[3]} text={v[2]} img={v[1]}></CategoryItemDiv>
+					) : (
+						<CategoryItemDiv active={false} id={v[3]} text={v[2]} img={v[0]}></CategoryItemDiv>
+					);
 				})}
 			</CategoryDiv>
 			<TextDiv>
@@ -150,7 +163,7 @@ const CategoryDiv = styled.div`
 	justify-content: center;
 	gap: 20px;
 `;
-const CategoryItemDiv = styled.div<{ img: any; text: any }>`
+const CategoryItemDiv = styled.div<{ img: any; text: any; active: boolean }>`
 	height: 70px;
 	width: 70px;
 	background-color: #fdfdfd;
@@ -166,9 +179,9 @@ const CategoryItemDiv = styled.div<{ img: any; text: any }>`
 		content: '${(props) => props.text}';
 		text-align: center;
 		font-weight: 700;
-		color: #999999;
 		margin-top: 100px;
 		font-size: 14px;
+		color: ${(props) => (props.active ? 'black' : '#999999')};
 	}
 `;
 const SubtitleDiv = styled.div``;
