@@ -1,10 +1,40 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
-import category from '../../assets/category.png';
-
+import {
+	accessory,
+	accessoryClick,
+	all,
+	allClick,
+	dress,
+	dressClick,
+	onepiece,
+	onepieceClick,
+	outter,
+	outterClick,
+	pants,
+	pantsClick,
+	skirt,
+	skirtClick,
+	suit,
+	suitClick,
+	tshirts,
+	tshirtsClick,
+} from '../../assets';
+const FILTER = ['추천순', '최신순', '마이픽'];
+const CATEGORY: any = [
+	[all, allClick, '전체'],
+	[tshirts, tshirtsClick, '상의'],
+	[outter, outterClick, '아우터'],
+	[pants, pantsClick, '바지'],
+	[onepiece, onepieceClick, '원피스'],
+	[skirt, skirtClick, '스커트'],
+	[accessory, accessoryClick, '액세서리'],
+	[suit, suitClick, '정장'],
+	[dress, dressClick, '드레스'],
+];
 const Fashion = () => {
-	const FILTER = ['추천순', '최신순', '마이픽'];
 	const [filter, setFilter] = useState('추천순');
+	const [category, setCategory] = useState('all');
 	const onClickHander = (e: any) => {
 		setFilter(e.target.id);
 	};
@@ -13,7 +43,11 @@ const Fashion = () => {
 	}, [filter]);
 	return (
 		<ContainerDiv>
-			<CategoryDiv />
+			<CategoryDiv>
+				{CATEGORY.map((v: any) => {
+					return <CategoryItemDiv text={v[2]} img={v[0]}></CategoryItemDiv>;
+				})}
+			</CategoryDiv>
 			<TextDiv>
 				<SubtitleDiv>새로운 트렌드의 시작 😎</SubtitleDiv>
 				<HeadTitleDiv>먼 훗날 유행이 될 최고의 아이템을 찾아보세요.</HeadTitleDiv>
@@ -88,7 +122,8 @@ const FilterItemDiv = styled.div`
 		display: flex;
 		flex-direction: column;
 		&::after {
-			content: '';
+			content: {
+			}
 			position: relative;
 			top: 10px;
 			border: 1px solid black;
@@ -109,9 +144,32 @@ const CategoryDiv = styled.div`
 	margin: 100px 0px;
 	height: 100px;
 	width: 1100px;
-	background-image: url(${category});
+	display: flex;
 	background-repeat: no-repeat;
 	background-position: center;
+	justify-content: center;
+	gap: 20px;
+`;
+const CategoryItemDiv = styled.div<{ img: any; text: any }>`
+	height: 70px;
+	width: 70px;
+	background-color: #fdfdfd;
+	border: 1px solid #ebebeb;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	background-image: url(${(props) => props.img});
+	background-repeat: no-repeat;
+	background-position: center;
+	border-radius: 20px;
+	&::after {
+		content: '${(props) => props.text}';
+		text-align: center;
+		font-weight: 700;
+		color: #999999;
+		margin-top: 100px;
+		font-size: 14px;
+	}
 `;
 const SubtitleDiv = styled.div``;
 const TextDiv = styled.div`
