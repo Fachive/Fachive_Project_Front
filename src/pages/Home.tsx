@@ -3,6 +3,7 @@ import PundingCard from '../components/PundingCard';
 import styled from 'styled-components';
 import homeImg from '../assets/homeImg.png';
 import fundingImg from '../assets/fundingImg.png';
+
 const Home = () => {
 	return (
 		<Container>
@@ -16,10 +17,13 @@ const Home = () => {
 				<PashionCard />
 				<PashionCard />
 				<PashionCard />
+				<PashionCard />
+				<PashionCard />
+				<PashionCard />
+				<PashionCard />
 			</FachiveRecommend>
 			<RecommendButton>패션추천 바로 가기</RecommendButton>
 			<FundingImg />
-
 			<RecommendTitle>패카이브 추천 픽</RecommendTitle>
 			<FachiveRecommend>
 				<PundingCard />
@@ -32,6 +36,9 @@ const Home = () => {
 		</Container>
 	);
 };
+
+export default Home;
+
 const RecommendButton = styled.button`
 	width: 500px;
 	margin: 50px auto;
@@ -63,11 +70,10 @@ const Container = styled.div`
 	flex-direction: column;
 `;
 const FachiveRecommend = styled.div`
-	width: 100%;
 	display: flex;
-	overflow-x: hidden;
-	overflow-y: hidden;
-	gap: 15px;
+	overflow-x: scroll;
+	gap: 12px;
+	width: 100%;
 `;
 const SlideImg = styled.img`
 	max-width: 100%;
@@ -78,5 +84,3 @@ const SlideImg = styled.img`
 	background-position: center;
 	background-repeat: no-repeat;
 `;
-
-export default Home;
