@@ -1,5 +1,3 @@
-import PashionCard from '../components/PashionCard';
-import PundingCard from '../components/PundingCard';
 import styled from 'styled-components';
 import homeImg from '../assets/homeImg.png';
 import fundingImg from '../assets/fundingImg.png';
@@ -10,29 +8,11 @@ const Home = () => {
 			<SlideImg />
 			<RecommendTitle>패카이브 추천 픽</RecommendTitle>
 
-			<FachiveRecommend>
-				<PashionCard />
-				<PashionCard />
-				<PashionCard />
-				<PashionCard />
-				<PashionCard />
-				<PashionCard />
-				<PashionCard />
-				<PashionCard />
-				<PashionCard />
-				<PashionCard />
-			</FachiveRecommend>
+			<FachiveRecommend></FachiveRecommend>
 			<RecommendButton>패션추천 바로 가기</RecommendButton>
 			<FundingImg />
 			<RecommendTitle>패카이브 추천 픽</RecommendTitle>
-			<FachiveRecommend>
-				<PundingCard />
-				<PundingCard />
-				<PundingCard />
-				<PundingCard />
-				<PundingCard />
-				<PundingCard />
-			</FachiveRecommend>
+			<FachiveRecommend></FachiveRecommend>
 		</Container>
 	);
 };
