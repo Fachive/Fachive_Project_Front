@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useEffect, useState } from 'react';
 import {
 	accessory,
@@ -59,12 +59,13 @@ export interface CardRes {
 
 const Fashion = () => {
 	const location = useLocation();
-	const [filter, setFilter] = useState('추천순');
-	const [currentPage, setCurrentPage] = useState(location.pathname);
-	const [category, setCategory] = useState('all');
+	const [filter, setFilter] = useState<string>('추천순');
+	const [currentPage, setCurrentPage] = useState<string>(location.pathname);
+	const [category, setCategory] = useState<string>('all');
 	const [CardData, setCardData] = useState<CardRes[]>([]);
-	const [limit, setLimit] = useState(10);
-	const [page, setPage] = useState(1);
+	const [limit, setLimit] = useState<number>(10);
+	const [page, setPage] = useState<number>(1);
+	const [categoryModal, setCategoryModal] = useState<boolean>(false);
 	const offset = (page - 1) * limit;
 
 	const onClickHander = (e: any) => {
@@ -150,14 +151,27 @@ const Fashion = () => {
 						<option value="가을">가을</option>
 						<option value="겨울">겨울</option>
 					</DropItemSelect>
-					카테고리:
-					<DropItemSelect>
-						<option value="">전체</option>
-						<option value="봄">봄</option>
-						<option value="여름">여름</option>
-						<option value="가을">가을</option>
-						<option value="겨울">겨울</option>
-					</DropItemSelect>
+					<CategorySelectDiv onClick={() => setCategoryModal(true)}>
+						<span style={{ marginRight: '6px' }}>카테고리 :</span>
+						{
+							CATEGORY.filter((v) => {
+								return v[3] === category;
+							})[0][2]
+						}
+						{categoryModal && (
+							<DropCategoryItemBoxDiv>
+								{CATEGORY.map((v) =>
+									category === v[3] ? (
+										<CategoryItemSpan onClick={() => setCategory(v[3])} active={true}>
+											{v[2]}
+										</CategoryItemSpan>
+									) : (
+										<CategoryItemSpan onClick={() => setCategory(v[3])}>{v[2]}</CategoryItemSpan>
+									)
+								)}
+							</DropCategoryItemBoxDiv>
+						)}
+					</CategorySelectDiv>
 				</DropBoxDiv>
 			</SelectDiv>
 
@@ -188,8 +202,36 @@ const FilterBoxDiv = styled.div`
 	display: flex;
 	gap: 20px;
 `;
+const CategorySelectDiv = styled.div``;
 const DropBoxDiv = styled.div`
 	font-weight: 600;
+	padding-right: 35px;
+	display: flex;
+`;
+const CategoryItemSpan = styled.span<{ active?: boolean }>`
+	color: #999999;
+	font-weight: 700;
+	cursor: pointer;
+	${({ active }) => {
+		return (
+			active &&
+			css`
+				color: black;
+			`
+		);
+	}};
+`;
+const DropCategoryItemBoxDiv = styled.div`
+	width: 600px;
+	height: 70px;
+	background-color: #ffffff;
+	position: absolute;
+	left: 1180px;
+	border-radius: 20px;
+	border: 1px solid gray;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
 `;
 const DropItemSelect = styled.select`
 	border: none;
