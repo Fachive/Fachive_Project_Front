@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import { BiLike } from 'react-icons/bi';
 import { IoEyeOutline } from 'react-icons/io5';
-import { FashionRes } from '../pages/Fashion/Fashion';
+import { CardRes } from '../pages/Fashion/Fashion';
 
 interface ResProps {
-	data: FashionRes;
+	data: CardRes;
 }
 
 const FashionCard = ({ data }: ResProps) => {
@@ -15,7 +15,7 @@ const FashionCard = ({ data }: ResProps) => {
 				<CardLeftInfo>
 					<Profile />
 					<Designer>
-						{data.displayName.length > 10 ? data.displayName.slice(0, 10) + '....' : data.displayName}
+						{data.displayName?.length > 10 ? data.displayName?.slice(0, 10) + '....' : data.displayName}
 					</Designer>
 				</CardLeftInfo>
 				<CardLeftRightInfo>
