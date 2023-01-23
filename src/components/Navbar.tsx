@@ -4,19 +4,19 @@ import LogoImg from '../assets/Logo.png';
 
 const Navbar = () => {
 	const location = useLocation();
-	console.log(location.pathname);
 	const NAV_ITEM = [
 		['/fashion', '패션픽업'],
 		['/funding', '펀딩'],
 		['/portfolio', '포트폴리오'],
 	];
+
 	return (
 		<Container>
 			<NavContainerDiv>
 				<LogoSpan></LogoSpan>
-				{NAV_ITEM.map((v) => {
+				{NAV_ITEM.map((v, i) => {
 					return (
-						<NavItemSpan>
+						<NavItemSpan key={i}>
 							{location.pathname === v[0] ? (
 								<StyledLink to={`${v[0]}`} className="selected">
 									{v[1]}
@@ -36,6 +36,7 @@ const Navbar = () => {
 		</Container>
 	);
 };
+
 export default Navbar;
 const StyledLink = styled(NavLink)`
 	text-decoration-line: none;
