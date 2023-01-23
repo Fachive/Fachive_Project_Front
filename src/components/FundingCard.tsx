@@ -12,6 +12,7 @@ const FundingCard = ({ data }: ResProps) => {
 			<CardInfoBoxDiv>
 				<TitleDiv>{data.body}</TitleDiv>
 				<HashTagDiv>#힙합 #아메카지 #인스타룩 #패셔너블</HashTagDiv>
+				<progress value={data.percentage} max="100" style={{ width: '100%' }}></progress>
 				<PundingInfoDiv>
 					<div style={{ display: 'flex' }}>
 						<ProfileDiv />
