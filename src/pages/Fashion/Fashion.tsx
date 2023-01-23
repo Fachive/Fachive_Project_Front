@@ -20,8 +20,14 @@ import {
 	tshirts,
 	tshirtsClick,
 } from '../../assets';
+import axios from 'axios';
+import FashionCard from '../../components/FashionCard';
+import Pagination from '../../components/Pagination';
+import { useLocation } from 'react-router-dom';
+import FundingCard from '../../components/FundingCard';
+
 const FILTER = ['추천순', '최신순', '마이픽'];
-const CATEGORY: any = [
+const CATEGORY: (any | string)[] = [
 	[all, allClick, '전체', 'all'],
 	[tshirts, tshirtsClick, '상의', 'tshirts'],
 	[outter, outterClick, '아우터', 'outter'],
@@ -32,32 +38,96 @@ const CATEGORY: any = [
 	[suit, suitClick, '정장', 'suit'],
 	[dress, dressClick, '드레스', 'dress'],
 ];
+export interface FundingRes {
+	body: string;
+	dueDate: Date;
+	fundedPrice: number;
+	fundingEntityId: number;
+	percentage: number;
+	postImageDto: {
+		fileName: string;
+		fileURI: string;
+	};
+	tags: any;
+	targetPrice: number;
+	title: string;
+}
 
-interface CategoryDiv {
-	onClick: (e: React.MouseEvent<HTMLButtonElement>) => React.MouseEvent<HTMLButtonElement>;
+export interface FashionRes {
+	displayName: string;
+	pickup: number;
+	postImageDto: {
+		fileName: string;
+		fileURI: string;
+	};
+	views: number;
 }
 const Fashion = () => {
+	const location = useLocation();
 	const [filter, setFilter] = useState('추천순');
+	const [currentPage, setCurrentPage] = useState(location.pathname);
 	const [category, setCategory] = useState('all');
+	const [fashionData, setFashionData] = useState<FashionRes[]>([]);
+	const [fundingData, setFundingData] = useState<FundingRes[]>([]);
+	const [limit, setLimit] = useState(10);
+	const [page, setPage] = useState(1);
+	const offset = (page - 1) * limit;
+
 	const onClickHander = (e: any) => {
 		setFilter(e.target.id);
 	};
+	const getData = async () => {
+		if (currentPage === '/fashion') {
+			const res = await axios.get(
+				'http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/fashionpickup/main/get'
+			);
+			setFashionData(res.data.data);
+		} else if (currentPage === '/funding') {
+			const res = await axios.get(
+				'http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/funding/mainPageGet'
+			);
+			setFundingData(res.data.data);
+		}
+	};
+
 	useEffect(() => {
-		console.log(filter, 'useEffect');
-		console.log(category, 'useEffect');
+		setCurrentPage(location.pathname);
+	}, [location, currentPage]);
+	useEffect(() => {
+		getData();
 	}, [filter, category]);
+
+	useEffect(() => {
+		console.log(offset);
+	}, [page]);
+	useEffect(() => {
+		console.log(fashionData);
+	}, [fashionData]);
 	const clickHander = (e: any) => {
-		console.log(e.target.id);
-		setCategory(() => e.target.id);
+		setCategory(e.target.id);
 	};
 	return (
 		<ContainerDiv>
-			<CategoryDiv onClick={(e) => clickHander(e)}>
-				{CATEGORY.map((v: any) => {
+			<CategoryDiv>
+				{CATEGORY.map((v: (any | string)[], i) => {
 					return category === v[3] ? (
-						<CategoryItemDiv active={true} id={v[3]} text={v[2]} img={v[1]}></CategoryItemDiv>
+						<CategoryItemDiv
+							key={i}
+							onClick={(e) => clickHander(e)}
+							active={true}
+							id={v[3]}
+							text={v[2]}
+							img={v[1]}
+						></CategoryItemDiv>
 					) : (
-						<CategoryItemDiv active={false} id={v[3]} text={v[2]} img={v[0]}></CategoryItemDiv>
+						<CategoryItemDiv
+							key={i}
+							onClick={(e) => clickHander(e)}
+							active={false}
+							id={v[3]}
+							text={v[2]}
+							img={v[0]}
+						></CategoryItemDiv>
 					);
 				})}
 			</CategoryDiv>
@@ -68,13 +138,15 @@ const Fashion = () => {
 
 			<SelectDiv>
 				<FilterBoxDiv onClick={(e) => onClickHander(e)}>
-					{FILTER.map((v) => {
+					{FILTER.map((v, i) => {
 						return filter === v ? (
-							<FilterItemDiv id={v} className="selected">
+							<FilterItemDiv key={i} id={v} className="selected">
 								{v}
 							</FilterItemDiv>
 						) : (
-							<FilterItemDiv id={v}>{v}</FilterItemDiv>
+							<FilterItemDiv key={i} id={v}>
+								{v}
+							</FilterItemDiv>
 						);
 					})}
 				</FilterBoxDiv>
@@ -97,6 +169,25 @@ const Fashion = () => {
 					</DropItemSelect>
 				</DropBoxDiv>
 			</SelectDiv>
+			{currentPage === '/fashion' ? (
+				<>
+					<CardDiv>
+						{fashionData.slice(offset, offset + limit).map((v) => {
+							return <FashionCard data={v}></FashionCard>;
+						})}
+					</CardDiv>
+					<Pagination total={fashionData.length} limit={limit} page={page} setPage={setPage} />
+				</>
+			) : (
+				<>
+					<CardDiv>
+						{fundingData.slice(offset, offset + limit).map((v) => {
+							return <FundingCard data={v}></FundingCard>;
+						})}
+					</CardDiv>
+					<Pagination total={fundingData.length} limit={limit} page={page} setPage={setPage} />
+				</>
+			)}
 		</ContainerDiv>
 	);
 };
@@ -108,6 +199,7 @@ const SelectDiv = styled.div`
 	margin-top: 100px;
 	justify-content: space-between;
 	width: 100%;
+	margin-bottom: 30px;
 `;
 const FilterBoxDiv = styled.div`
 	display: flex;
@@ -162,6 +254,12 @@ const CategoryDiv = styled.div`
 	background-position: center;
 	justify-content: center;
 	gap: 20px;
+`;
+const CardDiv = styled.section`
+	display: grid;
+	grid-template-columns: repeat(5, calc(20% - 30px));
+	gap: 30px;
+	width: 100%;
 `;
 const CategoryItemDiv = styled.div<{ img: any; text: any; active: boolean }>`
 	height: 70px;
