@@ -25,6 +25,7 @@ import FashionCard from '../../components/FashionCard';
 import Pagination from '../../components/Pagination';
 import { useLocation } from 'react-router-dom';
 import FundingCard from '../../components/FundingCard';
+import { CardRes } from '../../types/fashionPage';
 
 const FILTER = ['추천순', '최신순', '마이픽'];
 const CATEGORY: (any | string)[] = [
@@ -38,24 +39,6 @@ const CATEGORY: (any | string)[] = [
 	[suit, suitClick, '정장', 'suit'],
 	[dress, dressClick, '드레스', 'dress'],
 ];
-export interface CardRes {
-	body: string;
-	dueDate: Date;
-	fundedPrice: number;
-	fundingEntityId: number;
-	percentage: number;
-	postImageDto: {
-		fileName: string;
-		fileURI: string;
-	};
-	tags: any;
-	targetPrice: number;
-	title: string;
-	displayName: string;
-	pickup: number;
-
-	views: number;
-}
 
 const Fashion = () => {
 	const location = useLocation();
