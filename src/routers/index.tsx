@@ -1,10 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import Layout from '../layouts/Layout';
-import Login from '../pages/auth/Login';
-import Sign from '../pages/auth/Sign';
-import Detail from '../pages/Detail';
-import Login from '../pages/auth/Login';
-import { Home, Fashion } from '../pages';
+import { Home, Fashion, Detail, Login, Sign } from '../pages';
 
 const Router = () => {
 	return (
