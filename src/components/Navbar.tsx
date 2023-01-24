@@ -1,14 +1,13 @@
 import { NavLink, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import LogoImg from '../assets/Logo.png';
-
+const NAV_ITEM = [
+	['/fashion', '패션픽업'],
+	['/funding', '펀딩'],
+	['/portfolio', '포트폴리오'],
+];
 const Navbar = () => {
 	const location = useLocation();
-	const NAV_ITEM = [
-		['/fashion', '패션픽업'],
-		['/funding', '펀딩'],
-		['/portfolio', '포트폴리오'],
-	];
 
 	return (
 		<Container>

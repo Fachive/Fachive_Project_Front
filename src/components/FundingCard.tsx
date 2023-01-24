@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import IMG from '../assets/img2.png';
-import { CardRes } from '../pages/Fashion/Fashion';
+import { CardRes } from '../types/fashionPage';
 
 interface ResProps {
 	data: CardRes;
@@ -29,6 +29,7 @@ export default FundingCard;
 
 const CardDiv = styled.div`
 	border-radius: 10px;
+	min-width: 312px;
 `;
 
 const CardInfoBoxDiv = styled.div`
