@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import {
 	accessory,
 	accessoryClick,
@@ -54,6 +54,19 @@ const Fashion = () => {
 	const onClickHander = (e: any) => {
 		setFilter(e.target.id);
 	};
+
+	const modalRef = useRef<HTMLDivElement>(null);
+
+	const handleClickOutside = (e: MouseEvent) => {
+		if (modalRef.current && !modalRef.current.contains(e.target as Node)) setCategoryModal(false);
+	};
+
+	useEffect(() => {
+		window.addEventListener('click', handleClickOutside);
+		return () => {
+			window.removeEventListener('click', handleClickOutside);
+		};
+	}, []);
 
 	const getData = async () => {
 		if (currentPage === '/fashion') {
@@ -136,7 +149,7 @@ const Fashion = () => {
 						<option value="가을">가을</option>
 						<option value="겨울">겨울</option>
 					</DropItemSelect>
-					<CategorySelectDiv onClick={() => setCategoryModal(true)}>
+					<CategorySelectDiv ref={modalRef} onClick={() => setCategoryModal(true)}>
 						<span style={{ marginRight: '6px' }}>카테고리 :</span>
 						{
 							CATEGORY.filter((v) => {
@@ -211,7 +224,8 @@ const DropCategoryItemBoxDiv = styled.div`
 	height: 70px;
 	background-color: #ffffff;
 	position: absolute;
-	left: 1180px;
+	margin-top: 15px;
+	right: 5%;
 	border-radius: 20px;
 	border: 1px solid gray;
 	display: flex;
