@@ -76,7 +76,9 @@ const Fashion = () => {
 		getData();
 		setPage(1);
 	}, [filter, category, currentPage]);
-
+	useEffect(() => {
+		setCategory('all');
+	}, [location.pathname]);
 	const clickHander = (e: any) => {
 		setCategory(e.target.id);
 	};
@@ -256,18 +258,31 @@ const HeadTitleDiv = styled.div`
 const CategoryDiv = styled.div`
 	margin: 100px 0px;
 	height: 100px;
-	width: 1100px;
 	display: flex;
-	background-repeat: no-repeat;
-	background-position: center;
 	justify-content: center;
+	flex-wrap: wrap;
 	gap: 20px;
+	row-gap: 40px;
 `;
 const CardDiv = styled.section`
 	display: grid;
+
 	grid-template-columns: repeat(5, calc(20% - 30px));
 	gap: 30px;
 	width: 100%;
+	justify-content: center;
+	@media (max-width: 1800px) {
+		grid-template-columns: repeat(4, calc(25% - 30px));
+	}
+	@media (max-width: 1450px) {
+		grid-template-columns: repeat(3, calc(33% - 30px));
+	}
+	@media (max-width: 1150px) {
+		grid-template-columns: repeat(2, calc(50% - 30px));
+	}
+	@media (max-width: 800px) {
+		grid-template-columns: repeat(1, calc(50%));
+	}
 `;
 const CategoryItemDiv = styled.div<{ img: any; text: any; active: boolean }>`
 	height: 70px;
@@ -293,4 +308,11 @@ const CategoryItemDiv = styled.div<{ img: any; text: any; active: boolean }>`
 const SubtitleDiv = styled.div``;
 const TextDiv = styled.div`
 	text-align: center;
+
+	@media (max-width: 900px) {
+		margin: 50px 0px;
+	}
+	@media (max-width: 550px) {
+		margin: 150px 0px;
+	}
 `;
