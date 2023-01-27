@@ -5,10 +5,9 @@ import { CardRes } from '../types/fashionPage';
 
 interface ResProps {
 	data: CardRes;
-	idx?: number;
 }
 
-const FashionCard = ({ data, idx }: ResProps) => {
+const FashionCard = ({ data }: ResProps) => {
 	return (
 		<Card>
 			<CardDiv imgSrc={data.postImageDto.fileURI}></CardDiv>
@@ -24,7 +23,6 @@ const FashionCard = ({ data, idx }: ResProps) => {
 					{data.pickup > 10000 ? Math.trunc(data.pickup / 1000) + 'k' : data.pickup}
 					<IoEyeOutline style={{ marginLeft: '15px' }} size="22" />
 					{data.views > 10000 ? Math.trunc(data.views / 10000) + 'k' : data.views}
-					{idx}
 				</CardLeftRightInfo>
 			</CardInfoBox>
 		</Card>

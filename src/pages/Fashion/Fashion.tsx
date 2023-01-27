@@ -174,7 +174,7 @@ const Fashion = () => {
 			</SelectDiv>
 
 			<CardDiv>
-				{CardData.slice(offset, offset + limit).map((v) => {
+				{CardData.slice(offset, offset + limit).map((v, i) => {
 					return currentPage === '/fashion' ? (
 						<FashionCard data={v}></FashionCard>
 					) : (

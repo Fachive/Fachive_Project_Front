@@ -51,8 +51,8 @@ const Home = () => {
 			<FachiveRecommend>
 				<button onClick={() => moveSlide(-1)}>이전</button>
 				<RecommendFlexDiv style={style}>
-					{CardData[0]?.slice(0, 10).map((fashionData, idx) => {
-						return <FashionCard data={fashionData} idx={idx} />;
+					{CardData[0]?.slice(0, 10).map((fashionData) => {
+						return <FashionCard data={fashionData} />;
 					})}
 				</RecommendFlexDiv>
 				<button onClick={() => moveSlide(+1)}>다음</button>
