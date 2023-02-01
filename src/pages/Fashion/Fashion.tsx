@@ -58,7 +58,8 @@ const Fashion = () => {
 	const modalRef = useRef<HTMLDivElement>(null);
 
 	const handleClickOutside = (e: MouseEvent) => {
-		if (modalRef.current && !modalRef.current.contains(e.target as Node)) setCategoryModal(false);
+		if (modalRef.current && !modalRef.current.contains(e.target as Node))
+			setCategoryModal(false);
 	};
 
 	useEffect(() => {
@@ -71,7 +72,7 @@ const Fashion = () => {
 	const getData = async () => {
 		if (currentPage === '/fashion') {
 			const res = await axios.get(
-				'http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/fashionpickup/main/get'
+				'http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/fashionpickup/mainfasionpickup'
 			);
 			setCardData(res.data.data);
 		} else if (currentPage === '/funding') {
@@ -123,7 +124,9 @@ const Fashion = () => {
 			</CategoryDiv>
 			<TextDiv>
 				<SubtitleDiv>새로운 트렌드의 시작 😎</SubtitleDiv>
-				<HeadTitleDiv>먼 훗날 유행이 될 최고의 아이템을 찾아보세요.</HeadTitleDiv>
+				<HeadTitleDiv>
+					먼 훗날 유행이 될 최고의 아이템을 찾아보세요.
+				</HeadTitleDiv>
 			</TextDiv>
 
 			<SelectDiv>
@@ -149,7 +152,10 @@ const Fashion = () => {
 						<option value="가을">가을</option>
 						<option value="겨울">겨울</option>
 					</DropItemSelect>
-					<CategorySelectDiv ref={modalRef} onClick={() => setCategoryModal(true)}>
+					<CategorySelectDiv
+						ref={modalRef}
+						onClick={() => setCategoryModal(true)}
+					>
 						<span style={{ marginRight: '6px' }}>카테고리 :</span>
 						{
 							CATEGORY.filter((v) => {
@@ -160,11 +166,16 @@ const Fashion = () => {
 							<DropCategoryItemBoxDiv>
 								{CATEGORY.map((v) =>
 									category === v[3] ? (
-										<CategoryItemSpan onClick={() => setCategory(v[3])} active={true}>
+										<CategoryItemSpan
+											onClick={() => setCategory(v[3])}
+											active={true}
+										>
 											{v[2]}
 										</CategoryItemSpan>
 									) : (
-										<CategoryItemSpan onClick={() => setCategory(v[3])}>{v[2]}</CategoryItemSpan>
+										<CategoryItemSpan onClick={() => setCategory(v[3])}>
+											{v[2]}
+										</CategoryItemSpan>
 									)
 								)}
 							</DropCategoryItemBoxDiv>
@@ -182,7 +193,12 @@ const Fashion = () => {
 					);
 				})}
 			</CardDiv>
-			<Pagination total={CardData?.length} limit={limit} page={page} setPage={setPage} />
+			<Pagination
+				total={CardData?.length}
+				limit={limit}
+				page={page}
+				setPage={setPage}
+			/>
 		</ContainerDiv>
 	);
 };
