@@ -8,21 +8,27 @@ interface ResProps {
 }
 
 const FashionCard = ({ data }: ResProps) => {
+	console.log(data.postImageDtoList[0]?.fileURI, 3);
 	return (
 		<Card>
-			<CardDiv imgSrc={data.postImageDto.fileURI}></CardDiv>
+			<CardDiv imgSrc={data.postImageDtoList[0]?.fileURI}></CardDiv>
 			<CardInfoBox>
 				<CardLeftInfo>
 					<Profile />
 					<Designer>
-						{data.displayName?.length > 10 ? data.displayName?.slice(0, 10) + '....' : data.displayName}
+						{/* {data.displayName?.length > 10
+							? data.displayName?.slice(0, 10) + '....'
+							: data.displayName} */}
+						backEnd
 					</Designer>
 				</CardLeftInfo>
 				<CardLeftRightInfo>
 					<BiLike size="22" />
-					{data.pickup > 10000 ? Math.trunc(data.pickup / 1000) + 'k' : data.pickup}
+					{data.myPicks > 10000 ? Math.trunc(data.myPicks / 1000) + 'k' : 150}
 					<IoEyeOutline style={{ marginLeft: '15px' }} size="22" />
-					{data.views > 10000 ? Math.trunc(data.views / 10000) + 'k' : data.views}
+					{data.views > 10000
+						? Math.trunc(data.views / 10000) + 'k'
+						: data.views}
 				</CardLeftRightInfo>
 			</CardInfoBox>
 		</Card>
