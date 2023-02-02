@@ -71,7 +71,7 @@ const Fashion = () => {
 	const getData = async () => {
 		if (currentPage === '/fashion') {
 			const res = await axios.get(
-				'http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/fashionpickup/mainfasionpickup'
+				'http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/fashionpickup/mainfasionpickup?categoryName=suit&sortWay=views&pageIndex=1'
 			);
 			setCardData(res.data.data);
 		} else if (currentPage === '/funding') {
