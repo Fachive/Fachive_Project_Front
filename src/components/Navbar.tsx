@@ -64,6 +64,7 @@ const Container = styled.div`
 	font-size: 16px;
 	font-weight: 700;
 `;
+
 const LogoSpan = styled.span`
 	height: 25px;
 	width: 200px;
@@ -71,14 +72,17 @@ const LogoSpan = styled.span`
 	background-image: url(${LogoImg});
 	margin-right: 50px;
 `;
+
 const NavContainerDiv = styled.div`
 	display: flex;
 	gap: 15px;
 `;
+
 const NavItemSpan = styled.span`
 	color: black;
 	text-decoration-line: none;
 `;
+
 const UserContainerDiv = styled.div`
 	display: flex;
 	gap: 15px;
