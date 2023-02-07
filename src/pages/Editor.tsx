@@ -6,6 +6,7 @@ import { accessory, dress, pants, skirt, suit, tshirts } from '../assets';
 const Editor = () => {
 	const previewImg: string[] = [accessory, dress, skirt, suit, tshirts, pants];
 	const [fileName, setFileName] = useState<string[]>([]);
+	const [currentHashTag, setCurrentHashTag] = useState<string>('');
 	const [postInfo, setPostInfo] = useState<PostInfo>({
 		category: '',
 		body: '',
@@ -21,6 +22,7 @@ const Editor = () => {
 	const changeTilte = (e: FormEvent<HTMLElement>) => {
 		setPostInfo((prev) => ({ ...prev, title: (e.target as HTMLInputElement).value }));
 	};
+
 	const changeBody = (e: FormEvent<HTMLElement>) => {
 		setPostInfo((prev) => ({ ...prev, body: (e.target as HTMLInputElement).value }));
 	};
@@ -48,15 +50,33 @@ const Editor = () => {
 			isDuplication = false;
 		}
 	};
+
 	const deleteFile = (index: number) => {
 		setPostInfo((prev) => ({ ...prev, fileImage: prev.fileImage.filter((_, i) => i !== index) }));
 		setFileName((prev) => prev.filter((_, i) => i !== index));
 	};
 
+	const hashTagChange = (e: FormEvent<HTMLElement>) => {
+		setCurrentHashTag((e.target as HTMLInputElement).value);
+	};
+
+	const onKeyPress = (e: any) => {
+		if (e.key === 'Enter' || e.key === ' ') {
+			if (e.target.value === '') return;
+			setPostInfo((prev) => ({ ...prev, hashTag: [...prev.hashTag, currentHashTag] }));
+			e.target.value = '';
+		}
+	};
+
+	const deleteHashTag = (index: number) => {
+		setPostInfo((prev) => ({ ...prev, hashTag: prev.hashTag.filter((_, i) => i !== index) }));
+	};
+
 	useEffect(() => {
 		console.log(postInfo);
 		console.log(fileName);
-	}, [postInfo, fileName]);
+		console.log(currentHashTag);
+	}, [postInfo, fileName, currentHashTag]);
 	return (
 		<ContainerDiv>
 			<TitleSection onChange={(e) => changeTilte(e)}>
@@ -102,19 +122,43 @@ const Editor = () => {
 					<BodyDiv onChange={changeBody}>
 						<BodyInput placeholder="내용을 입력하세요."></BodyInput>
 					</BodyDiv>
-					<HashTagDiv>해쉬태크를 입력하세요</HashTagDiv>
+					<HashTagDiv>
+						{postInfo.hashTag.length > 0 ? (
+							postInfo.hashTag.map((v, i) => {
+								return <HashTagItemSpan onClick={() => deleteHashTag(i)}>#{v}</HashTagItemSpan>;
+							})
+						) : (
+							<div
+								style={{
+									color: '#595959',
+									alignItems: 'center',
+									height: '150px',
+									display: 'flex',
+									justifyContent: 'center',
+								}}
+							>
+								해시태그가 없습니다.
+							</div>
+						)}
+					</HashTagDiv>
+					<HashTagInput
+						onChange={hashTagChange}
+						onKeyPress={onKeyPress}
+						placeholder="해시태그를 입력하세요"
+						maxLength={10}
+					></HashTagInput>
 					<UploadDiv>
 						{fileName.length > 0 ? (
 							fileName.map((v, i) => {
 								return (
-									<div>
+									<>
 										<div style={{ display: 'flex' }}>
 											<UploadItem>파일 : {v.length > 30 ? v.slice(0, 30) + '...' : v.slice(0, 30)}</UploadItem>{' '}
 											<DeleteButton onClick={() => deleteFile(i)}>X</DeleteButton>
 										</div>
 
 										{i === fileName.length - 1 ? '' : <Line></Line>}
-									</div>
+									</>
 								);
 							})
 						) : (
@@ -138,9 +182,45 @@ const Editor = () => {
 const PlusDiv = styled.input`
 	display: none;
 `;
+
 const ImgDiv = styled.div`
 	text-align: center;
 	margin-top: 150px;
+`;
+
+const HashTagInput = styled.input`
+	border: none;
+	font-size: 18px;
+	margin-top: 20px;
+	margin-bottom: 10px;
+	width: 336px;
+	padding: 20px 0px;
+	padding-left: 15px;
+
+	&:focus {
+		outline: none;
+		border: none;
+	}
+`;
+
+const HashTagItemSpan = styled.span`
+	border: 1px solid #d1d1d1;
+	border-radius: 20px;
+	height: 40px;
+	text-align: center;
+	padding: 10px 10px;
+	color: #595959;
+	cursor: pointer;
+`;
+const HashTagDiv = styled.div`
+	background-color: white;
+	width: 336px;
+	margin-top: 15px;
+	border-radius: 10px;
+	padding: 20px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 15px;
 `;
 
 const DeleteButton = styled.button`
@@ -247,7 +327,6 @@ const PreviewDiv = styled.div`
 `;
 const InfoDiv = styled.div`
 	width: 336px;
-	height: 780px;
 	margin-left: 15px;
 	margin-top: 15px;
 	display: flex;
@@ -279,14 +358,6 @@ const BodyInput = styled.textarea`
 	&:focus {
 		outline: none;
 	}
-`;
-
-const HashTagDiv = styled.div`
-	background-color: white;
-	width: 336px;
-	min-height: 100px;
-	margin-top: 15px;
-	border-radius: 10px;
 `;
 
 const CategoryButton = styled.button<{ raduis: string; isClickCategory: boolean }>`
