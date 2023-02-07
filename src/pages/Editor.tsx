@@ -25,24 +25,24 @@ const Editor = () => {
 		setPostInfo((prev) => ({ ...prev, body: (e.target as HTMLInputElement).value }));
 	};
 
-	const fileAdd = (e: any) => {
+	const fileAdd = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const files = e.target.files as FileList;
 		let isDuplication = false;
 
 		// eslint-disable-next-line semi-spacing
-		for (let i = 0; i < e.target.files.length; i++) {
+		for (let i = 0; i < files.length; i++) {
 			// eslint-disable-next-line semi-spacing
 			for (let j = 0; j < fileName.length; j++) {
-				if (fileName[j] === e.target.files[i].name) {
+				if (fileName[j] === files[i].name) {
 					isDuplication = true;
-					console.log(i);
 					break;
 				}
 			}
 			if (!isDuplication) {
-				setFileName((prev) => [...prev, e.target.files[i].name]);
+				setFileName((prev) => [...prev, files[i].name]);
 				setPostInfo((prev) => ({
 					...prev,
-					fileImage: [...prev.fileImage, URL.createObjectURL(e.target.files[i])],
+					fileImage: [...prev.fileImage, URL.createObjectURL(files[i])],
 				}));
 			}
 			isDuplication = false;
