@@ -1,12 +1,23 @@
-import React from 'react';
+import { async } from 'q';
+import React, { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import styled from 'styled-components';
+import { fashionPickUpDetailApi, fashionPickUpDetailApi22 } from '../api/api';
 import detail1 from '../assets/detail1.png';
 import detail2 from '../assets/detail2.png';
 import detail3 from '../assets/detail3.png';
 import detail4 from '../assets/detail4.png';
 import detail5 from '../assets/detail5.png';
-
 const Detail = () => {
+	const [image, setImage] = useState<string>('');
+	// const handleData = async () => {
+	// 	const data = await fashionPickUpDetailApi('1');
+	// 	const dataList = data.data;
+	// 	console.log(dataList.postImageDtoList[0]);
+	// 	setImage(dataList.postImageDtoList[0].fileURI);
+	// };
+	const { data } = useQuery('get', fashionPickUpDetailApi22, { refetchOnWindowFocus: false });
+	console.log(data);
 	return (
 		<section>
 			<DetailTitleH3>화이트 패턴 시스루 원피스</DetailTitleH3>
@@ -19,6 +30,7 @@ const Detail = () => {
 			</HashTagBoxDiv>
 			<FlexBoxDiv>
 				<PickupImageDiv>
+					<img src={`${image}`} alt="" />
 					<img src={`${detail1}`} alt="" />
 					<img src={`${detail2}`} alt="" />
 					<img src={`${detail3}`} alt="" />
