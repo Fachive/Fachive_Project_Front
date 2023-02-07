@@ -1,6 +1,7 @@
 export interface ResponseCategoryDTO {
 	categoryName: string;
 }
+interface file {}
 
 export interface PostImageDtoList {
 	fileName: string;
@@ -24,4 +25,5 @@ export interface PostInfo {
 	body: string;
 	title: string;
 	hashTag: Array<string>;
+	fileImage: string[];
 }
