@@ -26,14 +26,31 @@ const Editor = () => {
 	};
 
 	const fileAdd = (e: any) => {
-		setFileName((prev) => [...prev, e.target.files[0].name]);
-		setPostInfo((prev) => ({
-			...prev,
-			fileImage: [...prev.fileImage, URL.createObjectURL(e.target.files[0])],
-		}));
+		let isDuplication = false;
+
+		// eslint-disable-next-line semi-spacing
+		for (let i = 0; i < e.target.files.length; i++) {
+			// eslint-disable-next-line semi-spacing
+			for (let j = 0; j < fileName.length; j++) {
+				if (fileName[j] === e.target.files[i].name) {
+					isDuplication = true;
+					console.log(i);
+					break;
+				}
+			}
+			if (!isDuplication) {
+				setFileName((prev) => [...prev, e.target.files[i].name]);
+				setPostInfo((prev) => ({
+					...prev,
+					fileImage: [...prev.fileImage, URL.createObjectURL(e.target.files[i])],
+				}));
+			}
+			isDuplication = false;
+		}
 	};
 	const deleteFile = (index: number) => {
-		console.log(index);
+		setPostInfo((prev) => ({ ...prev, fileImage: prev.fileImage.filter((_, i) => i !== index) }));
+		setFileName((prev) => prev.filter((_, i) => i !== index));
 	};
 
 	useEffect(() => {
@@ -93,7 +110,7 @@ const Editor = () => {
 									<div>
 										<div style={{ display: 'flex' }}>
 											<UploadItem>파일 : {v.length > 30 ? v.slice(0, 30) + '...' : v.slice(0, 30)}</UploadItem>{' '}
-											<button onClick={() => deleteFile(i)}>삭제</button>
+											<DeleteButton onClick={() => deleteFile(i)}>X</DeleteButton>
 										</div>
 
 										{i === fileName.length - 1 ? '' : <Line></Line>}
@@ -106,7 +123,7 @@ const Editor = () => {
 							</div>
 						)}
 					</UploadDiv>
-					<PlusDiv id="inputFile" type="file" accept="image/*" onChange={fileAdd}></PlusDiv>
+					<PlusDiv id="inputFile" type="file" accept="image/*" multiple onChange={fileAdd}></PlusDiv>
 					<PlusLabel htmlFor="inputFile">+</PlusLabel>
 					{/* <CategoryDiv>
 						<CategoryItemLeftButton>패션픽업</CategoryItemLeftButton>
@@ -124,6 +141,13 @@ const PlusDiv = styled.input`
 const ImgDiv = styled.div`
 	text-align: center;
 	margin-top: 150px;
+`;
+
+const DeleteButton = styled.button`
+	background-color: white;
+	border: none;
+	color: gray;
+	cursor: pointer;
 `;
 
 const ContainerDiv = styled.div`
