@@ -11,10 +11,7 @@ const Home = () => {
 	const [FundingCardData, setFundingCardData] = useState<CardRes[]>([]);
 
 	const getData = async () => {
-		const res1 = await axios.get(
-			'http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/main/get/ten'
-		);
-		console.log(res1);
+		const res1 = await axios.get('http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/main/get/ten');
 		setFashionCardData(res1.data.slice(7, 16));
 		setFundingCardData(res1.data.slice(0, 7));
 	};
@@ -43,18 +40,15 @@ const Home = () => {
 	useEffect(() => {
 		console.log(FashionCardData);
 	}, [FashionCardData]);
+
 	return (
 		<Container>
 			<SlideImg />
 			<ButtonDiv>
 				<RecommendTitle>패카이브 추천 픽</RecommendTitle>
 				<div>
-					<ButtonItemButton onClick={() => moveSlide(-1)}>
-						이전
-					</ButtonItemButton>
-					<ButtonItemButton onClick={() => moveSlide(+1)}>
-						다음
-					</ButtonItemButton>
+					<ButtonItemButton onClick={() => moveSlide(-1)}>이전</ButtonItemButton>
+					<ButtonItemButton onClick={() => moveSlide(+1)}>다음</ButtonItemButton>
 				</div>
 			</ButtonDiv>
 
@@ -80,16 +74,19 @@ const Home = () => {
 };
 
 export default Home;
+
 const ButtonDiv = styled.div`
 	display: flex;
 	justify-content: space-between;
 `;
+
 const ButtonItemButton = styled.button`
 	margin-left: 10px;
 	margin-top: 30px;
 	margin-bottom: 10px;
 	font-weight: 800;
 `;
+
 const RecommendButton = styled.button`
 	width: 500px;
 	margin: 50px auto;

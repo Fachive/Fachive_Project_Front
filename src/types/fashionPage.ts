@@ -19,3 +19,9 @@ export interface CardRes {
 	fashionPickupEntityId: number;
 	portfolioEntityId: number;
 }
+export interface PostInfo {
+	category: string;
+	body: string;
+	title: string;
+	hashTag: Array<string>;
+}
