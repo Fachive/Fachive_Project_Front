@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, MouseEvent } from 'react';
 import {
 	accessory,
 	accessoryClick,
@@ -51,13 +51,13 @@ const Fashion = () => {
 	const [categoryModal, setCategoryModal] = useState<boolean>(false);
 	const offset = (page - 1) * limit;
 
-	const onClickHander = (e: any) => {
-		setFilter(e.target.id);
+	const onClickHander = (e: React.MouseEvent) => {
+		setFilter((e.target as HTMLElement).id);
 	};
 
 	const modalRef = useRef<HTMLDivElement>(null);
 
-	const handleClickOutside = (e: MouseEvent) => {
+	const handleClickOutside = (e: any) => {
 		if (modalRef.current && !modalRef.current.contains(e.target as Node)) setCategoryModal(false);
 	};
 
@@ -71,14 +71,14 @@ const Fashion = () => {
 	const getData = async () => {
 		if (currentPage === '/fashion') {
 			const res = await axios.get(
-				'http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/fashionpickup/mainfasionpickup?categoryName=suit&sortWay=views&pageIndex=1'
+				'http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/fashionpickup/mainfasionpickup?sortWay=views&pageIndex=1'
 			);
-			setCardData(res.data.data);
+			setCardData(res.data);
 		} else if (currentPage === '/funding') {
 			const res = await axios.get(
-				'http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/funding/mainFunding?categoryName=suit&sortWay=views&pageIndex=1'
+				'http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/fashionpickup/mainfasionpickup?categoryName=suit&sortWay=views&pageIndex=1'
 			);
-			setCardData(res.data.data);
+			setCardData(res.data);
 		}
 	};
 
@@ -92,8 +92,8 @@ const Fashion = () => {
 	useEffect(() => {
 		setCategory('all');
 	}, [location.pathname]);
-	const clickHander = (e: any) => {
-		setCategory(e.target.id);
+	const clickHander = (e: React.MouseEvent) => {
+		setCategory((e.target as HTMLButtonElement).id);
 	};
 
 	return (
@@ -290,7 +290,7 @@ const CardDiv = styled.section`
 		grid-template-columns: repeat(1, calc(50%));
 	}
 `;
-const CategoryItemDiv = styled.div<{ img: any; text: any; active: boolean }>`
+const CategoryItemDiv = styled.div<{ img: string; text: string; active: boolean }>`
 	height: 70px;
 	width: 70px;
 	background-color: #fdfdfd;
