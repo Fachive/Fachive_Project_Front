@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { useEffect, useState, useRef, MouseEvent } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import {
 	accessory,
 	accessoryClick,
@@ -44,7 +44,7 @@ const Fashion = () => {
 	const location = useLocation();
 	const [filter, setFilter] = useState<string>('추천순');
 	const [currentPage, setCurrentPage] = useState<string>(location.pathname);
-	const [category, setCategory] = useState<string>('all');
+	const [category, setCategory] = useState<string>('상의');
 	const [CardData, setCardData] = useState<CardRes[]>([]);
 	const [limit, setLimit] = useState<number>(10);
 	const [page, setPage] = useState<number>(1);
@@ -71,12 +71,12 @@ const Fashion = () => {
 	const getData = async () => {
 		if (currentPage === '/fashion') {
 			const res = await axios.get(
-				'http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/fashionpickup/mainfasionpickup?sortWay=views&pageIndex=1'
+				`http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/fashionpickup/mainfasionpickup?categoryName=${category}`
 			);
 			setCardData(res.data);
 		} else if (currentPage === '/funding') {
 			const res = await axios.get(
-				'http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/fashionpickup/mainfasionpickup?categoryName=suit&sortWay=views&pageIndex=1'
+				'http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/funding/mainFunding?categoryName=%EC%83%81%EC%9D%98'
 			);
 			setCardData(res.data);
 		}
@@ -90,33 +90,34 @@ const Fashion = () => {
 		setPage(1);
 	}, [filter, category, currentPage]);
 	useEffect(() => {
-		setCategory('all');
+		setCategory('상의');
 	}, [location.pathname]);
 	const clickHander = (e: React.MouseEvent) => {
 		setCategory((e.target as HTMLButtonElement).id);
 	};
 
+	console.log(category);
 	return (
 		<ContainerDiv>
 			<CategoryDiv>
-				{CATEGORY.map((v: (any | string)[], i) => {
-					return category === v[3] ? (
+				{CATEGORY.map((categoryItem: (any | string)[], i) => {
+					return category === categoryItem[2] ? (
 						<CategoryItemDiv
 							key={i}
 							onClick={(e) => clickHander(e)}
 							active={true}
-							id={v[3]}
-							text={v[2]}
-							img={v[1]}
+							id={categoryItem[2]}
+							text={categoryItem[2]}
+							img={categoryItem[1]}
 						></CategoryItemDiv>
 					) : (
 						<CategoryItemDiv
 							key={i}
 							onClick={(e) => clickHander(e)}
 							active={false}
-							id={v[3]}
-							text={v[2]}
-							img={v[0]}
+							id={categoryItem[2]}
+							text={categoryItem[2]}
+							img={categoryItem[0]}
 						></CategoryItemDiv>
 					);
 				})}
@@ -145,7 +146,7 @@ const Fashion = () => {
 						<span style={{ marginRight: '6px' }}>카테고리 :</span>
 						{
 							CATEGORY.filter((v) => {
-								return v[3] === category;
+								return v[2] === category;
 							})[0][2]
 						}
 						{categoryModal && (

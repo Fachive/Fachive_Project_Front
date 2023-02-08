@@ -15,6 +15,7 @@ export interface CardRes {
 	myPicks: number;
 	targetPrice: number;
 	fundedPrice: number;
+	s3ImageUriList: string[];
 	responseCategoryDTO: ResponseCategoryDTO;
 	postImageDtoList: PostImageDtoList[];
 	fashionPickupEntityId: number;
