@@ -8,7 +8,7 @@ const FundingCard = ({ data }: ResProps) => {
 	return (
 		data && (
 			<CardDiv>
-				<CardIMGDiv url={data.postImageDtoList[0]?.fileURI}></CardIMGDiv>
+				<CardIMGDiv url={data.s3ImageUriList[0]}></CardIMGDiv>
 				<CardInfoBoxDiv>
 					<TitleDiv>{data.body}</TitleDiv>
 					<HashTagDiv>#힙합 #아메카지 #인스타룩 #패셔너블</HashTagDiv>
