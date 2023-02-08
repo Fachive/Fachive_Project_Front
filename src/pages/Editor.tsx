@@ -63,7 +63,8 @@ const Editor = () => {
 	const onKeyPress = (e: any) => {
 		if (e.key === 'Enter' || e.key === ' ') {
 			if (e.target.value === '') return;
-			setPostInfo((prev) => ({ ...prev, hashTag: [...prev.hashTag, currentHashTag] }));
+			let HashTag = new Set([...postInfo.hashTag, currentHashTag]);
+			setPostInfo((prev) => ({ ...prev, hashTag: [...Array.from(HashTag)] }));
 			e.target.value = '';
 		}
 	};
@@ -77,6 +78,7 @@ const Editor = () => {
 		console.log(fileName);
 		console.log(currentHashTag);
 	}, [postInfo, fileName, currentHashTag]);
+
 	return (
 		<ContainerDiv>
 			<TitleSection onChange={(e) => changeTilte(e)}>
@@ -123,30 +125,19 @@ const Editor = () => {
 						<BodyInput placeholder="내용을 입력하세요."></BodyInput>
 					</BodyDiv>
 					<HashTagDiv>
-						{postInfo.hashTag.length > 0 ? (
-							postInfo.hashTag.map((v, i) => {
-								return <HashTagItemSpan onClick={() => deleteHashTag(i)}>#{v}</HashTagItemSpan>;
-							})
-						) : (
-							<div
-								style={{
-									color: '#595959',
-									alignItems: 'center',
-									height: '150px',
-									display: 'flex',
-									justifyContent: 'center',
-								}}
-							>
-								해시태그가 없습니다.
-							</div>
-						)}
+						{postInfo.hashTag.length > 0
+							? postInfo.hashTag.map((v, i) => {
+									return <HashTagItemSpan onClick={() => deleteHashTag(i)}>#{v}</HashTagItemSpan>;
+							  })
+							: ''}
+						<HashTagInput
+							onChange={hashTagChange}
+							onKeyPress={onKeyPress}
+							placeholder="해시태그 입력"
+							maxLength={10}
+						></HashTagInput>
 					</HashTagDiv>
-					<HashTagInput
-						onChange={hashTagChange}
-						onKeyPress={onKeyPress}
-						placeholder="해시태그를 입력하세요"
-						maxLength={10}
-					></HashTagInput>
+
 					<UploadDiv>
 						{fileName.length > 0 ? (
 							fileName.map((v, i) => {
@@ -191,11 +182,9 @@ const ImgDiv = styled.div`
 const HashTagInput = styled.input`
 	border: none;
 	font-size: 18px;
-	margin-top: 20px;
 	margin-bottom: 10px;
-	width: 336px;
-	padding: 20px 0px;
-	padding-left: 15px;
+	padding-top: 15px;
+	width: 120px;
 
 	&:focus {
 		outline: none;
@@ -211,13 +200,16 @@ const HashTagItemSpan = styled.span`
 	padding: 10px 10px;
 	color: #595959;
 	cursor: pointer;
+	&:hover {
+		border: 1px solid red;
+	}
 `;
 const HashTagDiv = styled.div`
 	background-color: white;
 	width: 336px;
 	margin-top: 15px;
 	border-radius: 10px;
-	padding: 20px;
+	padding: 15px;
 	display: flex;
 	flex-wrap: wrap;
 	gap: 15px;
@@ -263,7 +255,6 @@ const PreviewImg = styled.img`
 	//object-fit: contain;
 	object-fit: cover;
 	width: 1000px;
-	height: 500px;
 `;
 const PlusLabel = styled.label`
 	width: 50px;
