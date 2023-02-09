@@ -2,12 +2,16 @@ import { useState, useEffect, MouseEvent, FormEvent } from 'react';
 import styled, { css } from 'styled-components';
 import { category as categoryList } from '../constants/editor';
 import { PostInfo } from '../types/fashionPage';
-import { accessory, dress, pants, skirt, suit, tshirts } from '../assets';
+import { CATEGORY } from '../constants/editor';
+import axios from 'axios';
+
 const Editor = () => {
-	const previewImg: string[] = [accessory, dress, skirt, suit, tshirts, pants];
+	const previewImg: string[] = [CATEGORY[1][0], CATEGORY[2][0], CATEGORY[3][0], CATEGORY[4][0], CATEGORY[5][0]];
 	const [fileName, setFileName] = useState<string[]>([]);
 	const [currentHashTag, setCurrentHashTag] = useState<string>('');
+	const [filePreview, setFilePreview] = useState<string[]>([]);
 	const [postInfo, setPostInfo] = useState<PostInfo>({
+		postType: '',
 		category: '',
 		body: '',
 		title: '',
@@ -16,7 +20,7 @@ const Editor = () => {
 	});
 
 	const categorySelcect = (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
-		setPostInfo((prev) => ({ ...prev, category: (e.target as HTMLButtonElement).id }));
+		setPostInfo((prev) => ({ ...prev, postType: (e.target as HTMLButtonElement).id }));
 	};
 
 	const changeTilte = (e: FormEvent<HTMLElement>) => {
@@ -25,6 +29,10 @@ const Editor = () => {
 
 	const changeBody = (e: FormEvent<HTMLElement>) => {
 		setPostInfo((prev) => ({ ...prev, body: (e.target as HTMLInputElement).value }));
+	};
+
+	const clickHander = (e: React.MouseEvent) => {
+		setPostInfo((prev) => ({ ...prev, category: (e.target as HTMLButtonElement).id }));
 	};
 
 	const fileAdd = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,8 +52,9 @@ const Editor = () => {
 				setFileName((prev) => [...prev, files[i].name]);
 				setPostInfo((prev) => ({
 					...prev,
-					fileImage: [...prev.fileImage, URL.createObjectURL(files[i])],
+					fileImage: [...prev.fileImage, files[i]],
 				}));
+				setFilePreview((prev) => [...prev, URL.createObjectURL(files[i])]);
 			}
 			isDuplication = false;
 		}
@@ -54,6 +63,7 @@ const Editor = () => {
 	const deleteFile = (index: number) => {
 		setPostInfo((prev) => ({ ...prev, fileImage: prev.fileImage.filter((_, i) => i !== index) }));
 		setFileName((prev) => prev.filter((_, i) => i !== index));
+		setFilePreview((prev) => prev.filter((_, i) => i !== index));
 	};
 
 	const hashTagChange = (e: FormEvent<HTMLElement>) => {
@@ -72,7 +82,31 @@ const Editor = () => {
 	const deleteHashTag = (index: number) => {
 		setPostInfo((prev) => ({ ...prev, hashTag: prev.hashTag.filter((_, i) => i !== index) }));
 	};
-
+	const onEndHandler = async (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
+		const userInput = (e.target as HTMLButtonElement).id;
+		console.log(userInput);
+		if (userInput === 'cancel') {
+		} else {
+			let data = new FormData();
+			data.append('userId', '6');
+			data.append('title', postInfo.title);
+			data.append('body', postInfo.body);
+			data.append('categoryName', postInfo.category);
+			// eslint-disable-next-line semi-spacing
+			for (let i = 0; i < postInfo.fileImage.length; i++) {
+				data.append('multipartFileList', postInfo.fileImage[i]);
+			}
+			// eslint-disable-next-line semi-spacing
+			for (let i = 0; i < postInfo.hashTag.length; i++) {
+				data.append('tagList', postInfo.hashTag[i]);
+			}
+			if (postInfo.postType === 'fashion') {
+				await axios.post('http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/fashionpickup/post', data);
+			} else {
+				await axios.post('http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/portfolio/post', data);
+			}
+		}
+	};
 	useEffect(() => {
 		console.log(postInfo);
 		console.log(fileName);
@@ -86,8 +120,8 @@ const Editor = () => {
 			</TitleSection>
 			<BodySection>
 				<PreviewDiv>
-					{postInfo.fileImage.length > 0 ? (
-						postInfo.fileImage.map((v) => {
+					{filePreview.length > 0 ? (
+						filePreview.map((v) => {
 							return <PreviewImg src={v} alt=""></PreviewImg>;
 						})
 					) : (
@@ -109,7 +143,7 @@ const Editor = () => {
 					<CategoryDiv onClick={(e) => categorySelcect(e)}>
 						<>
 							{categoryList.map((v) => {
-								return postInfo.category === v[0] ? (
+								return postInfo.postType === v[0] ? (
 									<CategoryButton isClickCategory={true} id={v[0]} raduis={v[2]}>
 										{v[1]}
 									</CategoryButton>
@@ -121,6 +155,31 @@ const Editor = () => {
 							})}
 						</>
 					</CategoryDiv>
+
+					<PickUpCategoryDiv>
+						{CATEGORY.slice(1).map((categoryItem: (any | string)[], i) => {
+							return postInfo.category === categoryItem[2] ? (
+								<PickUpCategoryItemDiv
+									key={i}
+									onClick={(e) => clickHander(e)}
+									active={true}
+									id={categoryItem[2]}
+									text={categoryItem[2]}
+									img={categoryItem[1]}
+								></PickUpCategoryItemDiv>
+							) : (
+								<PickUpCategoryItemDiv
+									key={i}
+									onClick={(e) => clickHander(e)}
+									active={false}
+									id={categoryItem[2]}
+									text={categoryItem[2]}
+									img={categoryItem[0]}
+								></PickUpCategoryItemDiv>
+							);
+						})}
+					</PickUpCategoryDiv>
+
 					<BodyDiv onChange={changeBody}>
 						<BodyInput placeholder="내용을 입력하세요."></BodyInput>
 					</BodyDiv>
@@ -160,15 +219,55 @@ const Editor = () => {
 					</UploadDiv>
 					<PlusDiv id="inputFile" type="file" accept="image/*" multiple onChange={fileAdd}></PlusDiv>
 					<PlusLabel htmlFor="inputFile">+</PlusLabel>
-					{/* <CategoryDiv>
-						<CategoryItemLeftButton>패션픽업</CategoryItemLeftButton>
-						<CategoryItemRightButton raduis={'0px 10px 10px 0px'}>포트폴리오</CategoryItemRightButton>
-					</CategoryDiv> */}
+					<EndSelectDiv onClick={(e) => onEndHandler(e)}>
+						<CategoryButton id={'cancel'} raduis={'10px 0px 0px 10px'}>
+							취소
+						</CategoryButton>
+						<CategoryButton id={'submit'} raduis={'0px 10px 10px 0px'}>
+							전송
+						</CategoryButton>
+					</EndSelectDiv>
 				</InfoDiv>
 			</BodySection>
 		</ContainerDiv>
 	);
 };
+
+export default Editor;
+
+const PickUpCategoryDiv = styled.div`
+	background-color: white;
+	margin: 20px 0px;
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	gap: 20px;
+	row-gap: 60px;
+	padding-top: 20px;
+	padding-bottom: 60px;
+`;
+
+const PickUpCategoryItemDiv = styled.div<{ img: string; text: string; active: boolean }>`
+	height: 60px;
+	width: 60px;
+	background-color: #fdfdfd;
+	border: 1px solid #ebebeb;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	background-image: url(${(props) => props.img});
+	background-repeat: no-repeat;
+	background-position: center;
+	border-radius: 20px;
+	&::after {
+		content: '${(props) => props.text}';
+		text-align: center;
+		font-weight: 700;
+		margin-top: 100px;
+		font-size: 14px;
+		color: ${(props) => (props.active ? 'black' : '#999999')};
+	}
+`;
 
 const PlusDiv = styled.input`
 	display: none;
@@ -351,7 +450,7 @@ const BodyInput = styled.textarea`
 	}
 `;
 
-const CategoryButton = styled.button<{ raduis: string; isClickCategory: boolean }>`
+const CategoryButton = styled.button<{ raduis: string; isClickCategory?: boolean }>`
 	width: 168px;
 	height: 50px;
 	border: 1px solid #ebebeb;
@@ -366,6 +465,9 @@ const CategoryButton = styled.button<{ raduis: string; isClickCategory: boolean 
 		`}
 `;
 
+const EndSelectDiv = styled.div`
+	margin-bottom: 100px;
+`;
 const CategoryDiv = styled.div``;
 
 const BodySection = styled.section`
@@ -374,4 +476,3 @@ const BodySection = styled.section`
 	display: flex;
 	justify-content: center;
 `;
-export default Editor;
