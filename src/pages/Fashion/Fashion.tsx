@@ -1,44 +1,14 @@
 import styled, { css } from 'styled-components';
 import { useEffect, useState, useRef } from 'react';
-import {
-	accessory,
-	accessoryClick,
-	all,
-	allClick,
-	dress,
-	dressClick,
-	onepiece,
-	onepieceClick,
-	outter,
-	outterClick,
-	pants,
-	pantsClick,
-	skirt,
-	skirtClick,
-	suit,
-	suitClick,
-	tshirts,
-	tshirtsClick,
-} from '../../assets';
+
 import axios from 'axios';
 import FashionCard from '../../components/FashionCard';
 import Pagination from '../../components/Pagination';
 import { useLocation } from 'react-router-dom';
 import FundingCard from '../../components/FundingCard';
 import { CardRes } from '../../types/fashionPage';
-
+import { CATEGORY } from '../../constants/editor';
 const FILTER = ['추천순', '최신순', '마이픽'];
-const CATEGORY: (any | string)[] = [
-	[all, allClick, '전체', 'all'],
-	[tshirts, tshirtsClick, '상의', 'tshirts'],
-	[outter, outterClick, '아우터', 'outter'],
-	[pants, pantsClick, '바지', 'pants'],
-	[onepiece, onepieceClick, '원피스', 'onepiece'],
-	[skirt, skirtClick, '스커트', 'skirt'],
-	[accessory, accessoryClick, '액세서리', 'accessory'],
-	[suit, suitClick, '정장', 'suit'],
-	[dress, dressClick, '드레스', 'dress'],
-];
 
 const Fashion = () => {
 	const location = useLocation();
@@ -76,7 +46,7 @@ const Fashion = () => {
 			setCardData(res.data);
 		} else if (currentPage === '/funding') {
 			const res = await axios.get(
-				'http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/funding/mainFunding?categoryName=%EC%83%81%EC%9D%98'
+				`http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/funding/mainFunding?categoryName=${category}`
 			);
 			setCardData(res.data);
 		}
@@ -152,12 +122,12 @@ const Fashion = () => {
 						{categoryModal && (
 							<DropCategoryItemBoxDiv>
 								{CATEGORY.map((v) =>
-									category === v[3] ? (
-										<CategoryItemSpan onClick={() => setCategory(v[3])} active={true}>
+									category === v[2] ? (
+										<CategoryItemSpan onClick={() => setCategory(v[2])} active={true}>
 											{v[2]}
 										</CategoryItemSpan>
 									) : (
-										<CategoryItemSpan onClick={() => setCategory(v[3])}>{v[2]}</CategoryItemSpan>
+										<CategoryItemSpan onClick={() => setCategory(v[2])}>{v[2]}</CategoryItemSpan>
 									)
 								)}
 							</DropCategoryItemBoxDiv>
