@@ -10,13 +10,14 @@ import detail4 from '../assets/detail4.png';
 import detail5 from '../assets/detail5.png';
 const Detail = () => {
 	const [image, setImage] = useState<string>('');
+	const id = '1';
 	// const handleData = async () => {
 	// 	const data = await fashionPickUpDetailApi('1');
 	// 	const dataList = data.data;
 	// 	console.log(dataList.postImageDtoList[0]);
 	// 	setImage(dataList.postImageDtoList[0].fileURI);
 	// };
-	const { data } = useQuery('get', fashionPickUpDetailApi22, { refetchOnWindowFocus: false });
+	const { data } = useQuery(['get', id], () => fashionPickUpDetailApi(id), { refetchOnWindowFocus: false });
 	console.log(data);
 	return (
 		<section>
