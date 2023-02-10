@@ -2,41 +2,41 @@ import { async } from 'q';
 import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
-import { fashionPickUpDetailApi, fashionPickUpDetailApi22 } from '../api/api';
-import detail1 from '../assets/detail1.png';
-import detail2 from '../assets/detail2.png';
-import detail3 from '../assets/detail3.png';
-import detail4 from '../assets/detail4.png';
-import detail5 from '../assets/detail5.png';
+import { fashionPickUpDetailApi } from '../api/api';
+import kakao from '../assets/kakao.jpg';
+
+interface fashionPickupDetailData {
+	data: detailData;
+}
+interface detailData {
+	title: string;
+	s3ImageUriList: Array<string>;
+	tagList: Array<string>;
+	fashionPickupEntityId: string;
+}
 const Detail = () => {
 	const [image, setImage] = useState<string>('');
-	const id = '1';
-	// const handleData = async () => {
-	// 	const data = await fashionPickUpDetailApi('1');
-	// 	const dataList = data.data;
-	// 	console.log(dataList.postImageDtoList[0]);
-	// 	setImage(dataList.postImageDtoList[0].fileURI);
-	// };
-	const { data } = useQuery(['get', id], () => fashionPickUpDetailApi(id), { refetchOnWindowFocus: false });
-	console.log(data);
+	const id = '2';
+	const { data } = useQuery<fashionPickupDetailData>(['get', id], () => fashionPickUpDetailApi(id), {
+		refetchOnWindowFocus: false,
+	});
+	if (typeof data !== 'undefined') {
+		console.log(data.data);
+	}
 	return (
 		<section>
-			<DetailTitleH3>화이트 패턴 시스루 원피스</DetailTitleH3>
+			<DetailTitleH3>{data?.data.title}</DetailTitleH3>
 			<HashTagBoxDiv>
-				<span>#원피스 </span>
-				<span>#데이트룩</span>
-				<span>#파티</span>
-				<span>#여름코디</span>
-				<span>#시스루</span>
+				{data?.data.tagList.map((tag, i) => {
+					return <span key={i}>#{tag}</span>;
+				})}
 			</HashTagBoxDiv>
 			<FlexBoxDiv>
 				<PickupImageDiv>
-					<img src={`${image}`} alt="" />
-					<img src={`${detail1}`} alt="" />
-					<img src={`${detail2}`} alt="" />
-					<img src={`${detail3}`} alt="" />
-					<img src={`${detail4}`} alt="" />
-					<img src={`${detail5}`} alt="" />
+					{data?.data.s3ImageUriList.map((url, i) => {
+						return <img key={i} src={url} />;
+					})}
+					<img src={`${kakao}`} alt="" />
 				</PickupImageDiv>
 				<PickupTextDiv>
 					<ProfileDiv>
@@ -53,7 +53,25 @@ const Detail = () => {
 					</p>
 					<p>댓글 8개</p>
 					<hr />
-					<input type="text" /> <button>작성</button>
+					<CommentInputDiv>
+						<input type="text" />
+						<button>작성</button>
+					</CommentInputDiv>
+					<CommentBoxDiv>
+						<ProfileImageDiv></ProfileImageDiv>
+						<CommentDiv>
+							<span>김아무개</span>
+							<span>
+								여기가 댓글 쓰는곳 맞나요? 너무 옷이 이뻐서 댓글을 안쓸수가 없겠더라구요 저 이거 너무 사고싶어서
+								펀딩하고싶습니다!
+							</span>
+						</CommentDiv>
+						<ProfileImageDiv></ProfileImageDiv>
+						<CommentDiv>
+							<span>박아무개</span>
+							<span>그러니까요 어떻게 이런걸 생각해 내셨는지 너무 부럽습니다 ㅠㅠ</span>
+						</CommentDiv>
+					</CommentBoxDiv>
 				</PickupTextDiv>
 				<PickupButtonDiv>
 					<span>아이콘1</span>
@@ -71,7 +89,9 @@ export default Detail;
 const FlexBoxDiv = styled.div`
 	box-sizing: border-box;
 	display: flex;
+	align-items: flex-start;
 	width: 100%;
+	height: auto;
 	div {
 		margin-right: 2%;
 	}
@@ -79,12 +99,15 @@ const FlexBoxDiv = styled.div`
 const DetailTitleH3 = styled.h3``;
 
 const HashTagBoxDiv = styled.div`
+	margin-bottom: 1rem;
 	span {
 		box-sizing: border-box;
 		margin-right: 1rem;
 		padding: 4px;
 		border: 1px solid #ebebeb;
 		border-radius: 20px;
+		color: #595959;
+		font-weight: 700;
 		text-align: center;
 	}
 `;
@@ -95,9 +118,13 @@ const PickupImageDiv = styled.div`
 	}
 `;
 const PickupTextDiv = styled.div`
+	position: sticky;
+	top: 20px;
 	width: 22%;
 `;
 const PickupButtonDiv = styled.div`
+	position: sticky;
+	top: 20px;
 	display: flex;
 	flex-direction: column;
 	width: 4%;
@@ -113,7 +140,7 @@ const ProfileImageDiv = styled.div`
 	width: 40px;
 	height: 40px;
 	border-radius: 50%;
-	background-color: gray;
+	background-color: #d9d9d9;
 `;
 const DesignerNameDiv = styled.div`
 	display: flex;
@@ -126,4 +153,45 @@ const MyPickButton = styled.button`
 	text-align: center;
 	padding: 8px 0;
 	border-radius: 5px;
+`;
+const CommentInputDiv = styled.div`
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	input {
+		box-sizing: border-box;
+		width: 70%;
+		padding: 1rem 0.5rem;
+		background-color: #f6f6f6;
+		border: none;
+		border-radius: 5px;
+		font-size: 1rem;
+	}
+	button {
+		width: 25%;
+		background-color: #67a0ed;
+		color: white;
+		border: none;
+		border-radius: 5px;
+		font-size: 1.05rem;
+		font-weight: 600;
+	}
+`;
+const CommentBoxDiv = styled.div`
+	box-sizing: border-box;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	margin: 1.5rem 0;
+	width: 100%;
+`;
+const CommentDiv = styled.div`
+	width: 80%;
+	margin-left: 1rem;
+	margin-bottom: 1rem;
+	span:nth-of-type(2n + 1) {
+		display: block;
+		margin-bottom: 0.7rem;
+		font-weight: bold;
+	}
 `;
