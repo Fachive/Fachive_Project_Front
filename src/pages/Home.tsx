@@ -11,7 +11,10 @@ const Home = () => {
 	const [FundingCardData, setFundingCardData] = useState<CardRes[]>([]);
 
 	const getData = async () => {
-		const res1 = await axios.get('http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/main/get/ten');
+		const res1 = await axios.get(
+			'http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/fashpickup/mainPageGet'
+		);
+		console.log(res1);
 		setFashionCardData(res1.data.slice(7, 16));
 		setFundingCardData(res1.data.slice(0, 7));
 	};

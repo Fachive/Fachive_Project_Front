@@ -3,7 +3,7 @@ interface PageType {
 	total: number;
 	limit: number;
 	page: number;
-	setPage: any;
+	setPage: (a: number) => void;
 }
 function Pagination({ total, limit, page, setPage }: PageType) {
 	const numPages = Math.ceil(total / limit);
