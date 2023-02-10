@@ -5,26 +5,27 @@ import { CardRes } from '../types/fashionPage';
 
 interface ResProps {
 	data: CardRes;
-	idx?: number;
 }
 
-const FashionCard = ({ data, idx }: ResProps) => {
+const FashionCard = ({ data }: ResProps) => {
 	return (
 		<Card>
-			<CardDiv imgSrc={data.postImageDto.fileURI}></CardDiv>
+			<CardDiv imgSrc={data.s3ImageUriList[0]}></CardDiv>
 			<CardInfoBox>
 				<CardLeftInfo>
 					<Profile />
 					<Designer>
-						{data.displayName?.length > 10 ? data.displayName?.slice(0, 10) + '....' : data.displayName}
+						{/* {data.displayName?.length > 10
+							? data.displayName?.slice(0, 10) + '....'
+							: data.displayName} */}
+						backEnd
 					</Designer>
 				</CardLeftInfo>
 				<CardLeftRightInfo>
 					<BiLike size="22" />
-					{data.pickup > 10000 ? Math.trunc(data.pickup / 1000) + 'k' : data.pickup}
-					<IoEyeOutline style={{ marginLeft: '15px' }} size="22" />
-					{data.views > 10000 ? Math.trunc(data.views / 10000) + 'k' : data.views}
-					{idx}
+					{data.myPicks > 10000 ? Math.trunc(data.myPicks / 1000) + 'k' : 1500}
+					<IoEyeOutline size="22" />
+					{data.views > 10000 ? Math.trunc(data.views / 10000) + 'k' : 2100}
 				</CardLeftRightInfo>
 			</CardInfoBox>
 		</Card>
@@ -33,8 +34,10 @@ const FashionCard = ({ data, idx }: ResProps) => {
 export default FashionCard;
 
 const CardLeftRightInfo = styled.div`
-	display: flex;
+	display: grid;
+	grid-template-columns: 1fr 2fr 1fr 2fr;
 	gap: 5px;
+	align-items: center;
 `;
 const CardLeftInfo = styled.div`
 	display: flex;

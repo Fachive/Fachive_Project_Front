@@ -1,18 +1,30 @@
-export interface CardRes {
-	body: string;
-	dueDate: Date;
-	fundedPrice: number;
-	fundingEntityId: number;
-	percentage: number;
-	postImageDto: {
-		fileName: string;
-		fileURI: string;
-	};
-	tags: any;
-	targetPrice: number;
-	title: string;
-	displayName: string;
-	pickup: number;
+export interface ResponseCategoryDTO {
+	categoryName: string;
+}
 
+export interface PostImageDtoList {
+	fileName: string;
+	fileURI: string;
+}
+
+export interface CardRes {
+	title: string;
+	body: string;
 	views: number;
+	myPicks: number;
+	targetPrice: number;
+	fundedPrice: number;
+	s3ImageUriList: string[];
+	responseCategoryDTO: ResponseCategoryDTO;
+	postImageDtoList: PostImageDtoList[];
+	fashionPickupEntityId: number;
+	portfolioEntityId: number;
+}
+export interface PostInfo {
+	postType: string;
+	category: string;
+	body: string;
+	title: string;
+	hashTag: Array<string>;
+	fileImage: File[];
 }

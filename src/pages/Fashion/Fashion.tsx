@@ -1,71 +1,54 @@
 import styled, { css } from 'styled-components';
-import { useEffect, useState } from 'react';
-import {
-	accessory,
-	accessoryClick,
-	all,
-	allClick,
-	dress,
-	dressClick,
-	onepiece,
-	onepieceClick,
-	outter,
-	outterClick,
-	pants,
-	pantsClick,
-	skirt,
-	skirtClick,
-	suit,
-	suitClick,
-	tshirts,
-	tshirtsClick,
-} from '../../assets';
+import { useEffect, useState, useRef } from 'react';
+
 import axios from 'axios';
 import FashionCard from '../../components/FashionCard';
 import Pagination from '../../components/Pagination';
 import { useLocation } from 'react-router-dom';
 import FundingCard from '../../components/FundingCard';
 import { CardRes } from '../../types/fashionPage';
-
+import { CATEGORY } from '../../constants/editor';
 const FILTER = ['추천순', '최신순', '마이픽'];
-const CATEGORY: (any | string)[] = [
-	[all, allClick, '전체', 'all'],
-	[tshirts, tshirtsClick, '상의', 'tshirts'],
-	[outter, outterClick, '아우터', 'outter'],
-	[pants, pantsClick, '바지', 'pants'],
-	[onepiece, onepieceClick, '원피스', 'onepiece'],
-	[skirt, skirtClick, '스커트', 'skirt'],
-	[accessory, accessoryClick, '액세서리', 'accessory'],
-	[suit, suitClick, '정장', 'suit'],
-	[dress, dressClick, '드레스', 'dress'],
-];
 
 const Fashion = () => {
 	const location = useLocation();
 	const [filter, setFilter] = useState<string>('추천순');
 	const [currentPage, setCurrentPage] = useState<string>(location.pathname);
-	const [category, setCategory] = useState<string>('all');
+	const [category, setCategory] = useState<string>('상의');
 	const [CardData, setCardData] = useState<CardRes[]>([]);
 	const [limit, setLimit] = useState<number>(10);
 	const [page, setPage] = useState<number>(1);
 	const [categoryModal, setCategoryModal] = useState<boolean>(false);
 	const offset = (page - 1) * limit;
 
-	const onClickHander = (e: any) => {
-		setFilter(e.target.id);
+	const onClickHander = (e: React.MouseEvent) => {
+		setFilter((e.target as HTMLElement).id);
 	};
+
+	const modalRef = useRef<HTMLDivElement>(null);
+
+	const handleClickOutside = (e: any) => {
+		if (modalRef.current && !modalRef.current.contains(e.target as Node)) setCategoryModal(false);
+	};
+
+	useEffect(() => {
+		window.addEventListener('click', handleClickOutside);
+		return () => {
+			window.removeEventListener('click', handleClickOutside);
+		};
+	}, []);
 
 	const getData = async () => {
 		if (currentPage === '/fashion') {
 			const res = await axios.get(
-				'http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/fashionpickup/main/get'
+				`http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/fashionpickup/mainfasionpickup?categoryName=${category}`
 			);
-			setCardData(res.data.data);
+			setCardData(res.data);
 		} else if (currentPage === '/funding') {
 			const res = await axios.get(
-				'http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/funding/mainPageGet'
+				`http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/funding/mainFunding?categoryName=${category}`
 			);
-			setCardData(res.data.data);
+			setCardData(res.data);
 		}
 	};
 
@@ -77,33 +60,34 @@ const Fashion = () => {
 		setPage(1);
 	}, [filter, category, currentPage]);
 	useEffect(() => {
-		setCategory('all');
+		setCategory('상의');
 	}, [location.pathname]);
-	const clickHander = (e: any) => {
-		setCategory(e.target.id);
+	const clickHander = (e: React.MouseEvent) => {
+		setCategory((e.target as HTMLButtonElement).id);
 	};
 
+	console.log(category);
 	return (
 		<ContainerDiv>
 			<CategoryDiv>
-				{CATEGORY.map((v: (any | string)[], i) => {
-					return category === v[3] ? (
+				{CATEGORY.map((categoryItem: (any | string)[], i) => {
+					return category === categoryItem[2] ? (
 						<CategoryItemDiv
 							key={i}
 							onClick={(e) => clickHander(e)}
 							active={true}
-							id={v[3]}
-							text={v[2]}
-							img={v[1]}
+							id={categoryItem[2]}
+							text={categoryItem[2]}
+							img={categoryItem[1]}
 						></CategoryItemDiv>
 					) : (
 						<CategoryItemDiv
 							key={i}
 							onClick={(e) => clickHander(e)}
 							active={false}
-							id={v[3]}
-							text={v[2]}
-							img={v[0]}
+							id={categoryItem[2]}
+							text={categoryItem[2]}
+							img={categoryItem[0]}
 						></CategoryItemDiv>
 					);
 				})}
@@ -128,30 +112,22 @@ const Fashion = () => {
 					})}
 				</FilterBoxDiv>
 				<DropBoxDiv>
-					계절:
-					<DropItemSelect>
-						<option value="">전체</option>
-						<option value="봄">봄</option>
-						<option value="여름">여름</option>
-						<option value="가을">가을</option>
-						<option value="겨울">겨울</option>
-					</DropItemSelect>
-					<CategorySelectDiv onClick={() => setCategoryModal(true)}>
+					<CategorySelectDiv ref={modalRef} onClick={() => setCategoryModal(true)}>
 						<span style={{ marginRight: '6px' }}>카테고리 :</span>
 						{
 							CATEGORY.filter((v) => {
-								return v[3] === category;
+								return v[2] === category;
 							})[0][2]
 						}
 						{categoryModal && (
 							<DropCategoryItemBoxDiv>
 								{CATEGORY.map((v) =>
-									category === v[3] ? (
-										<CategoryItemSpan onClick={() => setCategory(v[3])} active={true}>
+									category === v[2] ? (
+										<CategoryItemSpan onClick={() => setCategory(v[2])} active={true}>
 											{v[2]}
 										</CategoryItemSpan>
 									) : (
-										<CategoryItemSpan onClick={() => setCategory(v[3])}>{v[2]}</CategoryItemSpan>
+										<CategoryItemSpan onClick={() => setCategory(v[2])}>{v[2]}</CategoryItemSpan>
 									)
 								)}
 							</DropCategoryItemBoxDiv>
@@ -161,7 +137,7 @@ const Fashion = () => {
 			</SelectDiv>
 
 			<CardDiv>
-				{CardData.slice(offset, offset + limit).map((v) => {
+				{CardData.slice(offset, offset + limit).map((v, i) => {
 					return currentPage === '/fashion' ? (
 						<FashionCard data={v}></FashionCard>
 					) : (
@@ -211,7 +187,8 @@ const DropCategoryItemBoxDiv = styled.div`
 	height: 70px;
 	background-color: #ffffff;
 	position: absolute;
-	left: 1180px;
+	margin-top: 15px;
+	right: 5%;
 	border-radius: 20px;
 	border: 1px solid gray;
 	display: flex;
@@ -284,7 +261,7 @@ const CardDiv = styled.section`
 		grid-template-columns: repeat(1, calc(50%));
 	}
 `;
-const CategoryItemDiv = styled.div<{ img: any; text: any; active: boolean }>`
+const CategoryItemDiv = styled.div<{ img: string; text: string; active: boolean }>`
 	height: 70px;
 	width: 70px;
 	background-color: #fdfdfd;

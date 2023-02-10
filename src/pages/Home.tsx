@@ -7,25 +7,23 @@ import { CardRes } from '../types/fashionPage';
 import FashionCard from '../components/FashionCard';
 import FundingCard from '../components/FundingCard';
 const Home = () => {
-	const [CardData, setCardData] = useState<Array<CardRes>[]>([]);
+	const [FashionCardData, setFashionCardData] = useState<CardRes[]>([]);
+	const [FundingCardData, setFundingCardData] = useState<CardRes[]>([]);
 
 	const getData = async () => {
 		const res1 = await axios.get(
-			'http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/fashionpickup/main/get'
+			'http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/fashpickup/mainPageGet'
 		);
-		setCardData((prev) => [...prev, res1.data.data]);
-
-		const res2 = await axios.get(
-			'http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/funding/mainPageGet'
-		);
-		setCardData((prev) => [...prev, res2.data.data]);
+		console.log(res1);
+		setFashionCardData(res1.data.slice(7, 16));
+		setFundingCardData(res1.data.slice(0, 7));
 	};
 	const [current, setCurrent] = useState(0);
 	const [style, setStyle] = useState({
-		marginLeft: `-${current * 2}0%`,
+		transform: `translate(-${current * 345}px)`,
 	});
-	const imgSize = useRef(10);
-
+	const imgSize = useRef(5);
+	console.log(FashionCardData);
 	const moveSlide = (i: number) => {
 		let nextIndex = current + i;
 		if (nextIndex === -1) return;
@@ -36,33 +34,40 @@ const Home = () => {
 	};
 
 	useEffect(() => {
-		setStyle({ marginLeft: `-${current * 2}0%` });
+		setStyle({ transform: `translate(-${current * 345}px)` });
 	}, [current]);
 
 	useEffect(() => {
 		getData();
 	}, []);
+	useEffect(() => {
+		console.log(FashionCardData);
+	}, [FashionCardData]);
 
 	return (
 		<Container>
 			<SlideImg />
-			<RecommendTitle>패카이브 추천 픽</RecommendTitle>
+			<ButtonDiv>
+				<RecommendTitle>패카이브 추천 픽</RecommendTitle>
+				<div>
+					<ButtonItemButton onClick={() => moveSlide(-1)}>이전</ButtonItemButton>
+					<ButtonItemButton onClick={() => moveSlide(+1)}>다음</ButtonItemButton>
+				</div>
+			</ButtonDiv>
 
 			<FachiveRecommend>
-				<button onClick={() => moveSlide(-1)}>이전</button>
 				<RecommendFlexDiv style={style}>
-					{CardData[0]?.slice(0, 10).map((fashionData, idx) => {
-						return <FashionCard data={fashionData} idx={idx} />;
+					{FashionCardData.map((fashionData) => {
+						return <FashionCard data={fashionData} />;
 					})}
 				</RecommendFlexDiv>
-				<button onClick={() => moveSlide(+1)}>다음</button>
 			</FachiveRecommend>
 			<RecommendButton>패션추천 바로 가기</RecommendButton>
 			<FundingImg />
 			<RecommendTitle>패카이브 추천 픽</RecommendTitle>
 			<FachiveRecommend>
 				<RecommendFlexDiv style={style}>
-					{CardData[1]?.slice(0, 10).map((fundingData) => {
+					{FundingCardData.map((fundingData) => {
 						return <FundingCard data={fundingData} />;
 					})}
 				</RecommendFlexDiv>
@@ -72,6 +77,18 @@ const Home = () => {
 };
 
 export default Home;
+
+const ButtonDiv = styled.div`
+	display: flex;
+	justify-content: space-between;
+`;
+
+const ButtonItemButton = styled.button`
+	margin-left: 10px;
+	margin-top: 30px;
+	margin-bottom: 10px;
+	font-weight: 800;
+`;
 
 const RecommendButton = styled.button`
 	width: 500px;
