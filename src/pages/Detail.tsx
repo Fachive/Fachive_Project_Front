@@ -28,7 +28,7 @@ const Detail = () => {
 			<DetailTitleH3>{data?.data.title}</DetailTitleH3>
 			<HashTagBoxDiv>
 				{data?.data.tagList.map((tag, i) => {
-					return <span key={i}>#{tag}</span>;
+					return <span key={i}>#{Object.values(tag)}</span>;
 				})}
 			</HashTagBoxDiv>
 			<FlexBoxDiv>
