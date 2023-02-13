@@ -11,31 +11,46 @@ const Home = () => {
 	const [FundingCardData, setFundingCardData] = useState<CardRes[]>([]);
 
 	const getData = async () => {
-		const res1 = await axios.get(
-			'http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/fashpickup/mainPageGet'
-		);
+		const res1 = await axios.get('http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/main/get/ten');
 		console.log(res1);
-		setFashionCardData(res1.data.slice(7, 16));
-		setFundingCardData(res1.data.slice(0, 7));
+		setFashionCardData(res1.data.fashionpickList);
+		setFundingCardData(res1.data.fundingList);
 	};
-	const [current, setCurrent] = useState(0);
-	const [style, setStyle] = useState({
-		transform: `translate(-${current * 345}px)`,
+	const [currentFashion, setCurrentFashion] = useState(0);
+	const [currentFunding, setCurrentFunding] = useState(0);
+
+	const [styleFashion, setStyleFashion] = useState({
+		transform: `translate(-${currentFashion * 345}px)`,
 	});
+
+	const [styleFunding, setStyleFunding] = useState({
+		transform: `translate(-${currentFunding * 345}px)`,
+	});
+
 	const imgSize = useRef(5);
-	console.log(FashionCardData);
-	const moveSlide = (i: number) => {
-		let nextIndex = current + i;
+
+	const moveSlideFashion = (i: number) => {
+		let nextIndex = currentFashion + i;
 		if (nextIndex === -1) return;
 		if (nextIndex < 0) nextIndex = imgSize.current - 1;
 		else if (nextIndex >= imgSize.current) return;
 
-		setCurrent(nextIndex);
+		setCurrentFashion(nextIndex);
+	};
+
+	const moveSlideFunding = (i: number) => {
+		let nextIndex = currentFunding + i;
+		if (nextIndex === -1) return;
+		if (nextIndex < 0) nextIndex = imgSize.current - 1;
+		else if (nextIndex >= imgSize.current) return;
+
+		setCurrentFunding(nextIndex);
 	};
 
 	useEffect(() => {
-		setStyle({ transform: `translate(-${current * 345}px)` });
-	}, [current]);
+		setStyleFashion({ transform: `translate(-${currentFashion * 345}px)` });
+		setStyleFunding({ transform: `translate(-${currentFunding * 347}px)` });
+	}, [currentFashion, currentFunding]);
 
 	useEffect(() => {
 		getData();
@@ -50,28 +65,34 @@ const Home = () => {
 			<ButtonDiv>
 				<RecommendTitle>패카이브 추천 픽</RecommendTitle>
 				<div>
-					<ButtonItemButton onClick={() => moveSlide(-1)}>이전</ButtonItemButton>
-					<ButtonItemButton onClick={() => moveSlide(+1)}>다음</ButtonItemButton>
+					<ButtonItemButton onClick={() => moveSlideFashion(-1)}>이전</ButtonItemButton>
+					<ButtonItemButton onClick={() => moveSlideFashion(+1)}>다음</ButtonItemButton>
 				</div>
 			</ButtonDiv>
 
-			<FachiveRecommend>
-				<RecommendFlexDiv style={style}>
+			<FachiveFashionRecommend>
+				<RecommendFlexDiv style={styleFashion}>
 					{FashionCardData.map((fashionData) => {
 						return <FashionCard data={fashionData} />;
 					})}
 				</RecommendFlexDiv>
-			</FachiveRecommend>
+			</FachiveFashionRecommend>
 			<RecommendButton>패션추천 바로 가기</RecommendButton>
 			<FundingImg />
-			<RecommendTitle>패카이브 추천 픽</RecommendTitle>
-			<FachiveRecommend>
-				<RecommendFlexDiv style={style}>
+			<ButtonDiv>
+				<RecommendTitle>곧 마감되는 펀딩</RecommendTitle>
+				<div>
+					<ButtonItemButton onClick={() => moveSlideFunding(-1)}>이전</ButtonItemButton>
+					<ButtonItemButton onClick={() => moveSlideFunding(+1)}>다음</ButtonItemButton>
+				</div>
+			</ButtonDiv>
+			<FachiveFundingRecommend>
+				<RecommendFlexDiv style={styleFunding}>
 					{FundingCardData.map((fundingData) => {
 						return <FundingCard data={fundingData} />;
 					})}
 				</RecommendFlexDiv>
-			</FachiveRecommend>
+			</FachiveFundingRecommend>
 		</Container>
 	);
 };
@@ -124,9 +145,12 @@ const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 `;
-const FachiveRecommend = styled.div`
+const FachiveFashionRecommend = styled.div`
 	overflow: hidden;
-	min-width: 1700px;
+`;
+const FachiveFundingRecommend = styled.div`
+	overflow: hidden;
+	margin-bottom: 100px;
 `;
 const SlideImg = styled.img`
 	max-width: 100%;
