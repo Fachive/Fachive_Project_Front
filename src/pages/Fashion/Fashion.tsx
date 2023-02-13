@@ -55,13 +55,21 @@ const Fashion = () => {
 	useEffect(() => {
 		setCurrentPage(location.pathname);
 	}, [location, currentPage]);
+
 	useEffect(() => {
 		getData();
 		setPage(1);
-	}, [filter, category, currentPage]);
+	}, [filter, category, currentPage, limit]);
+
 	useEffect(() => {
 		setCategory('상의');
+		if (currentPage === '/fashion') {
+			setLimit(10);
+		} else {
+			setLimit(12);
+		}
 	}, [location.pathname]);
+
 	const clickHander = (e: React.MouseEvent) => {
 		setCategory((e.target as HTMLButtonElement).id);
 	};
@@ -145,7 +153,31 @@ const Fashion = () => {
 					);
 				})}
 			</CardDiv>
-			<Pagination total={CardData?.length} limit={limit} page={page} setPage={setPage} />
+			<PageDiv>
+				<Pagination total={CardData?.length} limit={limit} page={page} setPage={setPage} />
+				<PageLimit>
+					페이지당 게시글 수
+					{currentPage === '/fashion' ? (
+						<select value={limit} onChange={(e) => setLimit(+(e.target as HTMLSelectElement).value)}>
+							10
+							<option value="10">10</option>
+							<option value="20">20</option>
+							<option value="30">30</option>
+							<option value="40">40</option>
+							<option value="50">50</option>
+						</select>
+					) : (
+						<select value={limit} onChange={(e) => setLimit(+(e.target as HTMLSelectElement).value)}>
+							12
+							<option value="12">12</option>
+							<option value="24">24</option>
+							<option value="36">36</option>
+							<option value="48">48</option>
+							<option value="60">60</option>
+						</select>
+					)}
+				</PageLimit>
+			</PageDiv>
 		</ContainerDiv>
 	);
 };
@@ -162,6 +194,24 @@ const SelectDiv = styled.div`
 const FilterBoxDiv = styled.div`
 	display: flex;
 	gap: 20px;
+`;
+const PageDiv = styled.div`
+	display: flex;
+	align-items: center;
+	margin-bottom: 100px;
+
+	select {
+		margin-left: 10px;
+		padding: 5px 0px 5px 5px;
+		border-radius: 5px;
+		border: 1px solid #999999;
+		color: #999999;
+	}
+`;
+const PageLimit = styled.div`
+	position: absolute;
+	right: 10%;
+	color: #999999;
 `;
 const CategorySelectDiv = styled.div``;
 const DropBoxDiv = styled.div`
