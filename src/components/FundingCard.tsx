@@ -33,7 +33,7 @@ const FundingCard = ({ data }: ResProps) => {
 export default FundingCard;
 
 const CardDiv = styled.div`
-	border-radius: 10px;
+	border-radius: 20px;
 	min-width: 312px;
 `;
 
