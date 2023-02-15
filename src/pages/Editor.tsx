@@ -1,6 +1,6 @@
 import { useState, useEffect, MouseEvent, FormEvent } from 'react';
 import styled, { css } from 'styled-components';
-import { category as categoryList } from '../constants/editor';
+import { category, category as categoryList } from '../constants/editor';
 import { PostInfo } from '../types/fashionPage';
 import { CATEGORY } from '../constants/editor';
 import axios from 'axios';
@@ -18,7 +18,12 @@ const Editor = () => {
 		hashTag: [],
 		fileImage: [],
 	});
-
+	const isVaildForm =
+		postInfo.postType !== '' &&
+		postInfo.category !== '' &&
+		postInfo.body.length > 10 &&
+		postInfo.title !== '' &&
+		postInfo.fileImage.length >= 1;
 	const categorySelcect = (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
 		setPostInfo((prev) => ({ ...prev, postType: (e.target as HTMLButtonElement).id }));
 	};
@@ -107,16 +112,11 @@ const Editor = () => {
 			}
 		}
 	};
-	useEffect(() => {
-		console.log(postInfo);
-		console.log(fileName);
-		console.log(currentHashTag);
-	}, [postInfo, fileName, currentHashTag]);
 
 	return (
 		<ContainerDiv>
 			<TitleSection onChange={(e) => changeTilte(e)}>
-				<TitleInput placeholder="제목을 입력하세요."></TitleInput>
+				<TitleInput placeholder="제목을 입력하세요.(필수값)"></TitleInput>
 			</TitleSection>
 			<BodySection>
 				<PreviewDiv>
@@ -181,7 +181,7 @@ const Editor = () => {
 					</PickUpCategoryDiv>
 
 					<BodyDiv onChange={changeBody}>
-						<BodyInput placeholder="내용을 입력하세요."></BodyInput>
+						<BodyInput placeholder="내용을 입력하세요.(필수값)"></BodyInput>
 					</BodyDiv>
 					<HashTagDiv>
 						{postInfo.hashTag.length > 0
@@ -213,7 +213,7 @@ const Editor = () => {
 							})
 						) : (
 							<div style={{ alignItems: 'center', height: '150px', display: 'flex', justifyContent: 'center' }}>
-								첨부파일을 입력하세요.
+								첨부파일 없음(1개 이상의 파일 첨부 필수)
 							</div>
 						)}
 					</UploadDiv>
@@ -223,9 +223,20 @@ const Editor = () => {
 						<CategoryButton id={'cancel'} raduis={'10px 0px 0px 10px'}>
 							취소
 						</CategoryButton>
-						<CategoryButton id={'submit'} raduis={'0px 10px 10px 0px'}>
-							전송
-						</CategoryButton>
+						{isVaildForm ? (
+							<CategoryButton id={'submit'} raduis={'0px 10px 10px 0px'}>
+								전송
+							</CategoryButton>
+						) : (
+							<CategoryButton
+								title="필수값들을 다 입력하시고 눌러주세요"
+								id={'submit'}
+								raduis={'0px 10px 10px 0px'}
+								disabled
+							>
+								전송
+							</CategoryButton>
+						)}
 					</EndSelectDiv>
 				</InfoDiv>
 			</BodySection>
