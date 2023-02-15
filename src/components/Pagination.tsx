@@ -7,7 +7,7 @@ interface PageType {
 }
 function Pagination({ total, limit, page, setPage }: PageType) {
 	const numPages = Math.ceil(total / limit);
-
+	console.log(total);
 	return (
 		<>
 			<Nav>
@@ -21,7 +21,7 @@ function Pagination({ total, limit, page, setPage }: PageType) {
 							{i + 1}
 						</Button>
 					))}
-				<Button onClick={() => setPage(page + 1)} disabled={page === numPages}>
+				<Button onClick={() => setPage(page + 1)} disabled={total === 0 || total === 1}>
 					NEXT&gt;
 				</Button>
 			</Nav>
@@ -38,9 +38,9 @@ const Nav = styled.nav`
 `;
 
 const Button = styled.button<{ 'aria-current'?: any }>`
-	border-radius: 100px;
-	width: 60px;
-	height: 60px;
+	border-radius: 50px;
+	width: 50px;
+	height: 50px;
 	padding: 8px;
 	margin: 0;
 	background: white;
@@ -54,15 +54,19 @@ const Button = styled.button<{ 'aria-current'?: any }>`
 	}
 
 	&[disabled] {
-		background: grey;
 		cursor: revert;
 		transform: revert;
+		color: gray;
+		&:hover {
+			background: none;
+		}
 	}
 
 	&[aria-current] {
-		background: skyblue;
+		background: #67a0ed;
 		font-weight: bold;
 		cursor: revert;
+		color: white;
 		transform: revert;
 	}
 `;
