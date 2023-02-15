@@ -143,16 +143,29 @@ const Fashion = () => {
 					</CategorySelectDiv>
 				</DropBoxDiv>
 			</SelectDiv>
-
-			<CardDiv>
-				{CardData.slice(offset, offset + limit).map((v, i) => {
-					return currentPage === '/fashion' ? (
-						<FashionCard data={v}></FashionCard>
-					) : (
-						<FundingCard data={v}></FundingCard>
-					);
-				})}
-			</CardDiv>
+			{CardData.length === 0 ? (
+				<div
+					style={{
+						display: 'flex',
+						justifyContent: 'center',
+						fontSize: '30px',
+						marginBottom: '30px',
+						fontWeight: '700',
+					}}
+				>
+					데이터가 없습니다
+				</div>
+			) : (
+				<CardDiv>
+					{CardData.slice(offset, offset + limit).map((v, i) => {
+						return currentPage === '/fashion' ? (
+							<FashionCard data={v}></FashionCard>
+						) : (
+							<FundingCard data={v}></FundingCard>
+						);
+					})}
+				</CardDiv>
+			)}
 			<PageDiv>
 				<Pagination total={CardData?.length} limit={limit} page={page} setPage={setPage} />
 				<PageLimit>
