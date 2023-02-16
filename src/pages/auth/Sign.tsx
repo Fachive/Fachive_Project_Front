@@ -114,6 +114,7 @@ const SignForm = styled.form`
 const SignInput = styled.input`
 	box-sizing: border-box;
 	padding: 0.8rem 1rem;
+	margin-top: 0.5rem;
 	margin-bottom: 1rem;
 	border-radius: 5px;
 	border: 0.5px solid #ebebeb;
