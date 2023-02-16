@@ -1,10 +1,38 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import logoImage from '../../assets/logo-vertical1.png';
 import logoText from '../../assets/logo-vertical2.png';
+import useInput from '../../hooks/useInput';
+import useValidate from '../../hooks/useValidate';
 
 const Sign = () => {
+	const [stateSignEmail, changeEmail, setSignEmail] = useInput('');
+	const [stateSignPassword, changePassword, setSignPassword] = useInput('');
+	const [stateSignPasswordCheck, changePasswordCheck, setSignPasswordCheck] = useInput('');
+	const [stateNickName, changeNickName, setNickName] = useInput('');
+	const {
+		validateUser: lockButton,
+		validateEmail,
+		validatePassword,
+		validatePasswordCheck,
+		passwordCheckError: statePasswordCheckError,
+		emailError: stateEmailError,
+		passwordError: statePasswordError,
+		isAbled: stateDisabled,
+	} = useValidate();
+	const handleSign = (e: React.MouseEvent<HTMLElement>) => {
+		e.preventDefault();
+		setSignEmail('');
+		setSignPassword('');
+		setNickName('');
+	};
+	useEffect(() => {
+		lockButton(stateSignEmail, stateSignPassword, stateSignPasswordCheck, stateNickName);
+		validateEmail(stateSignEmail);
+		validatePassword(stateSignPassword);
+		validatePasswordCheck(stateSignPassword, stateSignPasswordCheck);
+	});
 	return (
 		<SignDiv>
 			<TitleImage>
@@ -13,13 +41,48 @@ const Sign = () => {
 			</TitleImage>
 			<SignForm>
 				<label htmlFor="signEmail">이메일</label>
-				<SignInput id="signEmail" type="email" placeholder="이메일" />
+				<SignInput
+					id="signEmail"
+					type="email"
+					placeholder="이메일"
+					value={stateSignEmail}
+					onChange={(e) => {
+						changeEmail(e);
+					}}
+				/>
+				<ValidateMessageP>{stateEmailError && stateSignEmail && stateEmailError}</ValidateMessageP>
 				<label htmlFor="signPassword">비밀번호</label>
-				<SignInput id="signPassword" type="password" placeholder="비밀번호 입력" />
+				<SignInput
+					id="signPassword"
+					type="password"
+					placeholder="8자리 이상의 비밀번호 입력"
+					value={stateSignPassword}
+					onChange={(e) => {
+						changePassword(e);
+					}}
+				/>
+				<ValidateMessageP>{statePasswordError && stateSignPassword && statePasswordError}</ValidateMessageP>
 				<label htmlFor="signPasswordCheck">비밀번호 확인</label>
-				<SignInput id="signPasswordCheck" type="password" placeholder="비밀번호 확인" />
+				<SignInput
+					id="signPasswordCheck"
+					type="password"
+					placeholder="비밀번호 확인"
+					value={stateSignPasswordCheck}
+					onChange={(e) => {
+						changePasswordCheck(e);
+					}}
+				/>
+				<ValidateMessageP>{stateSignPassword && stateSignPasswordCheck && statePasswordCheckError}</ValidateMessageP>
 				<label htmlFor="signNickname">닉네임</label>
-				<SignInput id="signNickname" type="text" placeholder="2~8자 이내로 설정해주세요" />
+				<SignInput
+					id="signNickname"
+					type="text"
+					placeholder="별명"
+					value={stateNickName}
+					onChange={(e) => {
+						changeNickName(e);
+					}}
+				/>
 				<label htmlFor="signAgree">패카이브 가입 약관 동의</label>
 				<SignInput id="signAgree" type="text" placeholder="2~8자 이내로 설정해주세요" />
 				<SignButton>회원가입</SignButton>
@@ -68,4 +131,10 @@ const SignButton = styled.button`
 	color: white;
 	border: none;
 	border-radius: 5px;
+`;
+const ValidateMessageP = styled.p`
+	margin-bottom: 15px;
+	height: 15px;
+	font-size: 0.9rem;
+	color: red;
 `;

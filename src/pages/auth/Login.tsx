@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import logoImage from '../../assets/logo-vertical1.png';
@@ -8,6 +8,8 @@ import naver from '../../assets/naver.jpg';
 import google from '../../assets/google.jpg';
 
 const Login = () => {
+	const [stateLoginEmail, setLoginEmail] = useState<string>('');
+	const [stateLoginPassword, setLoginPassword] = useState<string>('');
 	return (
 		<LoginDiv>
 			<TitleImageDiv>
