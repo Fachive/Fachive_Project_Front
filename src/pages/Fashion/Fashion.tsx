@@ -225,12 +225,18 @@ const PageLimit = styled.div`
 	position: absolute;
 	right: 10%;
 	color: #999999;
+	@media (max-width: 700px) {
+		display: none;
+	}
 `;
 const CategorySelectDiv = styled.div``;
 const DropBoxDiv = styled.div`
 	font-weight: 600;
 	padding-right: 35px;
 	display: flex;
+	@media (max-width: 700px) {
+		display: none;
+	}
 `;
 const CategoryItemSpan = styled.span<{ active?: boolean }>`
 	color: #999999;
@@ -289,6 +295,7 @@ const ContainerDiv = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	min-width: 420px;
 `;
 const HeadTitleDiv = styled.div`
 	font-weight: 800;
@@ -297,7 +304,6 @@ const HeadTitleDiv = styled.div`
 `;
 const CategoryDiv = styled.div`
 	margin: 100px 0px;
-	height: 100px;
 	display: flex;
 	justify-content: center;
 	flex-wrap: wrap;
@@ -353,6 +359,6 @@ const TextDiv = styled.div`
 		margin: 50px 0px;
 	}
 	@media (max-width: 550px) {
-		margin: 150px 0px;
+		display: none;
 	}
 `;
