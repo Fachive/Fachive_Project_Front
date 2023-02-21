@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { signApi } from '../../api/api';
 import logoImage from '../../assets/logo-vertical1.png';
 import logoText from '../../assets/logo-vertical2.png';
 import useInput from '../../hooks/useInput';
@@ -85,7 +86,14 @@ const Sign = () => {
 				/>
 				<label htmlFor="signAgree">패카이브 가입 약관 동의</label>
 				<SignInput id="signAgree" type="text" placeholder="2~8자 이내로 설정해주세요" />
-				<SignButton>회원가입</SignButton>
+				<SignButton
+					onClick={(e) => {
+						e.preventDefault();
+						signApi();
+					}}
+				>
+					회원가입
+				</SignButton>
 				<Link to={'/login'}>log in</Link>
 			</SignForm>
 		</SignDiv>
