@@ -46,7 +46,7 @@ const Fashion = () => {
 			setCardData(res.data);
 		} else if (currentPage === '/funding') {
 			const res = await axios.get(
-				`http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/auth/funding/mainFunding?categoryName=${category}`
+				`http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/funding/auth/mainFunding?categoryName=${category}`
 			);
 			setCardData(res.data);
 		}
