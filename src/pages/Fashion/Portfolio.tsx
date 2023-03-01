@@ -16,9 +16,7 @@ const Portfolio = () => {
 	const offset = (page - 1) * limit;
 
 	const getData = async () => {
-		const res = await axios.get(
-			'http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/portfolio/auth/mainportfolio'
-		);
+		const res = await axios.get('https://fachive.kro.kr/portfolio/auth/mainportfolio');
 		setCardData(res.data);
 	};
 

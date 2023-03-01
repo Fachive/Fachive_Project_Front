@@ -41,13 +41,11 @@ const Fashion = () => {
 	const getData = async () => {
 		if (currentPage === '/fashion') {
 			const res = await axios.get(
-				`http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/fashionpickup/auth/mainfasionpickup?categoryName=${category}`
+				`https://fachive.kro.kr/fashionpickup/auth/mainfasionpickup?categoryName=${category}`
 			);
 			setCardData(res.data);
 		} else if (currentPage === '/funding') {
-			const res = await axios.get(
-				`http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/funding/auth/mainFunding?categoryName=${category}`
-			);
+			const res = await axios.get(`https://fachive.kro.kr/funding/auth/mainFunding?categoryName=${category}`);
 			setCardData(res.data);
 		}
 	};
@@ -68,7 +66,7 @@ const Fashion = () => {
 		} else {
 			setLimit(12);
 		}
-	}, [location.pathname]);
+	}, [location]);
 
 	const clickHander = (e: React.MouseEvent) => {
 		setCategory((e.target as HTMLButtonElement).id);
