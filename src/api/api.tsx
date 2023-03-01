@@ -47,20 +47,26 @@ export const signApi = async (email: string, password: string, displayName: stri
 		alert('회원가입 실패');
 	}
 };
-export const loginApi = async () => {
-	const data = await customAxios.post(
-		'/user/auth/login',
-		{
-			email: 'qkralsrb97@naver.com',
-			password: '123456789',
-		},
-		{
-			headers: {
-				'Content-Type': 'application/json',
+export const loginApi = async (email: string, password: string) => {
+	try {
+		const data = await customAxios.post(
+			'/user/auth/login',
+			{
+				email,
+				password,
 			},
-		}
-	);
-	return data;
+			{
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			}
+		);
+		window.sessionStorage.setItem('displayName', data.data.displayName);
+		window.sessionStorage.setItem('email', data.data.email);
+		return data;
+	} catch (error) {
+		console.log('error');
+	}
 };
 export const getEmailTokenApi = async (email: string) => {
 	if (emailRegExp.test(email)) {
