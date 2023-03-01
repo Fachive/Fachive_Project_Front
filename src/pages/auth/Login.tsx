@@ -6,11 +6,20 @@ import logoText from '../../assets/logo-vertical2.png';
 import kakao from '../../assets/kakao.jpg';
 import naver from '../../assets/naver.jpg';
 import google from '../../assets/google.jpg';
+<<<<<<< HEAD
 import { loginApi } from '../../api/api';
+=======
+import axios from 'axios';
+>>>>>>> fac33da54c0319612895f066f532426f9060022d
 
 const Login = () => {
 	const [stateLoginEmail, setLoginEmail] = useState<string>('');
 	const [stateLoginPassword, setLoginPassword] = useState<string>('');
+	async function onClickKakao() {
+		const res = await axios.get(
+			'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=fb02b63ae364416393d9e495dfb7c0bc&scope=profile_nickname%20account_email&state=RafymU3I4g74VtHcEW28p1cYrj90MX4zh19eWVyOgk4%3D&redirect_uri=https://fachive.kro.kr/login/oauth2/code/kakao'
+		);
+	}
 	return (
 		<LoginDiv>
 			<TitleImageDiv>
@@ -37,7 +46,7 @@ const Login = () => {
 			</form>
 			<SocialLoginText>다른 계정을 활용하여 간편하게 로그인</SocialLoginText>
 			<SocialLogin>
-				<img src={`${kakao}`} alt="" />
+				<img src={`${kakao}`} alt="" onClick={onClickKakao} />
 				<img src={`${naver}`} alt="" />
 				<img src={`${google}`} alt="" />
 			</SocialLogin>

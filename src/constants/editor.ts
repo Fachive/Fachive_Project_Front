@@ -35,3 +35,8 @@ export const CATEGORY: (any | string)[] = [
 	[suit, suitClick, '정장', 'suit'],
 	[dress, dressClick, '드레스', 'dress'],
 ];
+export const NAV_ITEM = [
+	['/fashion', '패션픽업'],
+	['/funding', '펀딩'],
+	['/portfolio', '포트폴리오'],
+];

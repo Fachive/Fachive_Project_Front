@@ -1,53 +1,23 @@
 import styled, { css } from 'styled-components';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 
 import axios from 'axios';
 import FashionCard from '../../components/FashionCard';
 import Pagination from '../../components/Pagination';
 import { useLocation } from 'react-router-dom';
-import FundingCard from '../../components/FundingCard';
 import { CardRes } from '../../types/fashionPage';
-import { CATEGORY } from '../../constants/editor';
-const FILTER = ['추천순', '최신순', '마이픽'];
-
-const Fashion = () => {
+import Masonry from 'react-masonry-css';
+const Portfolio = () => {
 	const location = useLocation();
-	const [filter, setFilter] = useState<string>('추천순');
 	const [currentPage, setCurrentPage] = useState<string>(location.pathname);
-	const [category, setCategory] = useState<string>('상의');
 	const [CardData, setCardData] = useState<CardRes[]>([]);
 	const [limit, setLimit] = useState<number>(10);
 	const [page, setPage] = useState<number>(1);
-	const [categoryModal, setCategoryModal] = useState<boolean>(false);
 	const offset = (page - 1) * limit;
 
-	const onClickHander = (e: React.MouseEvent) => {
-		setFilter((e.target as HTMLElement).id);
-	};
-
-	const modalRef = useRef<HTMLDivElement>(null);
-
-	const handleClickOutside = (e: any) => {
-		if (modalRef.current && !modalRef.current.contains(e.target as Node)) setCategoryModal(false);
-	};
-
-	useEffect(() => {
-		window.addEventListener('click', handleClickOutside);
-		return () => {
-			window.removeEventListener('click', handleClickOutside);
-		};
-	}, []);
-
 	const getData = async () => {
-		if (currentPage === '/fashion') {
-			const res = await axios.get(
-				`https://fachive.kro.kr/fashionpickup/auth/mainfasionpickup?categoryName=${category}`
-			);
-			setCardData(res.data);
-		} else if (currentPage === '/funding') {
-			const res = await axios.get(`https://fachive.kro.kr/funding/auth/mainFunding?categoryName=${category}`);
-			setCardData(res.data);
-		}
+		const res = await axios.get('https://fachive.kro.kr/portfolio/auth/mainportfolio');
+		setCardData(res.data);
 	};
 
 	useEffect(() => {
@@ -57,90 +27,10 @@ const Fashion = () => {
 	useEffect(() => {
 		getData();
 		setPage(1);
-	}, [filter, category, currentPage, limit]);
+	}, [currentPage, limit]);
 
-	useEffect(() => {
-		setCategory('상의');
-		if (currentPage === '/fashion') {
-			setLimit(10);
-		} else {
-			setLimit(12);
-		}
-	}, [location]);
-
-	const clickHander = (e: React.MouseEvent) => {
-		setCategory((e.target as HTMLButtonElement).id);
-	};
-
-	console.log(category);
 	return (
 		<ContainerDiv>
-			<CategoryDiv>
-				{CATEGORY.map((categoryItem: (any | string)[], i) => {
-					return category === categoryItem[2] ? (
-						<CategoryItemDiv
-							key={i}
-							onClick={(e) => clickHander(e)}
-							active={true}
-							id={categoryItem[2]}
-							text={categoryItem[2]}
-							img={categoryItem[1]}
-						></CategoryItemDiv>
-					) : (
-						<CategoryItemDiv
-							key={i}
-							onClick={(e) => clickHander(e)}
-							active={false}
-							id={categoryItem[2]}
-							text={categoryItem[2]}
-							img={categoryItem[0]}
-						></CategoryItemDiv>
-					);
-				})}
-			</CategoryDiv>
-			<TextDiv>
-				<SubtitleDiv>새로운 트렌드의 시작 😎</SubtitleDiv>
-				<HeadTitleDiv>먼 훗날 유행이 될 최고의 아이템을 찾아보세요.</HeadTitleDiv>
-			</TextDiv>
-
-			<SelectDiv>
-				<FilterBoxDiv onClick={(e) => onClickHander(e)}>
-					{FILTER.map((v, i) => {
-						return filter === v ? (
-							<FilterItemDiv key={i} id={v} className="selected">
-								{v}
-							</FilterItemDiv>
-						) : (
-							<FilterItemDiv key={i} id={v}>
-								{v}
-							</FilterItemDiv>
-						);
-					})}
-				</FilterBoxDiv>
-				<DropBoxDiv>
-					<CategorySelectDiv ref={modalRef} onClick={() => setCategoryModal(true)}>
-						<span style={{ marginRight: '6px' }}>카테고리 :</span>
-						{
-							CATEGORY.filter((v) => {
-								return v[2] === category;
-							})[0][2]
-						}
-						{categoryModal && (
-							<DropCategoryItemBoxDiv>
-								{CATEGORY.map((v) =>
-									category === v[2] ? (
-										<CategoryItemSpan onClick={() => setCategory(v[2])} active={true}>
-											{v[2]}
-										</CategoryItemSpan>
-									) : (
-										<CategoryItemSpan onClick={() => setCategory(v[2])}>{v[2]}</CategoryItemSpan>
-									)
-								)}
-							</DropCategoryItemBoxDiv>
-						)}
-					</CategorySelectDiv>
-				</DropBoxDiv>
-			</SelectDiv>
 			{CardData.length === 0 ? (
 				<div
 					style={{
@@ -154,46 +44,31 @@ const Fashion = () => {
 					데이터가 없습니다
 				</div>
 			) : (
-				<CardDiv>
+				<Masonry breakpointCols={5} className="my-masonry-grid" columnClassName="my-masonry-grid_column">
 					{CardData.slice(offset, offset + limit).map((v, i) => {
-						return currentPage === '/fashion' ? (
-							<FashionCard data={v}></FashionCard>
-						) : (
-							<FundingCard data={v}></FundingCard>
-						);
+						return <FashionCard data={v}></FashionCard>;
 					})}
-				</CardDiv>
+				</Masonry>
 			)}
 			<PageDiv>
 				<Pagination total={CardData?.length} limit={limit} page={page} setPage={setPage} />
 				<PageLimit>
 					페이지당 게시글 수
-					{currentPage === '/fashion' ? (
-						<select value={limit} onChange={(e) => setLimit(+(e.target as HTMLSelectElement).value)}>
-							10
-							<option value="10">10</option>
-							<option value="20">20</option>
-							<option value="30">30</option>
-							<option value="40">40</option>
-							<option value="50">50</option>
-						</select>
-					) : (
-						<select value={limit} onChange={(e) => setLimit(+(e.target as HTMLSelectElement).value)}>
-							12
-							<option value="12">12</option>
-							<option value="24">24</option>
-							<option value="36">36</option>
-							<option value="48">48</option>
-							<option value="60">60</option>
-						</select>
-					)}
+					<select value={limit} onChange={(e) => setLimit(+(e.target as HTMLSelectElement).value)}>
+						10
+						<option value="10">10</option>
+						<option value="20">20</option>
+						<option value="30">30</option>
+						<option value="40">40</option>
+						<option value="50">50</option>
+					</select>
 				</PageLimit>
 			</PageDiv>
 		</ContainerDiv>
 	);
 };
 
-export default Fashion;
+export default Portfolio;
 
 const SelectDiv = styled.div`
 	display: flex;
@@ -291,6 +166,7 @@ const FilterItemDiv = styled.div`
 `;
 const ContainerDiv = styled.div`
 	display: flex;
+	padding-top: 30px;
 	flex-direction: column;
 	align-items: center;
 	min-width: 420px;
