@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const customAxios = axios.create({
-	baseURL: 'http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080',
+	baseURL: 'https://fachive.kro.kr:443',
 	timeout: 1000,
 	headers: {
 		'Content-Type': 'application/json',
@@ -15,25 +15,58 @@ export const fashionPickUpDetailApi22 = async () => {
 	const data = await customAxios.get('/fashionpickup/multiGet?postFashionEntityId=1');
 	return data;
 };
-export const signApi = async () => {
+export const signApi = async (email: string, password: string, displayName: string, emailToken: string) => {
+	try {
+		const data = await customAxios.post(
+			'/user/auth/sighup',
+			{
+				career: '10년',
+				city: '인천',
+				company: '패카이브',
+				displayName,
+				education: '서울대학교',
+				email,
+				password,
+				emailToken,
+				state: 'aa',
+				userinfo: 'bb',
+				multipartFileList: [],
+				role: 'GENERAL',
+			},
+			{
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			}
+		);
+		alert('회원가입 성공');
+		window.location.href = '/login';
+		return data;
+	} catch (error) {
+		alert('회원가입 실패');
+	}
+};
+export const loginApi = async () => {
 	const data = await customAxios.post(
-		'http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/user/auth/post',
+		'/user/auth/login',
+		{
+			email: 'test111111@naver.com',
+			password: 'test1111',
+		},
 		{
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: {
-				career: '10',
-				city: '인천',
-				company: '패카이브',
-				displayName: '안뇽',
-				education: '서울대학교',
-				email: 'ddd@naver.com',
-				password: '123456789',
-				state: 'aa',
-				userinfo: 'bb',
-			},
 		}
 	);
+	return data;
+};
+export const getEmailTokenApi = async (email: string) => {
+	const data = await customAxios.post(`/email/create/token?email=${email}`);
+	return data;
+};
+
+export const checkEmailTokenApi = async (email: string) => {
+	const data = await customAxios.get(`/email/confirm-email?token=${email}`);
 	return data;
 };

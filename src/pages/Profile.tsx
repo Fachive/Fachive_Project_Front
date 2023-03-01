@@ -75,7 +75,7 @@ const MiddleTitleDiv = styled.div`
 	padding: 10px 0;
 	h3 {
 		font-size: 2rem;
-		margin-right: 10px;
+		margin-right: 10pxy;
 	}
 `;
 const MiddlePickDiv = styled.div`

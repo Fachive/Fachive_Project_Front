@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { signApi } from '../../api/api';
@@ -12,6 +12,8 @@ const Sign = () => {
 	const [stateSignPassword, changePassword, setSignPassword] = useInput('');
 	const [stateSignPasswordCheck, changePasswordCheck, setSignPasswordCheck] = useInput('');
 	const [stateNickName, changeNickName, setNickName] = useInput('');
+	const [stateEmailToken, changeEmailTokene, setEmailToken] = useInput('');
+	const [stateTokenInputMount, setTokenInputMount] = useState(true);
 	const {
 		validateUser: lockButton,
 		validateEmail,
@@ -41,18 +43,36 @@ const Sign = () => {
 				<img src={`${logoText}`} alt="" />
 			</TitleImage>
 			<SignForm>
-				<label htmlFor="signEmail">이메일</label>
-				<SignInput
-					id="signEmail"
-					type="email"
-					placeholder="이메일"
-					value={stateSignEmail}
-					onChange={(e) => {
-						changeEmail(e);
-					}}
-				/>
+				<TitleLabel htmlFor="signEmail">이메일</TitleLabel>
+				<SendTokenDiv>
+					<SignInput
+						id="signEmail"
+						type="email"
+						placeholder="이메일"
+						value={stateSignEmail}
+						onChange={(e) => {
+							changeEmail(e);
+						}}
+					/>
+					<SendTokenButton
+						disabled={!stateTokenInputMount}
+						onClick={(e) => {
+							e.preventDefault();
+							setTokenInputMount((prev) => !prev);
+							console.log(stateTokenInputMount);
+						}}
+					>
+						토큰 보내기
+					</SendTokenButton>
+				</SendTokenDiv>
+				{!stateTokenInputMount && (
+					<div>
+						<input type="text" />
+						<button>인증</button>
+					</div>
+				)}
 				<ValidateMessageP>{stateEmailError && stateSignEmail && stateEmailError}</ValidateMessageP>
-				<label htmlFor="signPassword">비밀번호</label>
+				<TitleLabel htmlFor="signPassword">비밀번호</TitleLabel>
 				<SignInput
 					id="signPassword"
 					type="password"
@@ -63,7 +83,7 @@ const Sign = () => {
 					}}
 				/>
 				<ValidateMessageP>{statePasswordError && stateSignPassword && statePasswordError}</ValidateMessageP>
-				<label htmlFor="signPasswordCheck">비밀번호 확인</label>
+				<TitleLabel htmlFor="signPasswordCheck">비밀번호 확인</TitleLabel>
 				<SignInput
 					id="signPasswordCheck"
 					type="password"
@@ -74,7 +94,7 @@ const Sign = () => {
 					}}
 				/>
 				<ValidateMessageP>{stateSignPassword && stateSignPasswordCheck && statePasswordCheckError}</ValidateMessageP>
-				<label htmlFor="signNickname">닉네임</label>
+				<TitleLabel htmlFor="signNickname">닉네임</TitleLabel>
 				<SignInput
 					id="signNickname"
 					type="text"
@@ -84,12 +104,13 @@ const Sign = () => {
 						changeNickName(e);
 					}}
 				/>
-				<label htmlFor="signAgree">패카이브 가입 약관 동의</label>
+				<TitleLabel htmlFor="signAgree">패카이브 가입 약관 동의</TitleLabel>
 				<SignInput id="signAgree" type="text" placeholder="2~8자 이내로 설정해주세요" />
 				<SignButton
+					disabled={stateDisabled}
 					onClick={(e) => {
 						e.preventDefault();
-						signApi();
+						signApi(stateSignEmail, stateSignPassword, stateNickName, stateEmailToken);
 					}}
 				>
 					회원가입
@@ -121,14 +142,33 @@ const SignForm = styled.form`
 
 const SignInput = styled.input`
 	box-sizing: border-box;
-	padding: 0.8rem 1rem;
+	padding: 0.5rem 1rem;
 	margin-top: 0.5rem;
-	margin-bottom: 1rem;
+	margin-bottom: 0.5rem;
 	border-radius: 5px;
 	border: 0.5px solid #ebebeb;
 `;
+const SendTokenDiv = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+`;
+const SendTokenButton = styled.button`
+	padding: 0.4rem 0.5rem;
+	width: 25%;
+	background-color: #00b2ff;
+	font-weight: bold;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+`;
 
 const SignButton = styled.button`
+	&:disabled {
+		background-color: #666;
+		cursor: default;
+	}
 	box-sizing: border-box;
 	display: flex;
 	justify-content: center;
@@ -140,10 +180,14 @@ const SignButton = styled.button`
 	color: white;
 	border: none;
 	border-radius: 5px;
+	cursor: pointer;
 `;
 const ValidateMessageP = styled.p`
-	margin-bottom: 15px;
-	height: 15px;
+	margin-bottom: 10px;
+	height: 10px;
 	font-size: 0.9rem;
 	color: red;
+`;
+const TitleLabel = styled.label`
+	font-size: 0.9rem;
 `;

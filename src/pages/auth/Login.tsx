@@ -6,6 +6,7 @@ import logoText from '../../assets/logo-vertical2.png';
 import kakao from '../../assets/kakao.jpg';
 import naver from '../../assets/naver.jpg';
 import google from '../../assets/google.jpg';
+import { loginApi } from '../../api/api';
 
 const Login = () => {
 	const [stateLoginEmail, setLoginEmail] = useState<string>('');
@@ -21,7 +22,14 @@ const Login = () => {
 					<LoginInput type="email" placeholder="아이디" />
 					<LoginInput type="password" placeholder="비밀번호" />
 				</InputContainer>
-				<LoginButton>로그인</LoginButton>
+				<LoginButton
+					onClick={(e) => {
+						e.preventDefault();
+						loginApi();
+					}}
+				>
+					로그인
+				</LoginButton>
 				<LinkContainer>
 					<Link to={'/'}>비밀번호 재설정</Link>
 					<Link to={'/sign'}>회원가입</Link>
