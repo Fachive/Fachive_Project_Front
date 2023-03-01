@@ -6,11 +6,8 @@ import logoText from '../../assets/logo-vertical2.png';
 import kakao from '../../assets/kakao.jpg';
 import naver from '../../assets/naver.jpg';
 import google from '../../assets/google.jpg';
-<<<<<<< HEAD
 import { loginApi } from '../../api/api';
-=======
 import axios from 'axios';
->>>>>>> fac33da54c0319612895f066f532426f9060022d
 
 const Login = () => {
 	const [stateLoginEmail, setLoginEmail] = useState<string>('');
