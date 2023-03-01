@@ -120,8 +120,8 @@ const Sign = () => {
 						changeNickName(e);
 					}}
 				/>
-				<TitleLabel htmlFor="signAgree">패카이브 가입 약관 동의</TitleLabel>
-				<SignInput id="signAgree" type="text" placeholder="2~8자 이내로 설정해주세요" />
+				{/* <TitleLabel htmlFor="signAgree">패카이브 가입 약관 동의</TitleLabel>
+				<SignInput id="signAgree" type="text" placeholder="2~8자 이내로 설정해주세요" /> */}
 				<SignButton
 					disabled={stateDisabled}
 					onClick={(e) => {
