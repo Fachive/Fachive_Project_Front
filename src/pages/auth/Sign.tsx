@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { signApi } from '../../api/api';
+import { checkEmailTokenApi, getEmailTokenApi, signApi } from '../../api/api';
 import logoImage from '../../assets/logo-vertical1.png';
 import logoText from '../../assets/logo-vertical2.png';
 import useInput from '../../hooks/useInput';
@@ -14,6 +14,7 @@ const Sign = () => {
 	const [stateNickName, changeNickName, setNickName] = useInput('');
 	const [stateEmailToken, changeEmailTokene, setEmailToken] = useInput('');
 	const [stateTokenInputMount, setTokenInputMount] = useState(true);
+	const [stateToeknButtonLock, setToeknButtonLock] = useState(false);
 	const {
 		validateUser: lockButton,
 		validateEmail,
@@ -31,7 +32,7 @@ const Sign = () => {
 		setNickName('');
 	};
 	useEffect(() => {
-		lockButton(stateSignEmail, stateSignPassword, stateSignPasswordCheck, stateNickName);
+		lockButton(stateSignEmail, stateSignPassword, stateSignPasswordCheck, stateNickName, stateEmailToken);
 		validateEmail(stateSignEmail);
 		validatePassword(stateSignPassword);
 		validatePasswordCheck(stateSignPassword, stateSignPasswordCheck);
@@ -45,7 +46,7 @@ const Sign = () => {
 			<SignForm>
 				<TitleLabel htmlFor="signEmail">이메일</TitleLabel>
 				<SendTokenDiv>
-					<SignInput
+					<EmailInput
 						id="signEmail"
 						type="email"
 						placeholder="이메일"
@@ -56,22 +57,37 @@ const Sign = () => {
 					/>
 					<SendTokenButton
 						disabled={!stateTokenInputMount}
-						onClick={(e) => {
+						onClick={async (e) => {
 							e.preventDefault();
-							setTokenInputMount((prev) => !prev);
-							console.log(stateTokenInputMount);
+							const data = await getEmailTokenApi(stateSignEmail);
+							setTokenInputMount(data == undefined ? true : false);
 						}}
 					>
-						토큰 보내기
+						토큰받기
 					</SendTokenButton>
 				</SendTokenDiv>
-				{!stateTokenInputMount && (
-					<div>
-						<input type="text" />
-						<button>인증</button>
-					</div>
-				)}
 				<ValidateMessageP>{stateEmailError && stateSignEmail && stateEmailError}</ValidateMessageP>
+				{!stateTokenInputMount && (
+					<>
+						<SignInput
+							type="text"
+							placeholder="인증토큰을 입력하세요"
+							onChange={(e) => {
+								changeEmailTokene(e);
+							}}
+						/>
+						<SignButton
+							disabled={stateToeknButtonLock}
+							onClick={async (e) => {
+								e.preventDefault();
+								const data = await checkEmailTokenApi(stateEmailToken);
+								setToeknButtonLock(data == undefined ? false : true);
+							}}
+						>
+							인증
+						</SignButton>
+					</>
+				)}
 				<TitleLabel htmlFor="signPassword">비밀번호</TitleLabel>
 				<SignInput
 					id="signPassword"
@@ -148,6 +164,15 @@ const SignInput = styled.input`
 	border-radius: 5px;
 	border: 0.5px solid #ebebeb;
 `;
+const EmailInput = styled.input`
+	box-sizing: border-box;
+	width: 70%;
+	padding: 0.5rem 1rem;
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
+	border-radius: 5px;
+	border: 0.5px solid #ebebeb;
+`;
 const SendTokenDiv = styled.div`
 	display: flex;
 	align-items: center;
@@ -162,6 +187,10 @@ const SendTokenButton = styled.button`
 	border: none;
 	border-radius: 5px;
 	cursor: pointer;
+	&:disabled {
+		background-color: #666;
+		cursor: default;
+	}
 `;
 
 const SignButton = styled.button`

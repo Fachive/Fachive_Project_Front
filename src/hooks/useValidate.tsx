@@ -6,8 +6,8 @@ const useValidate = () => {
 	const [stateEmailError, setEmailError] = useState<string>('');
 	const [statePasswordError, setPasswordError] = useState<string>('');
 	const [statePasswordCheckError, setPasswordCheckError] = useState<string>('');
-	const lockButton = (email: string, password: string, passwordCheck: string, nickName: string) => {
-		if (emailRegExp.test(email) && passwordRegExp.test(password) && nickName && passwordCheck) {
+	const lockButton = (email: string, password: string, passwordCheck: string, nickName: string, emailToken: string) => {
+		if (emailRegExp.test(email) && passwordRegExp.test(password) && nickName && passwordCheck && emailToken) {
 			if (password === passwordCheck) {
 				setDisabled(false);
 			}

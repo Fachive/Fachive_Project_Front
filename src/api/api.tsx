@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { emailRegExp } from '../utils/regExp';
 
 const customAxios = axios.create({
 	baseURL: 'https://fachive.kro.kr:443',
@@ -50,8 +51,8 @@ export const loginApi = async () => {
 	const data = await customAxios.post(
 		'/user/auth/login',
 		{
-			email: 'test111111@naver.com',
-			password: 'test1111',
+			email: 'qkralsrb97@naver.com',
+			password: '123456789',
 		},
 		{
 			headers: {
@@ -62,11 +63,20 @@ export const loginApi = async () => {
 	return data;
 };
 export const getEmailTokenApi = async (email: string) => {
-	const data = await customAxios.post(`/email/create/token?email=${email}`);
-	return data;
+	if (emailRegExp.test(email)) {
+		const data = await customAxios.post(`/email/create/token?email=${email}`);
+		return data;
+	} else {
+		alert('올바른 이메일을 입력해주세요');
+	}
 };
 
 export const checkEmailTokenApi = async (email: string) => {
-	const data = await customAxios.get(`/email/confirm-email?token=${email}`);
-	return data;
+	try {
+		const data = await customAxios.get(`/email/confirm-email?token=${email}`);
+		alert('인증에 성공하셨습니다');
+		return data;
+	} catch (error) {
+		alert('인증에 실패하셨습니다');
+	}
 };
