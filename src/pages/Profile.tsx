@@ -1,7 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useState } from 'react';
 
 const Profile = () => {
+	const FILTER = ['패션픽업', '펀딩', '포트폴리오'];
+	const [filter, setFilter] = useState<string>('패션픽업');
+	const onClickHander = (e: React.MouseEvent) => {
+		if ((e.target as HTMLElement).id !== null) {
+			setFilter((e.target as HTMLElement).id);
+		} else return;
+	};
 	return (
 		<ProfileDiv>
 			<UpperPartDiv>
@@ -24,15 +32,100 @@ const Profile = () => {
 					</MiddleIntroDiv>
 				</MiddleInnerDiv>
 			</MiddlePartDiv>
-			<LowerPartDiv></LowerPartDiv>
+			<LowerPartDiv>
+				<DesignerDescriptDiv>
+					<DesignerDescriptTitle>디자이너 프로필</DesignerDescriptTitle>
+					<DesignerDescriptBody>
+						<br />
+						안녕하세요! 여성복 전문으로 디자인 작업하는 ‘Choi’ 입니다! 작업물은 패카이브와 인스타그램에 주로 올리고
+						있습니다!<br></br> <br />
+						(Insta : Choi_FD_._.) . <br />
+						<br />
+						2년차 패션 디자이너 . 2022 국제 디지털 패션 콘테스트 여성복 부문 최우수상 수상 제50회 중앙패션디자인콘테스트
+						여성복 부문 우수상 수상 한국의류산업학회 패션 콘테스트 장려상 수상
+					</DesignerDescriptBody>
+				</DesignerDescriptDiv>
+				<DesignerPostDiv>
+					<SelectDiv>
+						<FilterBoxDiv onClick={(e) => onClickHander(e)}>
+							{FILTER.map((v, i) => {
+								return filter === v ? (
+									<div>
+										<FilterItemDiv key={i} id={v} className="selected">
+											{v}
+										</FilterItemDiv>
+										<hr style={{ border: '1px solid black' }}></hr>
+									</div>
+								) : (
+									<FilterItemDiv key={i} id={v}>
+										{v}
+									</FilterItemDiv>
+								);
+							})}
+						</FilterBoxDiv>
+					</SelectDiv>
+					<hr style={{ border: '', position: 'relative', bottom: '16px' }}></hr>
+				</DesignerPostDiv>
+			</LowerPartDiv>
 		</ProfileDiv>
 	);
 };
 
 export default Profile;
+const SelectDiv = styled.div`
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+`;
+const FilterItemDiv = styled.div`
+	height: 20px;
+	font-weight: 800;
+	font-size: 18px;
+	color: #999999;
+	cursor: pointer;
 
-const ProfileDiv = styled.div`
-	height: calc(100vh - 65px);
+	&.selected {
+		color: black;
+		font-weight: 800;
+		display: flex;
+		flex-direction: column;
+		&::after {
+			content: {
+			}
+			position: relative;
+			top: 10px;
+			border: 1px solid black;
+		}
+	}
+`;
+const FilterBoxDiv = styled.div`
+	display: flex;
+	gap: 20px;
+`;
+const ProfileDiv = styled.div``;
+
+const DesignerDescriptDiv = styled.div`
+	width: 40%;
+	background-color: white;
+	height: 300px;
+	padding: 0px 15px;
+	padding-top: 20px;
+
+	border-radius: 15px;
+`;
+
+const DesignerDescriptBody = styled.div``;
+
+const DesignerPostDiv = styled.div`
+	width: 80%;
+	min-height: 1000px;
+	padding-left: 30px;
+	padding-top: 40px;
+	background-color: white;
+	border-radius: 15px;
+`;
+const DesignerDescriptTitle = styled.div`
+	font-weight: 900;
 `;
 const UpperPartDiv = styled.div`
 	width: calc(100% + 11.55%);
@@ -57,10 +150,14 @@ const ImageDiv = styled.div`
 	background-color: #f6f6f6;
 `;
 const LowerPartDiv = styled.div`
+	display: flex;
+	gap: 15px;
 	width: calc(100% + 11.55%);
 	margin: 0px -6%;
-	height: 20vh;
+	padding: 0px 5%;
 	background-color: #f6f6f6;
+	padding-top: 15px;
+	padding-bottom: 100px;
 `;
 const MiddleInnerDiv = styled.div`
 	box-sizing: border-box;
