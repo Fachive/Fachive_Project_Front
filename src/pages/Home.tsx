@@ -71,7 +71,14 @@ const Home = () => {
 			<FachiveFashionRecommend>
 				<RecommendFlexDiv style={styleFashion}>
 					{FashionCardData.map((fashionData) => {
-						return <FashionCard data={fashionData} />;
+						return (
+							<Link
+								style={{ textDecoration: 'none', color: 'black' }}
+								to={`fashion/detail/${fashionData.fashionPickupEntityId}`}
+							>
+								<FashionCard data={fashionData} />
+							</Link>
+						);
 					})}
 				</RecommendFlexDiv>
 			</FachiveFashionRecommend>
@@ -93,7 +100,14 @@ const Home = () => {
 			<FachiveFundingRecommend>
 				<RecommendFlexDiv style={styleFunding}>
 					{FundingCardData.map((fundingData) => {
-						return <FundingCard data={fundingData} />;
+						return (
+							<Link
+								style={{ textDecoration: 'none', color: 'black' }}
+								to={`funding/detail/${fundingData.fundingEntityId}`}
+							>
+								<FundingCard data={fundingData} />
+							</Link>
+						);
 					})}
 				</RecommendFlexDiv>
 			</FachiveFundingRecommend>

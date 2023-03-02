@@ -23,9 +23,9 @@ const FashionCard = ({ data }: ResProps) => {
 				</CardLeftInfo>
 				<CardLeftRightInfo>
 					<BiLike size="22" />
-					{data.myPicks > 10000 ? Math.trunc(data.myPicks / 1000) + 'k' : 1500}
+					{data.myPicks > 10000 ? Math.trunc(data.myPicks / 1000) + 'k' : data.myPicks}
 					<IoEyeOutline size="22" />
-					{data.views > 10000 ? Math.trunc(data.views / 10000) + 'k' : 2100}
+					{data.views > 10000 ? Math.trunc(data.views / 10000) + 'k' : data.views}
 				</CardLeftRightInfo>
 			</CardInfoBox>
 		</Card>
