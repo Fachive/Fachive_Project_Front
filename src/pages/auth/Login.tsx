@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import logoImage from '../../assets/logo-vertical1.png';
 import logoText from '../../assets/logo-vertical2.png';
@@ -8,10 +8,12 @@ import naver from '../../assets/naver.jpg';
 import google from '../../assets/google.jpg';
 import { loginApi } from '../../api/api';
 import axios from 'axios';
+import useInput from '../../hooks/useInput';
 
 const Login = () => {
-	const [stateLoginEmail, setLoginEmail] = useState<string>('');
-	const [stateLoginPassword, setLoginPassword] = useState<string>('');
+	const nav = useNavigate();
+	const [stateLoginEmail, changeLoginEmail, setLoginEmail] = useInput('');
+	const [stateLoginPassword, changeLoginPassword, setLoginPassword] = useInput('');
 	async function onClickKakao() {
 		const res = await axios.get(
 			'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=fb02b63ae364416393d9e495dfb7c0bc&scope=profile_nickname%20account_email&state=RafymU3I4g74VtHcEW28p1cYrj90MX4zh19eWVyOgk4%3D&redirect_uri=https://fachive.kro.kr/login/oauth2/code/kakao'
@@ -25,13 +27,18 @@ const Login = () => {
 			</TitleImageDiv>
 			<form>
 				<InputContainer>
-					<LoginInput type="email" placeholder="아이디" />
-					<LoginInput type="password" placeholder="비밀번호" />
+					<LoginInput type="email" placeholder="아이디" onChange={(e) => changeLoginEmail(e)} />
+					<LoginInput type="password" placeholder="비밀번호" onChange={(e) => changeLoginPassword(e)} />
 				</InputContainer>
 				<LoginButton
-					onClick={(e) => {
+					onClick={async (e) => {
 						e.preventDefault();
-						loginApi();
+						const data = await loginApi(stateLoginEmail, stateLoginPassword);
+						if (data != undefined && data?.data.length != 0) {
+							nav('/');
+						} else {
+							alert('이메일이나 비밀번호가 올바르지 않습니다. 다시 시도해주세요');
+						}
 					}}
 				>
 					로그인
