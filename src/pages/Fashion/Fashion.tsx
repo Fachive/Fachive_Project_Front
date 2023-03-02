@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import FashionCard from '../../components/FashionCard';
 import Pagination from '../../components/Pagination';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import FundingCard from '../../components/FundingCard';
 import { CardRes } from '../../types/fashionPage';
 import { CATEGORY } from '../../constants/editor';
@@ -24,7 +24,6 @@ const Fashion = () => {
 	const onClickHander = (e: React.MouseEvent) => {
 		setFilter((e.target as HTMLElement).id);
 	};
-
 	const modalRef = useRef<HTMLDivElement>(null);
 
 	const handleClickOutside = (e: any) => {
@@ -61,18 +60,18 @@ const Fashion = () => {
 
 	useEffect(() => {
 		setCategory('상의');
-		if (currentPage === '/fashion') {
+		if (location.pathname === '/fashion') {
 			setLimit(10);
 		} else {
 			setLimit(12);
 		}
-	}, [location]);
+	}, [location, limit]);
 
 	const clickHander = (e: React.MouseEvent) => {
 		setCategory((e.target as HTMLButtonElement).id);
 	};
 
-	console.log(category);
+	console.log(limit, '리미트');
 	return (
 		<ContainerDiv>
 			<CategoryDiv>
@@ -157,9 +156,13 @@ const Fashion = () => {
 				<CardDiv>
 					{CardData.slice(offset, offset + limit).map((v, i) => {
 						return currentPage === '/fashion' ? (
-							<FashionCard data={v}></FashionCard>
+							<Link style={{ textDecoration: 'none', color: 'black' }} to={`detail/${v.fashionPickupEntityId}`}>
+								<FashionCard data={v}></FashionCard>
+							</Link>
 						) : (
-							<FundingCard data={v}></FundingCard>
+							<Link style={{ textDecoration: 'none', color: 'black' }} to={`detail/${v.fundingEntityId}`}>
+								<FundingCard data={v}></FundingCard>
+							</Link>
 						);
 					})}
 				</CardDiv>

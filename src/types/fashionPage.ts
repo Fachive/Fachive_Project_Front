@@ -18,6 +18,7 @@ export interface CardRes {
 	responseCategoryDTO: ResponseCategoryDTO;
 	postImageDtoList: PostImageDtoList[];
 	fashionPickupEntityId: number;
+	fundingEntityId?: number;
 	portfolioEntityId: number;
 }
 export interface PostInfo {
