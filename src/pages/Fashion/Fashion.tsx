@@ -235,6 +235,7 @@ const DropBoxDiv = styled.div`
 	font-weight: 600;
 	padding-right: 35px;
 	display: flex;
+	cursor: pointer;
 	@media (max-width: 700px) {
 		display: none;
 	}
