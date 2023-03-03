@@ -8,6 +8,9 @@ interface ResProps {
 }
 
 const FashionCard = ({ data }: ResProps) => {
+	const like = Math.trunc(Math.random() * 1000);
+	const views = Math.trunc(Math.random() * 1000);
+
 	return (
 		<Card>
 			<CardDiv imgSrc={data.s3ImageUriList[0]}></CardDiv>
@@ -23,9 +26,9 @@ const FashionCard = ({ data }: ResProps) => {
 				</CardLeftInfo>
 				<CardLeftRightInfo>
 					<BiLike size="22" />
-					{data.myPicks > 10000 ? Math.trunc(data.myPicks / 1000) + 'k' : data.myPicks}
+					{like > 10000 ? Math.trunc(like / 1000) + 'k' : like}
 					<IoEyeOutline size="22" />
-					{data.views > 10000 ? Math.trunc(data.views / 10000) + 'k' : data.views}
+					{views > 10000 ? Math.trunc(views / 10000) + 'k' : views}
 				</CardLeftRightInfo>
 			</CardInfoBox>
 		</Card>
