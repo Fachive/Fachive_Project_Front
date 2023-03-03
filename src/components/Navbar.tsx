@@ -3,9 +3,22 @@ import styled from 'styled-components';
 import LogoImg from '../assets/Logo.png';
 import { NAV_ITEM } from '../constants/editor';
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 const Navbar = () => {
 	const location = useLocation();
+	const [isLogin, setIsLogin] = useState(false);
+	useEffect(() => {
+		if (sessionStorage.getItem('token') !== null) {
+			setIsLogin(true);
+		}
+	}, []);
 
+	function logoutHandler() {
+		setIsLogin(false);
+		sessionStorage.removeItem('displayName');
+		sessionStorage.removeItem('email');
+		sessionStorage.removeItem('token');
+	}
 	return (
 		<Container>
 			<NavContainerDiv>
@@ -29,8 +42,18 @@ const Navbar = () => {
 				</NavItemDiv>
 			</NavContainerDiv>
 			<UserContainerDiv>
-				<UserItemDiv>로그인</UserItemDiv>
-				<UserItemDiv>로그아웃</UserItemDiv>
+				{isLogin ? (
+					<UserItemDiv onClick={logoutHandler}>로그아웃</UserItemDiv>
+				) : (
+					<>
+						<Link style={{ textDecorationLine: 'none', color: 'black' }} to="/login">
+							<UserItemDiv>로그인</UserItemDiv>
+						</Link>
+						<Link style={{ textDecorationLine: 'none', color: 'black' }} to="/sign">
+							<UserItemDiv>회원가입</UserItemDiv>
+						</Link>
+					</>
+				)}
 			</UserContainerDiv>
 			<></>
 		</Container>
@@ -104,4 +127,9 @@ const UserContainerDiv = styled.div`
 		display: none;
 	}
 `;
-const UserItemDiv = styled.span``;
+const UserItemDiv = styled.span`
+	cursor: pointer;
+	color: #999999;
+	font-size: 16px;
+	font-weight: 700;
+`;

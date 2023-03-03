@@ -63,6 +63,7 @@ export const loginApi = async (email: string, password: string) => {
 		);
 		window.sessionStorage.setItem('displayName', data.data.displayName);
 		window.sessionStorage.setItem('email', data.data.email);
+		window.sessionStorage.setItem('token', data.data.token.split(':')[1]);
 		return data;
 	} catch (error) {
 		console.log('error');
