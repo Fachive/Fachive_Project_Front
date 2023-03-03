@@ -6,10 +6,11 @@ import axios from 'axios';
 import { CardRes } from '../types/fashionPage';
 import FashionCard from '../components/FashionCard';
 import FundingCard from '../components/FundingCard';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 const Home = () => {
 	const [FashionCardData, setFashionCardData] = useState<CardRes[]>([]);
 	const [FundingCardData, setFundingCardData] = useState<CardRes[]>([]);
+	const nav = useNavigate();
 
 	const getData = async () => {
 		const res1 = await axios.get('https://fachive.kro.kr/main/auth/get/ten');
@@ -83,11 +84,7 @@ const Home = () => {
 				</RecommendFlexDiv>
 			</FachiveFashionRecommend>
 
-			<RecommendButton>
-				<Link style={{ textDecorationLine: 'none', color: 'black' }} to="/fashion">
-					패션추천 바로 가기
-				</Link>
-			</RecommendButton>
+			<RecommendButton onClick={() => nav('fashion')}>패션추천 바로 가기</RecommendButton>
 
 			<FundingImg />
 			<ButtonDiv>
@@ -111,6 +108,7 @@ const Home = () => {
 					})}
 				</RecommendFlexDiv>
 			</FachiveFundingRecommend>
+			<RecommendButton onClick={() => nav('funding')}>펀딩 바로 가기</RecommendButton>
 		</Container>
 	);
 };
@@ -181,7 +179,6 @@ const FachiveFashionRecommend = styled.div`
 
 const FachiveFundingRecommend = styled.div`
 	overflow: hidden;
-	margin-bottom: 100px;
 `;
 
 const SlideImg = styled.img`
