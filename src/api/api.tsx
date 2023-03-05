@@ -9,7 +9,7 @@ const customAxios = axios.create({
 	},
 });
 export const fashionPickUpDetailApi = async (num: string) => {
-	const data = await customAxios.get(`/fashionpickup/get/${num}`);
+	const data = await customAxios.get(`/fashionpickup/auth/get/${num}`);
 	return data;
 };
 export const fashionPickUpDetailApi22 = async () => {
