@@ -29,8 +29,8 @@ const Navbar = () => {
 				</NavItemDiv>
 			</NavContainerDiv>
 			<UserContainerDiv>
-				<UserItemDiv>로그인</UserItemDiv>
-				<UserItemDiv>로그아웃</UserItemDiv>
+				<Link to={'/login'}>로그인</Link>
+				<Link to={'/'}>로그아웃</Link>
 			</UserContainerDiv>
 			<></>
 		</Container>
@@ -100,8 +100,11 @@ const UserContainerDiv = styled.div`
 	display: flex;
 	gap: 15px;
 	padding-right: 20px;
+	a {
+		text-decoration: none;
+		color: black;
+	}
 	@media (max-width: 710px) {
 		display: none;
 	}
 `;
-const UserItemDiv = styled.span``;
