@@ -28,11 +28,16 @@ const Navbar = () => {
 					})}
 				</NavItemDiv>
 			</NavContainerDiv>
-			<UserContainerDiv>
-				<Link to={'/login'}>로그인</Link>
-				<Link to={'/'}>로그아웃</Link>
-			</UserContainerDiv>
-			<></>
+			{window.sessionStorage.getItem('token') || window.sessionStorage.getItem('displayName') ? (
+				<UserContainerDiv>
+					<span>안녕하세요 {window.sessionStorage.getItem('displayName')}님!</span>
+				</UserContainerDiv>
+			) : (
+				<UserContainerDiv>
+					<Link to={'/login'}>로그인</Link>
+					<Link to={'/'}>로그아웃</Link>
+				</UserContainerDiv>
+			)}
 		</Container>
 	);
 };
