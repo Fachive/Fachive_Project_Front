@@ -40,11 +40,13 @@ const Fashion = () => {
 	const getData = async () => {
 		if (currentPage === '/fashion') {
 			const res = await axios.get(
-				`https://fachive.kro.kr/fashionpickup/auth/mainfasionpickup?categoryName=${category}`
+				`https://fachive.kro.kr/fashionpickup/auth/mainfasionpickup?categoryName=total&sortWay=${filter}`
 			);
 			setCardData(res.data);
 		} else if (currentPage === '/funding') {
-			const res = await axios.get(`https://fachive.kro.kr/funding/auth/mainFunding?categoryName=${category}`);
+			const res = await axios.get(
+				`https://fachive.kro.kr/funding/auth/mainFunding?categoryName=${category}&sortWay=${filter}`
+			);
 			setCardData(res.data);
 		}
 	};
