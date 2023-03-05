@@ -90,5 +90,5 @@ export const checkEmailTokenApi = async (email: string) => {
 export const userToken = async () => {
 	const data = await customAxios.get('/');
 	console.log(data);
-	// localStorage.setItem('token', data)
+	// window.sessionStorage.setItem('token', data)
 };
