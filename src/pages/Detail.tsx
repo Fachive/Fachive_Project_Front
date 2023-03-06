@@ -4,9 +4,10 @@ import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { fashionPickUpDetailApi } from '../api/api';
 import kakao from '../assets/kakao.jpg';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { AiOutlineLike, AiOutlineClose } from 'react-icons/ai';
 import { IoMdRefresh } from 'react-icons/io';
+import axios from 'axios';
 interface fashionPickupDetailData {
 	data: detailData;
 }
@@ -15,9 +16,12 @@ interface detailData {
 	s3ImageUriList: Array<string>;
 	tagList: Array<string>;
 	fashionPickupEntityId: string;
+	body: string;
+	responseCommentDTOList: Array<string>;
 }
 const Detail = () => {
 	const [image, setImage] = useState<string>('');
+	const nav = useNavigate();
 	const url = useLocation();
 	const { data } = useQuery<fashionPickupDetailData>(
 		['get'],
@@ -29,6 +33,14 @@ const Detail = () => {
 	if (typeof data !== 'undefined') {
 		console.log(data.data);
 	}
+	const likeHander = async () => {
+		const res = await axios.post('http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/MyPick/post', {
+			entityId: 4,
+			userId: 32,
+			whatToPick: 'FASHIONPICKUP',
+		});
+		console.log(res);
+	};
 	return (
 		<section>
 			<DetailTitleH3>{data?.data.title}</DetailTitleH3>
@@ -47,54 +59,57 @@ const Detail = () => {
 				<PickupTextDiv>
 					<ProfileDiv>
 						<ProfileImageDiv></ProfileImageDiv>
-						<DesignerNameDiv>
+						<DesignerNameDiv style={{ marginLeft: '10px' }}>
 							<span>디자이너</span>
-							<span>ㅎㅇㅎㅇ</span>
+							<span style={{ fontWeight: '800' }}>Designer Choi</span>
 						</DesignerNameDiv>
 						<MyPickButton>마이픽</MyPickButton>
 					</ProfileDiv>
-					<p>
-						Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugit magnam enim error impedit officiis! Numquam
-						eligendi totam voluptates eaque hic, repellat libero maxime at nulla commodi autem nihil adipisci aperiam?
-					</p>
-					<p>댓글 8개</p>
+					<p style={{ margin: '30px 0px' }}>{data?.data.body}</p>
+					<p style={{ fontWeight: '800' }}>댓글 {data?.data.responseCommentDTOList.length}개</p>
 					<hr />
 					<CommentInputDiv>
 						<input type="text" />
 						<button>작성</button>
 					</CommentInputDiv>
 					<CommentBoxDiv>
-						<ProfileImageDiv></ProfileImageDiv>
-						<CommentDiv>
-							<span>김아무개</span>
-							<span>
-								여기가 댓글 쓰는곳 맞나요? 너무 옷이 이뻐서 댓글을 안쓸수가 없겠더라구요 저 이거 너무 사고싶어서
-								펀딩하고싶습니다!
-							</span>
-						</CommentDiv>
-						<ProfileImageDiv></ProfileImageDiv>
-						<CommentDiv>
-							<span>박아무개</span>
-							<span>그러니까요 어떻게 이런걸 생각해 내셨는지 너무 부럽습니다 ㅠㅠ</span>
-						</CommentDiv>
+						{data?.data.responseCommentDTOList.length === 0 ? (
+							<>댓글이 없습니다</>
+						) : (
+							<>
+								<ProfileImageDiv></ProfileImageDiv>
+								<CommentDiv>
+									<span>김아무개</span>
+									<span>
+										여기가 댓글 쓰는곳 맞나요? 너무 옷이 이뻐서 댓글을 안쓸수가 없겠더라구요 저 이거 너무 사고싶어서
+										펀딩하고싶습니다!
+									</span>
+								</CommentDiv>
+								<ProfileImageDiv></ProfileImageDiv>
+								<CommentDiv>
+									<span>박아무개</span>
+									<span>그러니까요 어떻게 이런걸 생각해 내셨는지 너무 부럽습니다 ㅠㅠ</span>
+								</CommentDiv>
+							</>
+						)}
 					</CommentBoxDiv>
 				</PickupTextDiv>
 				<PickupButtonDiv>
 					<div style={{ textAlign: 'center' }}>
-						<PickupItemDiv style={{ border: '2px solid black' }}>
+						<PickupItemDiv onClick={() => nav(-1)} style={{ border: '2px solid black' }}>
 							<AiOutlineClose style={{ fontSize: '15px', color: 'black', fontWeight: '700' }}></AiOutlineClose>
 						</PickupItemDiv>
 						<span style={{ fontSize: '15px', color: 'black', fontWeight: '700' }}>나가기</span>
 					</div>
 					<div style={{ textAlign: 'center' }}>
-						<PickupItemDiv>
+						<PickupItemDiv onClick={() => likeHander()}>
 							<AiOutlineLike size="24" style={{ color: 'gray' }}></AiOutlineLike>
 						</PickupItemDiv>
 						<span style={{ fontSize: '15px', color: '#999999', fontWeight: '700' }}>좋아요</span>
 					</div>
 
 					<div style={{ textAlign: 'center' }}>
-						<PickupItemDiv>
+						<PickupItemDiv onClick={() => nav('/')}>
 							<IoMdRefresh size="24" style={{ color: 'gray' }}></IoMdRefresh>
 						</PickupItemDiv>
 						<span style={{ fontSize: '15px', color: '#999999', fontWeight: '700' }}>처음으로</span>
@@ -110,6 +125,7 @@ export default Detail;
 const PickupItemDiv = styled.div`
 	width: 50px;
 	height: 50px;
+	cursor: pointer;
 	border-radius: 30px;
 	border: 1px solid #ebebeb;
 	display: flex;
@@ -125,9 +141,12 @@ const FlexBoxDiv = styled.div`
 	width: 100%;
 	height: auto;
 `;
-const DetailTitleH3 = styled.h3``;
+const DetailTitleH3 = styled.h3`
+	margin-top: 20px;
+`;
 
 const HashTagBoxDiv = styled.div`
+	margin-top: 30px;
 	margin-bottom: 1rem;
 	span {
 		box-sizing: border-box;
