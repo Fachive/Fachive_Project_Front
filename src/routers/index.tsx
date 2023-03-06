@@ -9,15 +9,15 @@ const Router = () => {
 	const sessionStorageToken = window.sessionStorage.getItem('token');
 	const navigate = useNavigate();
 	const location = useLocation();
-	// useEffect(() => {
-	// 	if (!sessionStorageDisplayName && !sessionStorageToken && location.pathname.includes('profile')) {
-	// 		navigate('/');
-	// 	} else if (sessionStorageDisplayName || (sessionStorageToken && location.pathname.includes('login'))) {
-	// 		navigate('/');
-	// 	} else if (sessionStorageDisplayName || (sessionStorageToken && location.pathname.includes('sign'))) {
-	// 		navigate('/');
-	// 	}
-	// }, [location.pathname]);
+	useEffect(() => {
+		if (!sessionStorageDisplayName && !sessionStorageToken && location.pathname.includes('profile')) {
+			navigate('/');
+		} else if (sessionStorageDisplayName || (sessionStorageToken && location.pathname.includes('login'))) {
+			navigate('/');
+		} else if (sessionStorageDisplayName || (sessionStorageToken && location.pathname.includes('sign'))) {
+			navigate('/');
+		}
+	}, [location.pathname]);
 	return (
 		<Routes>
 			<Route path="/" element={<Layout />}>
