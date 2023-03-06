@@ -17,7 +17,16 @@ interface detailData {
 	tagList: Array<string>;
 	fashionPickupEntityId: string;
 	body: string;
-	responseCommentDTOList: Array<string>;
+	responseCommentDTOList: [commentList];
+}
+interface commentList {
+	commentId: number;
+	postId: number;
+	postType: string;
+	userId: number;
+	commentBody: string;
+	commentProfileImageURI: string;
+	mypick: number;
 }
 const Detail = () => {
 	const [image, setImage] = useState<string>('');
@@ -54,7 +63,6 @@ const Detail = () => {
 					{data?.data.s3ImageUriList.map((url, i) => {
 						return <img key={i} src={url} />;
 					})}
-					<img src={`${kakao}`} alt="" />
 				</PickupImageDiv>
 				<PickupTextDiv>
 					<ProfileDiv>
@@ -73,25 +81,18 @@ const Detail = () => {
 						<button>작성</button>
 					</CommentInputDiv>
 					<CommentBoxDiv>
-						{data?.data.responseCommentDTOList.length === 0 ? (
-							<>댓글이 없습니다</>
-						) : (
-							<>
-								<ProfileImageDiv></ProfileImageDiv>
-								<CommentDiv>
-									<span>김아무개</span>
-									<span>
-										여기가 댓글 쓰는곳 맞나요? 너무 옷이 이뻐서 댓글을 안쓸수가 없겠더라구요 저 이거 너무 사고싶어서
-										펀딩하고싶습니다!
-									</span>
-								</CommentDiv>
-								<ProfileImageDiv></ProfileImageDiv>
-								<CommentDiv>
-									<span>박아무개</span>
-									<span>그러니까요 어떻게 이런걸 생각해 내셨는지 너무 부럽습니다 ㅠㅠ</span>
-								</CommentDiv>
-							</>
-						)}
+						{data?.data.responseCommentDTOList[0] !== undefined &&
+							data?.data.responseCommentDTOList.map((el) => {
+								return (
+									<React.Fragment key={el.commentId}>
+										<ProfileImageDiv>{<img src={el.commentProfileImageURI}></img>}</ProfileImageDiv>
+										<CommentDiv>
+											<span>{el.userId}</span>
+											<span>{el.commentBody}</span>
+										</CommentDiv>
+									</React.Fragment>
+								);
+							})}
 					</CommentBoxDiv>
 				</PickupTextDiv>
 				<PickupButtonDiv>
@@ -112,7 +113,7 @@ const Detail = () => {
 						<PickupItemDiv onClick={() => nav('/')}>
 							<IoMdRefresh size="24" style={{ color: 'gray' }}></IoMdRefresh>
 						</PickupItemDiv>
-						<span style={{ fontSize: '15px', color: '#999999', fontWeight: '700' }}>처음으로</span>
+						<span style={{ fontSize: '13px', color: '#999999', fontWeight: '700' }}>처음으로</span>
 					</div>
 				</PickupButtonDiv>
 			</FlexBoxDiv>
@@ -131,6 +132,7 @@ const PickupItemDiv = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	margin-bottom: 10px;
 	flex-direction: column;
 `;
 
@@ -142,7 +144,9 @@ const FlexBoxDiv = styled.div`
 	height: auto;
 `;
 const DetailTitleH3 = styled.h3`
-	margin-top: 20px;
+	display: inline-block;
+	font-size: 2.5rem;
+	margin: 1rem 0 1.5rem 0;
 `;
 
 const HashTagBoxDiv = styled.div`
@@ -246,4 +250,9 @@ const CommentDiv = styled.div`
 		margin-bottom: 0.7rem;
 		font-weight: bold;
 	}
+`;
+const BodyP = styled.p`
+	font-size: 1.2rem;
+	font-weight: 600;
+	margin: 1rem 0;
 `;

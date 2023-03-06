@@ -14,7 +14,7 @@ const Home = () => {
 	const [FashionCardData, setFashionCardData] = useState<CardRes[]>([]);
 	const [FundingCardData, setFundingCardData] = useState<CardRes[]>([]);
 	const nav = useNavigate();
-
+	window.history.replaceState({}, '', window.location.pathname);
 	const getData = async () => {
 		const res1 = await axios.get('https://fachive.kro.kr/main/auth/get/ten');
 		setFashionCardData(res1.data.fashionpickList);
