@@ -7,7 +7,6 @@ interface PageType {
 }
 function Pagination({ total, limit, page, setPage }: PageType) {
 	const numPages = Math.ceil(total / limit);
-	console.log(total);
 	return (
 		<>
 			<Nav>
