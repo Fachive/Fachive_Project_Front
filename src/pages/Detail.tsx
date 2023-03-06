@@ -5,7 +5,8 @@ import styled from 'styled-components';
 import { fashionPickUpDetailApi } from '../api/api';
 import kakao from '../assets/kakao.jpg';
 import { useLocation } from 'react-router-dom';
-
+import { AiOutlineLike, AiOutlineClose } from 'react-icons/ai';
+import { IoMdRefresh } from 'react-icons/io';
 interface fashionPickupDetailData {
 	data: detailData;
 }
@@ -79,10 +80,25 @@ const Detail = () => {
 					</CommentBoxDiv>
 				</PickupTextDiv>
 				<PickupButtonDiv>
-					<span>아이콘1</span>
-					<span>아이콘2</span>
-					<span>아이콘3</span>
-					<span>아이콘4</span>
+					<div style={{ textAlign: 'center' }}>
+						<PickupItemDiv style={{ border: '2px solid black' }}>
+							<AiOutlineClose style={{ fontSize: '15px', color: 'black', fontWeight: '700' }}></AiOutlineClose>
+						</PickupItemDiv>
+						<span style={{ fontSize: '15px', color: 'black', fontWeight: '700' }}>나가기</span>
+					</div>
+					<div style={{ textAlign: 'center' }}>
+						<PickupItemDiv>
+							<AiOutlineLike size="24" style={{ color: 'gray' }}></AiOutlineLike>
+						</PickupItemDiv>
+						<span style={{ fontSize: '15px', color: '#999999', fontWeight: '700' }}>좋아요</span>
+					</div>
+
+					<div style={{ textAlign: 'center' }}>
+						<PickupItemDiv>
+							<IoMdRefresh size="24" style={{ color: 'gray' }}></IoMdRefresh>
+						</PickupItemDiv>
+						<span style={{ fontSize: '15px', color: '#999999', fontWeight: '700' }}>처음으로</span>
+					</div>
 				</PickupButtonDiv>
 			</FlexBoxDiv>
 		</section>
@@ -91,15 +107,23 @@ const Detail = () => {
 
 export default Detail;
 
+const PickupItemDiv = styled.div`
+	width: 50px;
+	height: 50px;
+	border-radius: 30px;
+	border: 1px solid #ebebeb;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+`;
+
 const FlexBoxDiv = styled.div`
 	box-sizing: border-box;
 	display: flex;
 	align-items: flex-start;
 	width: 100%;
 	height: auto;
-	div {
-		margin-right: 2%;
-	}
 `;
 const DetailTitleH3 = styled.h3``;
 
@@ -126,14 +150,17 @@ const PickupTextDiv = styled.div`
 	position: sticky;
 	top: 20px;
 	width: 22%;
+	margin-left: 20px;
 `;
 const PickupButtonDiv = styled.div`
 	position: sticky;
 	top: 20px;
 	display: flex;
 	flex-direction: column;
-	width: 4%;
-	margin-right: 0;
+	justify-content: center;
+	align-items: center;
+	width: 10%;
+	gap: 20px;
 `;
 const ProfileDiv = styled.div`
 	display: flex;
@@ -187,6 +214,7 @@ const CommentBoxDiv = styled.div`
 	display: flex;
 	flex-wrap: wrap;
 	align-items: flex-start;
+
 	margin: 1.5rem 0;
 	width: 100%;
 `;
