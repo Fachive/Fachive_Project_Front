@@ -87,3 +87,9 @@ export const checkEmailTokenApi = async (email: string) => {
 		alert('인증에 실패하셨습니다');
 	}
 };
+
+export const userToken = async () => {
+	const data = await customAxios.get('/');
+	console.log(data);
+	// window.sessionStorage.setItem('token', data)
+};

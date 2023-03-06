@@ -63,6 +63,7 @@ const Navbar = () => {
 				)}
 			</UserContainerDiv>
 			<></>
+
 		</Container>
 	);
 };
@@ -147,6 +148,10 @@ const UserContainerDiv = styled.div`
 	display: flex;
 	gap: 15px;
 	padding-right: 20px;
+	a {
+		text-decoration: none;
+		color: black;
+	}
 	@media (max-width: 710px) {
 		display: none;
 	}
@@ -157,3 +162,4 @@ const UserItemDiv = styled.span`
 	font-size: 16px;
 	font-weight: 700;
 `;
+

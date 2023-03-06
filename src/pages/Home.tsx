@@ -6,7 +6,10 @@ import axios from 'axios';
 import { CardRes } from '../types/fashionPage';
 import FashionCard from '../components/FashionCard';
 import FundingCard from '../components/FundingCard';
-import { Link, useNavigate } from 'react-router-dom';
+
+import { Link,useNavigate } from 'react-router-dom';
+import { userToken } from '../api/api';
+
 const Home = () => {
 	const [FashionCardData, setFashionCardData] = useState<CardRes[]>([]);
 	const [FundingCardData, setFundingCardData] = useState<CardRes[]>([]);
@@ -56,6 +59,10 @@ const Home = () => {
 
 	useEffect(() => {
 		getData();
+	}, []);
+
+	useEffect(() => {
+		userToken();
 	}, []);
 
 	return (

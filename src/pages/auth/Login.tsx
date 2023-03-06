@@ -16,8 +16,15 @@ const Login = () => {
 	const [stateLoginPassword, changeLoginPassword, setLoginPassword] = useInput('');
 	async function onClickKakao() {
 		const res = await axios.get(
-			'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=fb02b63ae364416393d9e495dfb7c0bc&scope=profile_nickname%20account_email&state=RafymU3I4g74VtHcEW28p1cYrj90MX4zh19eWVyOgk4%3D&redirect_uri=https://fachive.kro.kr/login/oauth2/code/kakao'
+			'https://accounts.kakao.com/login/?continue=https%3A%2F%2Fkauth.kakao.com%2Foauth%2Fauthorize%3Fscope%3Dprofile_nickname%2520account_email%26response_type%3Dcode%26state%3DyvBBBThQeYtzuva8raC14Y26Y1XN7Ysxz1qMtHpe_bQ%253D%26redirect_uri%3Dhttps%253A%252F%252Ffachive.kro.kr%252Flogin%252Foauth2%252Fcode%252Fkakao%26through_account%3Dtrue%26client_id%3Dfb02b63ae364416393d9e495dfb7c0bc#login'
 		);
+		return res;
+	}
+	async function onClickGoogle() {
+		const res = await axios.get(
+			'https://fachive.kro.kr/login/oauth2/code/google?state=DjBJ5h4uJGpl52wAad4KrXh2l_Y_Hol3-k4yL7xAuwQ%3D&code=4%2F0AWtgzh5F7guSenqXJutjm-_sYoyvvOgzODsdhk1wcL9l9htyrK0QVIwCuDAa8AycX2068A&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&authuser=0&prompt=none'
+		);
+		return res;
 	}
 	return (
 		<LoginDiv>
@@ -51,9 +58,19 @@ const Login = () => {
 			</form>
 			<SocialLoginText>다른 계정을 활용하여 간편하게 로그인</SocialLoginText>
 			<SocialLogin>
-				<img src={`${kakao}`} alt="" onClick={onClickKakao} />
-				<img src={`${naver}`} alt="" />
-				<img src={`${google}`} alt="" />
+				<a
+					href={
+						'https://accounts.kakao.com/login/?continue=https%3A%2F%2Fkauth.kakao.com%2Foauth%2Fauthorize%3Fscope%3Dprofile_nickname%2520account_email%26response_type%3Dcode%26state%3DyvBBBThQeYtzuva8raC14Y26Y1XN7Ysxz1qMtHpe_bQ%253D%26redirect_uri%3Dhttps%253A%252F%252Ffachive.kro.kr%252Flogin%252Foauth2%252Fcode%252Fkakao%26through_account%3Dtrue%26client_id%3Dfb02b63ae364416393d9e495dfb7c0bc#login'
+					}
+				>
+					<img src={`${kakao}`} alt="" onClick={onClickKakao} />
+				</a>
+				<a href="https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=0EIcVhqxOkoYijiKDftK&scope=name%20email&state=wiImg0q8t8MLU69-GwaEp44V_EP-20uhYruOu8MWdKQ%3D&redirect_uri=https://fachive.kro.kr/login/oauth2/code/naver">
+					<img src={`${naver}`} alt="" />
+				</a>
+				<a href="https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?response_type=code&client_id=949571754376-jo565rnok1d4r3li488pvlkm3c3ts2gv.apps.googleusercontent.com&scope=openid%20profile%20email&state=URyfFHIu0Be-HzKsXgzUQVYetP1lDWZ5DSrH98A-DXs%3D&redirect_uri=https%3A%2F%2Ffachive.kro.kr%2Flogin%2Foauth2%2Fcode%2Fgoogle&nonce=Lpf4t3d3cEV4Br7QoE21puf1CqVsEPeeEaCASSLN5sA&service=lso&o2v=2&flowName=GeneralOAuthFlow">
+					<img src={`${google}`} alt="" onClick={onClickGoogle} />
+				</a>
 			</SocialLogin>
 		</LoginDiv>
 	);
@@ -121,9 +138,12 @@ const SocialLogin = styled.div`
 	justify-content: space-around;
 	margin: 0 auto;
 	width: 80%;
-	img {
-		width: 25%;
-		border: 0.3px solid #eee;
-		border-radius: 50%;
+	a {
+		width: 30%;
+		img {
+			width: 100%;
+			border: 0.3px solid #eee;
+			border-radius: 50%;
+		}
 	}
 `;
