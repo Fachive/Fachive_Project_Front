@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { fashionPickUpDetailApi } from '../api/api';
-import kakao from '../assets/kakao.jpg';
 import { useLocation } from 'react-router-dom';
 import { AiOutlineLike, AiOutlineClose } from 'react-icons/ai';
 import { IoMdRefresh } from 'react-icons/io';
@@ -15,6 +14,17 @@ interface detailData {
 	s3ImageUriList: Array<string>;
 	tagList: Array<string>;
 	fashionPickupEntityId: string;
+	body: string;
+	responseCommentDTOList: [commentList];
+}
+interface commentList {
+	commentId: number;
+	postId: number;
+	postType: string;
+	userId: number;
+	commentBody: string;
+	commentProfileImageURI: string;
+	mypick: number;
 }
 const Detail = () => {
 	const [image, setImage] = useState<string>('');
@@ -42,7 +52,6 @@ const Detail = () => {
 					{data?.data.s3ImageUriList.map((url, i) => {
 						return <img key={i} src={url} />;
 					})}
-					<img src={`${kakao}`} alt="" />
 				</PickupImageDiv>
 				<PickupTextDiv>
 					<ProfileDiv>
@@ -53,30 +62,26 @@ const Detail = () => {
 						</DesignerNameDiv>
 						<MyPickButton>마이픽</MyPickButton>
 					</ProfileDiv>
-					<p>
-						Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugit magnam enim error impedit officiis! Numquam
-						eligendi totam voluptates eaque hic, repellat libero maxime at nulla commodi autem nihil adipisci aperiam?
-					</p>
-					<p>댓글 8개</p>
+					<BodyP>{data?.data.body}</BodyP>
+					<p>댓글 {data?.data.responseCommentDTOList.length}개</p>
 					<hr />
 					<CommentInputDiv>
 						<input type="text" />
 						<button>작성</button>
 					</CommentInputDiv>
 					<CommentBoxDiv>
-						<ProfileImageDiv></ProfileImageDiv>
-						<CommentDiv>
-							<span>김아무개</span>
-							<span>
-								여기가 댓글 쓰는곳 맞나요? 너무 옷이 이뻐서 댓글을 안쓸수가 없겠더라구요 저 이거 너무 사고싶어서
-								펀딩하고싶습니다!
-							</span>
-						</CommentDiv>
-						<ProfileImageDiv></ProfileImageDiv>
-						<CommentDiv>
-							<span>박아무개</span>
-							<span>그러니까요 어떻게 이런걸 생각해 내셨는지 너무 부럽습니다 ㅠㅠ</span>
-						</CommentDiv>
+						{data?.data.responseCommentDTOList[0] !== undefined &&
+							data?.data.responseCommentDTOList.map((el) => {
+								return (
+									<React.Fragment key={el.commentId}>
+										<ProfileImageDiv>{<img src={el.commentProfileImageURI}></img>}</ProfileImageDiv>
+										<CommentDiv>
+											<span>{el.userId}</span>
+											<span>{el.commentBody}</span>
+										</CommentDiv>
+									</React.Fragment>
+								);
+							})}
 					</CommentBoxDiv>
 				</PickupTextDiv>
 				<PickupButtonDiv>
@@ -125,7 +130,11 @@ const FlexBoxDiv = styled.div`
 	width: 100%;
 	height: auto;
 `;
-const DetailTitleH3 = styled.h3``;
+const DetailTitleH3 = styled.h3`
+	display: inline-block;
+	font-size: 2.5rem;
+	margin: 1rem 0 1.5rem 0;
+`;
 
 const HashTagBoxDiv = styled.div`
 	margin-bottom: 1rem;
@@ -227,4 +236,9 @@ const CommentDiv = styled.div`
 		margin-bottom: 0.7rem;
 		font-weight: bold;
 	}
+`;
+const BodyP = styled.p`
+	font-size: 1.2rem;
+	font-weight: 600;
+	margin: 1rem 0;
 `;
