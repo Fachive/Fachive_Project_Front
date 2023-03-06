@@ -20,6 +20,8 @@ const Navbar = () => {
 		sessionStorage.removeItem('displayName');
 		sessionStorage.removeItem('email');
 		sessionStorage.removeItem('token');
+		sessionStorage.removeItem('userId');
+
 		nav('/');
 	}
 	return (
@@ -63,7 +65,6 @@ const Navbar = () => {
 				)}
 			</UserContainerDiv>
 			<></>
-
 		</Container>
 	);
 };
@@ -162,4 +163,3 @@ const UserItemDiv = styled.span`
 	font-size: 16px;
 	font-weight: 700;
 `;
-
