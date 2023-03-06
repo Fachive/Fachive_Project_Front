@@ -14,13 +14,12 @@ const Fashion = () => {
 	const location = useLocation();
 	const [filter, setFilter] = useState<string>('추천순');
 	const [currentPage, setCurrentPage] = useState<string>(location.pathname);
-	const [category, setCategory] = useState<string>('상의');
+	const [category, setCategory] = useState<string>('전체');
 	const [CardData, setCardData] = useState<CardRes[]>([]);
 	const [limit, setLimit] = useState<number>(10);
 	const [page, setPage] = useState<number>(1);
 	const [categoryModal, setCategoryModal] = useState<boolean>(false);
 	const offset = (page - 1) * limit;
-
 	const onClickHander = (e: React.MouseEvent) => {
 		setFilter((e.target as HTMLElement).id);
 	};
@@ -40,7 +39,7 @@ const Fashion = () => {
 	const getData = async () => {
 		if (currentPage === '/fashion') {
 			const res = await axios.get(
-				`https://fachive.kro.kr/fashionpickup/auth/mainfasionpickup?categoryName=total&sortWay=${filter}`
+				`https://fachive.kro.kr/fashionpickup/auth/mainfasionpickup?categoryName=${category}&sortWay=${filter}`
 			);
 			setCardData(res.data);
 		} else if (currentPage === '/funding') {
@@ -61,7 +60,7 @@ const Fashion = () => {
 	}, [filter, category, currentPage, limit]);
 
 	useEffect(() => {
-		setCategory('상의');
+		setCategory('전체');
 		if (location.pathname === '/fashion') {
 			setLimit(10);
 		} else {
@@ -73,7 +72,6 @@ const Fashion = () => {
 		setCategory((e.target as HTMLButtonElement).id);
 	};
 
-	console.log(limit, '리미트');
 	return (
 		<ContainerDiv>
 			<CategoryDiv>

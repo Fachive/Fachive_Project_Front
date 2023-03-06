@@ -7,7 +7,7 @@ import { CardRes } from '../types/fashionPage';
 import FashionCard from '../components/FashionCard';
 import FundingCard from '../components/FundingCard';
 
-import { Link,useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { userToken } from '../api/api';
 
 const Home = () => {
