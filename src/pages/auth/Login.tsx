@@ -41,7 +41,8 @@ const Login = () => {
 					onClick={async (e) => {
 						e.preventDefault();
 						const data = await loginApi(stateLoginEmail, stateLoginPassword);
-						if (data != undefined && data?.data.length != 0) {
+
+						if (data !== undefined && data?.data.length !== 0) {
 							nav('/');
 						} else {
 							alert('이메일이나 비밀번호가 올바르지 않습니다. 다시 시도해주세요');

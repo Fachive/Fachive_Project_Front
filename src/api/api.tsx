@@ -9,7 +9,7 @@ const customAxios = axios.create({
 	},
 });
 export const fashionPickUpDetailApi = async (num: string) => {
-	const data = await customAxios.get(`/fashionpickup/get/${num}`);
+	const data = await customAxios.get(`/fashionpickup/auth/get/${num}`);
 	return data;
 };
 export const fashionPickUpDetailApi22 = async () => {
@@ -63,6 +63,7 @@ export const loginApi = async (email: string, password: string) => {
 		);
 		window.sessionStorage.setItem('displayName', data.data.displayName);
 		window.sessionStorage.setItem('email', data.data.email);
+		window.sessionStorage.setItem('token', data.data.token.split(':')[1]);
 		return data;
 	} catch (error) {
 		console.log('error');

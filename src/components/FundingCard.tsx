@@ -5,6 +5,8 @@ interface ResProps {
 	data: CardRes;
 }
 const FundingCard = ({ data }: ResProps) => {
+	const persentage = Math.trunc(Math.random() * 100);
+	const targetPrice = Math.trunc(Math.random() * 10000000);
 	return (
 		data && (
 			<CardDiv>
@@ -12,18 +14,16 @@ const FundingCard = ({ data }: ResProps) => {
 				<CardInfoBoxDiv>
 					<TitleDiv>{data.body}</TitleDiv>
 					<HashTagDiv>#힙합 #아메카지 #인스타룩 #패셔너블</HashTagDiv>
-					{/* <progress
-					 value={data.percentage}
-					max="100"
-					style={{ width: '100%' }}
-				></progress> */}
+					<progress value={persentage} max="100" style={{ width: '100%' }}></progress>
 					<PundingInfoDiv>
 						<div style={{ display: 'flex' }}>
 							<ProfileDiv />
 							<DesignerSpan>케이빌리지</DesignerSpan>
-							{/* <SaleDiv>{data.percentage}% (D-3)</SaleDiv> */}
+							<SaleDiv>{persentage}%</SaleDiv>
 						</div>
-						<div style={{ fontSize: '20px', fontWeight: '600', color: '#1A3568' }}>{data.targetPrice}원</div>
+						<div style={{ fontSize: '20px', fontWeight: '600', color: '#1A3568' }}>
+							{targetPrice.toLocaleString()}원
+						</div>
 					</PundingInfoDiv>
 				</CardInfoBoxDiv>
 			</CardDiv>

@@ -21,7 +21,7 @@ function Pagination({ total, limit, page, setPage }: PageType) {
 							{i + 1}
 						</Button>
 					))}
-				<Button onClick={() => setPage(page + 1)} disabled={total === 0 || total === 1}>
+				<Button onClick={() => setPage(page + 1)} disabled={total === 0 || total === 1 || numPages === page}>
 					NEXT&gt;
 				</Button>
 			</Nav>

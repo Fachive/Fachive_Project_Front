@@ -31,6 +31,7 @@ const Router = () => {
 
 				<Route path="/profile" element={<Profile />}></Route>
 			</Route>
+
 			<Route path="/login" element={<Login />} />
 			<Route path="/sign" element={<Sign />} />
 		</Routes>

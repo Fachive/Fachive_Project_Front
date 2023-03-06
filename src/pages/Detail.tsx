@@ -4,6 +4,7 @@ import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { fashionPickUpDetailApi } from '../api/api';
 import kakao from '../assets/kakao.jpg';
+import { useLocation } from 'react-router-dom';
 
 interface fashionPickupDetailData {
 	data: detailData;
@@ -16,10 +17,14 @@ interface detailData {
 }
 const Detail = () => {
 	const [image, setImage] = useState<string>('');
-	const id = '2';
-	const { data } = useQuery<fashionPickupDetailData>(['get', id], () => fashionPickUpDetailApi(id), {
-		refetchOnWindowFocus: false,
-	});
+	const url = useLocation();
+	const { data } = useQuery<fashionPickupDetailData>(
+		['get'],
+		() => fashionPickUpDetailApi(url.pathname.split('/')[3]),
+		{
+			refetchOnWindowFocus: false,
+		}
+	);
 	if (typeof data !== 'undefined') {
 		console.log(data.data);
 	}
