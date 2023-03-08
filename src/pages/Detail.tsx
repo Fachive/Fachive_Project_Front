@@ -43,11 +43,19 @@ const Detail = () => {
 		console.log(data.data);
 	}
 	const likeHander = async () => {
-		const res = await axios.post('http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/MyPick/post', {
-			entityId: 4,
-			userId: 32,
-			whatToPick: 'FASHIONPICKUP',
-		});
+		const res = await axios.post(
+			'http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/MyPick/post',
+			{
+				entityId: 4,
+				userId: 32,
+				whatToPick: 'FASHIONPICKUP',
+			},
+			{
+				headers: {
+					Authorization: sessionStorage.getItem('token'),
+				},
+			}
+		);
 		console.log(res);
 	};
 	return (
