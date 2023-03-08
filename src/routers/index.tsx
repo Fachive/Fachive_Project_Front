@@ -10,11 +10,13 @@ const Router = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	useEffect(() => {
-		if (!sessionStorageDisplayName && !sessionStorageToken && location.pathname.includes('profile')) {
+		if (!sessionStorageToken && location.pathname.includes('profile')) {
 			navigate('/');
-		} else if (sessionStorageDisplayName || (sessionStorageToken && location.pathname.includes('login'))) {
+		} else if (!sessionStorageToken && location.pathname.includes('newpost')) {
 			navigate('/');
-		} else if (sessionStorageDisplayName || (sessionStorageToken && location.pathname.includes('sign'))) {
+		} else if (sessionStorageToken && location.pathname.includes('login')) {
+			navigate('/');
+		} else if (sessionStorageToken && location.pathname.includes('sign')) {
 			navigate('/');
 		}
 	}, [location.pathname]);
