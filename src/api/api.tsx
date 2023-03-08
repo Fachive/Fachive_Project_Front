@@ -61,9 +61,11 @@ export const loginApi = async (email: string, password: string) => {
 				},
 			}
 		);
+		const token = data.data.token.split(':').join(' ');
+		console.log(token);
 		window.sessionStorage.setItem('displayName', data.data.displayName);
 		window.sessionStorage.setItem('email', data.data.email);
-		window.sessionStorage.setItem('token', data.data.token);
+		window.sessionStorage.setItem('token', token);
 		window.sessionStorage.setItem('userId', data.data.userId);
 		return data;
 	} catch (error) {
