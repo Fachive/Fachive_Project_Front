@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import Layout from '../layouts/Layout';
-import { Home, Fashion, Detail, Login, Sign, Editor, Portfolio } from '../pages';
+import { Home, Fashion, FashionDetail, Login, Sign, Editor, Portfolio, FundingDetail, PortfolioDetail } from '../pages';
 import Profile from '../pages/Profile';
 
 const Router = () => {
@@ -24,8 +24,9 @@ const Router = () => {
 		<Routes>
 			<Route path="/" element={<Layout />}>
 				<Route index element={<Home />} />
-				<Route path="/fashion/detail/:id" element={<Detail />} />
-				<Route path="/funding/detail/:id" element={<Detail />} />
+				<Route path="/fashion/detail/:id" element={<FashionDetail />} />
+				<Route path="/funding/detail/:id" element={<FundingDetail />} />
+				<Route path="/portfolio/detail/:id" element={<PortfolioDetail />} />
 				<Route path="/fashion" element={<Fashion />} />
 				<Route path="/funding" element={<Fashion />} />
 				<Route path="/newpost" element={<Editor />} />

@@ -8,7 +8,7 @@ import FashionCard from '../components/FashionCard';
 import FundingCard from '../components/FundingCard';
 
 import { Link, useNavigate } from 'react-router-dom';
-import { userToken } from '../api/api';
+// import { userToken } from '../api/api';
 
 const Home = () => {
 	const [FashionCardData, setFashionCardData] = useState<CardRes[]>([]);
@@ -61,9 +61,9 @@ const Home = () => {
 		getData();
 	}, []);
 
-	useEffect(() => {
-		userToken();
-	}, []);
+	// useEffect(() => {
+	// 	userToken();
+	// }, []);
 
 	return (
 		<Container>

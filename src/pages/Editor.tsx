@@ -106,9 +106,9 @@ const Editor = () => {
 				data.append('tagList', postInfo.hashTag[i]);
 			}
 			if (postInfo.postType === 'fashion') {
-				await axios.post('http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/fashionpickup/post', data);
+				await axios.post('https://fachive.kro.kr/fashionpickup/post', data);
 			} else {
-				await axios.post('http://ec2-54-180-7-198.ap-northeast-2.compute.amazonaws.com:8080/portfolio/post', data);
+				await axios.post('https://fachive.kro.kr/portfolio/post', data);
 			}
 		}
 	};
