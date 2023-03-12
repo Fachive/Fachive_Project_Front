@@ -73,11 +73,8 @@ export const loginApi = async (email: string, password: string) => {
 		console.log(token);
 		window.sessionStorage.setItem('displayName', data.data.displayName);
 		window.sessionStorage.setItem('email', data.data.email);
-<<<<<<< Updated upstream
-		window.sessionStorage.setItem('token', token);
-=======
+
 		window.sessionStorage.setItem('token', data.data.token.split(':').join(''));
->>>>>>> Stashed changes
 		window.sessionStorage.setItem('userId', data.data.userId);
 		console.log(window.sessionStorage.getItem('token'));
 		return data;
